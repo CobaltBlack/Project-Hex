@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    public BoardManager boardScript;
-    public HexOverlayManager hexOverlayScript;
+    BoardManager boardScript;
+    HexOverlayManager hexOverlayScript;
 
     public GameObject player;
     public GameObject playerInstance;
@@ -16,14 +16,8 @@ public class GameManager : MonoBehaviour
     //[HideInInspector]
     public Vector3 playerPosition;
 
-    //test
-    public int x = 0;
-
     void Awake()
     {
-        // test
-        x = 1;
-
         if (instance == null)
         {
             instance = this;
@@ -43,12 +37,17 @@ public class GameManager : MonoBehaviour
 
     public void InitializeGame()
     {
-        boardScript.BoardSetup(); // set up board
-        playerInstance = Instantiate(player, boardScript.trueCenter, Quaternion.identity) as GameObject; // initialize player
+        // set up board
+        Debug.Log("Initialize gameboard");
+        boardScript.BoardSetup();
 
+        // initialize player
+        Debug.Log("Instantiate player");
+        playerInstance = Instantiate(player, boardScript.trueCenter, Quaternion.identity) as GameObject;
         //Debug.Log(playerInstance);
 
         // Create "ring" of overlays that moves with the player
+        Debug.Log("Instantiate overlay");
         hexOverlayScript.InstantiateOverlayAroundPlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
 
         MovePlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
@@ -78,12 +77,6 @@ public class GameManager : MonoBehaviour
     // DEBUG
     private int xDebug;
     private int yDebug;
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()

@@ -3,10 +3,18 @@ using System.Collections;
 
 public class HexOverlayManager : MonoBehaviour
 {
-    public BoardManager boardScript;
-    public GameManager gameScript;
-
     public GameObject hexOverlay;
+
+    BoardManager boardScript;
+    GameManager gameScript;
+
+    Transform hexHolderTransform;
+    HexOverlay hexScriptTop;
+    HexOverlay hexScriptBottom;
+    HexOverlay hexScriptTopLeft;
+    HexOverlay hexScriptTopRight;
+    HexOverlay hexScriptBottomLeft;
+    HexOverlay hexScriptBottomRight;
 
     void Awake()
     {
@@ -65,15 +73,6 @@ public class HexOverlayManager : MonoBehaviour
         //GameObject toDestroy = GameObject.Find("Overlay");
         Destroy(hexHolderTransform.gameObject);
     }
-
-    Transform hexHolderTransform;
-
-    HexOverlay hexScriptTop;
-    HexOverlay hexScriptBottom;
-    HexOverlay hexScriptTopLeft;
-    HexOverlay hexScriptTopRight;
-    HexOverlay hexScriptBottomLeft;
-    HexOverlay hexScriptBottomRight;
 
     // Instantiates 6 clickable hex overlays around coordinates xy
     // Each overlay is attached to a parent GameObject hexHolder

@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class BoardManager : MonoBehaviour
 {
-    public enum HexType { NORMAL, WALL };
+    public enum HexType { NORMAL, WALL, STORE, EXIT };
 
     //[Serializable] // (allows us to embed a class with sub properties in the inspector)
     public class MapHex
@@ -15,12 +15,13 @@ public class BoardManager : MonoBehaviour
 
         //public bool player;
         //public bool traversable;
-        public bool visited = false;
+        public bool visited;
 
         public MapHex(Vector3 position, HexType hexProperty) // Constructor
         {
             transformPosition = position;
             property = hexProperty;
+            visited = false;
 
             //player = isPlayer; // can be kept track of by GameManager
             //traversable = isTraversable; // can be kept track of by using property
@@ -28,11 +29,14 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    static int columns = 19; // Gameboard dimension - columns
-    static int rows = 19; // Gameboard dimension - rows
+    public int columns; // Gameboard dimension - columns
+    public int rows; // Gameboard dimension - rows
 
     public int xWorldCenter;
     public int yWorldCenter;
+
+    public GameObject[] hexRooms;
+    public MapHex[,] gameBoard;
 
     // holds TRUE coordinate
     [HideInInspector]
@@ -45,9 +49,6 @@ public class BoardManager : MonoBehaviour
         yWorldCenter = rows / 2;
     }
 
-    public GameObject[] hexRooms;
-
-    public MapHex[,] gameBoard = new MapHex[columns, rows]; // removing static status from columns and rows will break this
 
     public void BoardSetup()
     {
@@ -56,10 +57,9 @@ public class BoardManager : MonoBehaviour
         InitializeWorldObjects();
 
         InstantiateGameObjects();
-
     }
 
-    // 
+    // Returns whether the hex is valid (not a wall or out of bounds)
     public bool isHexValid(int x, int y)
     {
         if (0 > x || x >= columns || 0 > y || y >= rows)
@@ -89,6 +89,7 @@ public class BoardManager : MonoBehaviour
     // Set up an empty game board
     void InitializeGameBoard()
     {
+        gameBoard = new MapHex[columns, rows];
         float xTemp, yTemp;
         for (int x = 0; x < columns; x++)
         {
@@ -134,10 +135,11 @@ public class BoardManager : MonoBehaviour
 
     }
 
+    // Reads gameBoard and instantiates everything
     void InstantiateGameObjects()
     {
         // parent
-        Transform hexHolder = new GameObject("Board").transform; 
+        Transform hexHolder = new GameObject("Board").transform;
         GameObject instance, toInstantiate;
 
         for (int x = 0; x < columns; x++)
