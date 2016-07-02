@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HexOverlayManager : MonoBehaviour {
+public class HexOverlayManager : MonoBehaviour
+{
 
     public BoardManager boardScript;
     public GameManager gameScript;
@@ -80,7 +81,7 @@ public class HexOverlayManager : MonoBehaviour {
         hexHolder = new GameObject("Overlay").transform; // child all "hexOverlay" under parent "Overlay"
         hexHolder.position = boardScript.trueCenter;
         GameObject instance;
-        
+
         if (x % 2 == 1) // x is odd
         {
             // top
@@ -196,14 +197,14 @@ public class HexOverlayManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    }
+
+    // Update is called once per frame
+    void Update()
     {
-	
-	}
+
+    }
 }

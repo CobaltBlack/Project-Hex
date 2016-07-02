@@ -3,8 +3,8 @@ using System; // enables [serializable] attribute... allows us to modify how var
 using System.Collections.Generic; // Adding Generic enables lists
 using Random = UnityEngine.Random;
 
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
     public static GameManager instance = null;
 
     public BoardManager boardScript;
@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour {
     {
         // test
         x = 1;
-        
 
         if (instance == null)
         {
@@ -39,27 +38,19 @@ public class GameManager : MonoBehaviour {
         boardScript = GetComponent<BoardManager>();
         hexOverlayScript = GetComponent<HexOverlayManager>();
 
-
-
         InitializeGame();
-        
-
-
     }
 
     public void InitializeGame()
     {
-
         boardScript.BoardSetup(); // set up board
         playerInstance = Instantiate(player, boardScript.trueCenter, Quaternion.identity) as GameObject; // initialize player
 
         //Debug.Log(playerInstance);
 
-
         //MovePlayer(0, 0); // move player // MUST FIX X AND Y ARE NOOOOOOOOOOT WORLD COORDINATES
 
         hexOverlayScript.createOverlay(boardScript.trueCenter.x, boardScript.trueCenter.y); // only here for testing, move to MovePlayer later
-        
     }
 
     public void MovePlayer(int x, int y)
@@ -90,11 +81,11 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-	
-	}
-	
-	// Update is called once per frame
-	void Update()
+
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         if (Input.GetKeyDown("space"))
         {

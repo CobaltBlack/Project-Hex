@@ -28,11 +28,8 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-
-
     static int columns = 19; // Gameboard dimension - columns
     static int rows = 19; // Gameboard dimension - rows
-
 
     public int xWorldCenter;
     public int yWorldCenter;
@@ -112,6 +109,6 @@ public class BoardManager : MonoBehaviour
 
     void Update()
     {
-	
-	}
+
+    }
 }
