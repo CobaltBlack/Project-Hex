@@ -38,15 +38,4 @@ public class HexOverlay : MonoBehaviour
         GameManager.instance.inputSequence(xWorld, yWorld);
     }
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

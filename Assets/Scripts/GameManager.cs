@@ -48,20 +48,21 @@ public class GameManager : MonoBehaviour
 
         //Debug.Log(playerInstance);
 
-        //MovePlayer(0, 0); // move player // MUST FIX X AND Y ARE NOOOOOOOOOOT WORLD COORDINATES
+        // Create "ring" of overlays that moves with the player
+        hexOverlayScript.InstantiateOverlayAroundPlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
 
-        hexOverlayScript.createOverlay(boardScript.trueCenter.x, boardScript.trueCenter.y); // only here for testing, move to MovePlayer later
+        MovePlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
     }
 
     public void MovePlayer(int x, int y)
     {
-        playerInstance.transform.position = new Vector3(boardScript.gameBoard[x, y].x, boardScript.gameBoard[x, y].y, 0f);
+        playerInstance.transform.position = boardScript.GetHexPosition(x, y);
         hexOverlayScript.moveOverlay(x, y);
     }
 
     public void UpdatePlayer(int x, int y)
     {
-        boardScript.gameBoard[x, y].visited = true;
+        boardScript.SetHexVisited(x, y, true);
     }
 
     public void inputSequence(int x, int y)
@@ -90,8 +91,8 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             Debug.Log("xDebug, yDebug " + xDebug + ", " + yDebug);
-            Debug.Log("x(TRUE): " + boardScript.gameBoard[xDebug, yDebug].x);
-            Debug.Log("y(TRUE): " + boardScript.gameBoard[xDebug, yDebug].y);
+            //Debug.Log("x(TRUE): " + boardScript.gameBoard[xDebug, yDebug].x);
+            //Debug.Log("y(TRUE): " + boardScript.gameBoard[xDebug, yDebug].y);
             Debug.Log("property: " + boardScript.gameBoard[xDebug, yDebug].property);
             Debug.Log("visited: " + boardScript.gameBoard[xDebug, yDebug].visited);
         }

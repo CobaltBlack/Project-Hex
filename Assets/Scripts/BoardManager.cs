@@ -5,21 +5,21 @@ using Random = UnityEngine.Random;
 
 public class BoardManager : MonoBehaviour
 {
+    public enum HexType { NORMAL, WALL };
+
     //[Serializable] // (allows us to embed a class with sub properties in the inspector)
     public class MapHex
     {
-        public float x; // TRUE x
-        public float y; // TRUE y
-        public int property;
+        public Vector3 transformPosition;
+        public HexType property;
 
         //public bool player;
         //public bool traversable;
         public bool visited = false;
 
-        public MapHex(float xCoordinate, float yCoordinate, int hexProperty) // Constructor
+        public MapHex(Vector3 position, HexType hexProperty) // Constructor
         {
-            x = xCoordinate;
-            y = yCoordinate;
+            transformPosition = position;
             property = hexProperty;
 
             //player = isPlayer; // can be kept track of by GameManager
@@ -51,64 +51,111 @@ public class BoardManager : MonoBehaviour
 
     public void BoardSetup()
     {
-        Transform hexHolder = new GameObject("Board").transform; // parent
-        GameObject instance;
-        float xTemp, yTemp;
+        InitializeGameBoard();
+        InitializeWalls();
+        InitializeWorldObjects();
 
+        InstantiateGameObjects();
+
+    }
+
+    // 
+    public bool isHexValid(int x, int y)
+    {
+        if (0 > x || x >= columns || 0 > y || y >= rows)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    // Returns the Transform position of a hex by coordinate
+    public Vector3 GetHexPosition(int x, int y)
+    {
+        return gameBoard[x, y].transformPosition;
+    }
+
+    // Sets visited property of a hex
+    public void SetHexVisited(int x, int y, bool visited)
+    {
+        if (0 > x || x >= columns || 0 > y || y >= rows)
+        {
+            return;
+        }
+        gameBoard[x, y].visited = visited;
+    }
+
+    // Set up an empty game board
+    void InitializeGameBoard()
+    {
+        float xTemp, yTemp;
         for (int x = 0; x < columns; x++)
         {
             for (int y = 0; y < rows; y++)
             {
-                // randomly choose room toInstantiate
-                int hexChoice = Random.Range(0, hexRooms.Length);
-                GameObject toInstantiate = hexRooms[hexChoice]; // Choose blank tile
-
-                // create walls, probably make HexRooms[0] TO THE INTRAVERSABLE WALL
-
-                // create stores, exit, quests, etc
-
+                // TODO: Select random hextype
+                HexType hexType = HexType.NORMAL;
 
                 // hex protocol
-                Vector3 newLocation;
+                Vector3 hexLocation;
                 if (x % 2 == 0) // if even
                 {
                     xTemp = (float)(x * 1.5);
                     yTemp = y;
-                    newLocation = new Vector3(xTemp, yTemp, 0f);
+                    hexLocation = new Vector3(xTemp, yTemp, 0f);
                 }
-                else // if odd
+                else // if odd, shift tile up half a space (y + 0.5)
                 {
                     xTemp = (float)(x * 1.5);
                     yTemp = (float)(y + 0.5);
-                    newLocation = new Vector3(xTemp, yTemp, 0f);
+                    hexLocation = new Vector3(xTemp, yTemp, 0f);
                 }
 
                 // save center vector3
                 if (x == xWorldCenter && y == yWorldCenter)
                 {
-                    trueCenter = newLocation;
+                    trueCenter = hexLocation;
                 }
 
-                // instantiation
-                instance = Instantiate(toInstantiate, newLocation, Quaternion.identity) as GameObject;
-
-                // editing GameObject
-                instance.transform.SetParent(hexHolder);  // parent under hexHolder "Map"
-                instance.name = "hex_" + x + "_" + y; // name the hexes by coordinates
-
-                // logging
-                gameBoard[x, y] = new MapHex(xTemp, yTemp, hexChoice); // log info to gameBoard
+                // Save in gameBoard
+                gameBoard[x, y] = new MapHex(hexLocation, hexType); // log info to gameBoard
             }
         }
     }
 
-    void Start()
+    void InitializeWalls()
     {
 
     }
 
-    void Update()
+    void InitializeWorldObjects()
     {
 
+    }
+
+    void InstantiateGameObjects()
+    {
+        // parent
+        Transform hexHolder = new GameObject("Board").transform; 
+        GameObject instance, toInstantiate;
+
+        for (int x = 0; x < columns; x++)
+        {
+            for (int y = 0; y < rows; y++)
+            {
+                // randomly choose room 
+                // TODO: Choose room based on HexType
+                int hexChoice = Random.Range(0, hexRooms.Length);
+                toInstantiate = hexRooms[hexChoice]; // Choose blank tile
+
+                // instantiation
+                instance = Instantiate(toInstantiate, GetHexPosition(x, y), Quaternion.identity) as GameObject;
+
+                // editing GameObject
+                instance.transform.SetParent(hexHolder);  // parent under hexHolder "Map"
+                instance.name = "hex_" + x + "_" + y; // name the hexes by coordinates
+            }
+        }
     }
 }
