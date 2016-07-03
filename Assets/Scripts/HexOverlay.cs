@@ -9,16 +9,9 @@ public class HexOverlay : MonoBehaviour
     public int xWorld;
     public int yWorld;
 
-    // TRUE coordinate
-    //public float xTrue;
-    //public float yTrue;
-
-    public void Awake()
+    void Awake()
     {
         overlaySprite = gameObject.GetComponent<SpriteRenderer>();
-
-        //xTrue = gameObject.transform.position.x;
-        //yTrue = gameObject.transform.position.y;
     }
 
     void OnMouseEnter()
@@ -38,4 +31,8 @@ public class HexOverlay : MonoBehaviour
         GameManager.instance.inputSequence(xWorld, yWorld);
     }
 
+    public void OverlaySetActive(bool isActive)
+    {
+        gameObject.SetActive(isActive);
+    }
 }

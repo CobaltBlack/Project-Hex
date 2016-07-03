@@ -25,47 +25,7 @@ public class HexOverlayManager : MonoBehaviour
     public void moveOverlay(int x, int y)
     {
         hexHolderTransform.position = boardScript.GetHexPosition(x, y);
-
-        if (x % 2 == 0) // x is even
-        {
-            hexScriptTop.xWorld = x;
-            hexScriptTop.yWorld = y + 1;
-
-            hexScriptBottom.xWorld = x;
-            hexScriptBottom.yWorld = y - 1;
-
-            hexScriptTopLeft.xWorld = x - 1;
-            hexScriptTopLeft.yWorld = y;
-
-            hexScriptTopRight.xWorld = x + 1;
-            hexScriptTopRight.yWorld = y;
-
-            hexScriptBottomLeft.xWorld = x - 1;
-            hexScriptBottomLeft.yWorld = y - 1;
-
-            hexScriptBottomRight.xWorld = x + 1;
-            hexScriptBottomRight.yWorld = y - 1;
-        }
-        else // x is odd
-        {
-            hexScriptTop.xWorld = x;
-            hexScriptTop.yWorld = y + 1;
-
-            hexScriptBottom.xWorld = x;
-            hexScriptBottom.yWorld = y - 1;
-
-            hexScriptTopLeft.xWorld = x - 1;
-            hexScriptTopLeft.yWorld = y + 1;
-
-            hexScriptTopRight.xWorld = x + 1;
-            hexScriptTopRight.yWorld = y + 1;
-
-            hexScriptBottomLeft.xWorld = x - 1;
-            hexScriptBottomLeft.yWorld = y;
-
-            hexScriptBottomRight.xWorld = x + 1;
-            hexScriptBottomRight.yWorld = y;
-        }
+        updateHexInfo(x, y);
     }
 
     public void destroyOverlay()
@@ -83,36 +43,30 @@ public class HexOverlayManager : MonoBehaviour
         hexHolderTransform.position = boardScript.GetHexPosition(x, y);
         GameObject instance;
 
+        // top
+        instance = InstantiateOverlay(x, y + 1);
+        if (instance)
+        {
+            instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
+            hexScriptTop = instance.GetComponent<HexOverlay>();
+        }
+
+        // bottom
+        instance = InstantiateOverlay(x, y - 1);
+        if (instance)
+        {
+            instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
+            hexScriptBottom = instance.GetComponent<HexOverlay>();
+        }
+
         if (x % 2 == 0) // x is even
         {
-            // top
-            instance = InstantiateOverlay(x, y + 1);
-            if (instance)
-            {
-                instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
-                hexScriptTop = instance.GetComponent<HexOverlay>();
-                hexScriptTop.xWorld = x;
-                hexScriptTop.yWorld = y + 1;
-            }
-
-            // bottom
-            instance = InstantiateOverlay(x, y - 1);
-            if (instance)
-            {
-                instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
-                hexScriptBottom = instance.GetComponent<HexOverlay>();
-                hexScriptBottom.xWorld = x;
-                hexScriptBottom.yWorld = y - 1;
-            }
-
             // top left
             instance = InstantiateOverlay(x - 1, y);
             if (instance)
             {
                 instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
                 hexScriptTopLeft = instance.GetComponent<HexOverlay>();
-                hexScriptTopLeft.xWorld = x - 1;
-                hexScriptTopLeft.yWorld = y;
             }
 
             // top right
@@ -121,8 +75,6 @@ public class HexOverlayManager : MonoBehaviour
             {
                 instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
                 hexScriptTopRight = instance.GetComponent<HexOverlay>();
-                hexScriptTopRight.xWorld = x + 1;
-                hexScriptTopRight.yWorld = y;
             }
 
             // bottom left
@@ -131,8 +83,6 @@ public class HexOverlayManager : MonoBehaviour
             {
                 instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
                 hexScriptBottomLeft = instance.GetComponent<HexOverlay>();
-                hexScriptBottomLeft.xWorld = x - 1;
-                hexScriptBottomLeft.yWorld = y - 1;
             }
 
             // bottom right
@@ -141,40 +91,16 @@ public class HexOverlayManager : MonoBehaviour
             {
                 instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
                 hexScriptBottomRight = instance.GetComponent<HexOverlay>();
-                hexScriptBottomRight.xWorld = x + 1;
-                hexScriptBottomRight.yWorld = y - 1;
             }
         }
         else // x is odd
         {
-            // top
-            instance = InstantiateOverlay(x, y + 1);
-            if (instance)
-            {
-                instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
-                hexScriptTop = instance.GetComponent<HexOverlay>();
-                hexScriptTop.xWorld = x;
-                hexScriptTop.yWorld = y + 1;
-            }
-
-            // bottom
-            instance = InstantiateOverlay(x, y - 1);
-            if (instance)
-            {
-                instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
-                hexScriptBottom = instance.GetComponent<HexOverlay>();
-                hexScriptBottom.xWorld = x;
-                hexScriptBottom.yWorld = y - 1;
-            }
-
             // top left
             instance = InstantiateOverlay(x - 1, y + 1);
             if (instance)
             {
                 instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
                 hexScriptTopLeft = instance.GetComponent<HexOverlay>();
-                hexScriptTopLeft.xWorld = x - 1;
-                hexScriptTopLeft.yWorld = y + 1;
             }
 
             // top right
@@ -183,8 +109,6 @@ public class HexOverlayManager : MonoBehaviour
             {
                 instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
                 hexScriptTopRight = instance.GetComponent<HexOverlay>();
-                hexScriptTopRight.xWorld = x + 1;
-                hexScriptTopRight.yWorld = y + 1;
             }
 
             // bottom left
@@ -193,8 +117,6 @@ public class HexOverlayManager : MonoBehaviour
             {
                 instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
                 hexScriptBottomLeft = instance.GetComponent<HexOverlay>();
-                hexScriptBottomLeft.xWorld = x - 1;
-                hexScriptBottomLeft.yWorld = y;
             }
 
             // bottom right
@@ -203,6 +125,84 @@ public class HexOverlayManager : MonoBehaviour
             {
                 instance.transform.SetParent(hexHolderTransform);  // parent under hexHolder "Map"
                 hexScriptBottomRight = instance.GetComponent<HexOverlay>();
+            }
+        }
+
+        updateHexInfo(x, y);
+    }
+
+    void updateHexInfo(int x, int y)
+    {
+        if (hexScriptTop)
+        {
+            hexScriptTop.OverlaySetActive(boardScript.isHexValid(x, y + 1));
+            hexScriptTop.xWorld = x;
+            hexScriptTop.yWorld = y + 1;
+        }
+
+        if (hexScriptBottom)
+        {
+            hexScriptBottom.OverlaySetActive(boardScript.isHexValid(x, y - 1));
+            hexScriptBottom.xWorld = x;
+            hexScriptBottom.yWorld = y - 1;
+        }
+
+        if (x % 2 == 0) // x is even
+        {
+            if (hexScriptTopLeft)
+            {
+                hexScriptTopLeft.OverlaySetActive(boardScript.isHexValid(x - 1, y));
+                hexScriptTopLeft.xWorld = x - 1;
+                hexScriptTopLeft.yWorld = y;
+            }
+
+            if (hexScriptTopRight)
+            {
+                hexScriptTopRight.OverlaySetActive(boardScript.isHexValid(x + 1, y));
+                hexScriptTopRight.xWorld = x + 1;
+                hexScriptTopRight.yWorld = y;
+            }
+
+            if (hexScriptBottomLeft)
+            {
+                hexScriptBottomLeft.OverlaySetActive(boardScript.isHexValid(x - 1, y - 1));
+                hexScriptBottomLeft.xWorld = x - 1;
+                hexScriptBottomLeft.yWorld = y - 1;
+            }
+
+            if (hexScriptBottomRight)
+            {
+                hexScriptBottomRight.OverlaySetActive(boardScript.isHexValid(x + 1, y - 1));
+                hexScriptBottomRight.xWorld = x + 1;
+                hexScriptBottomRight.yWorld = y - 1;
+            }
+        }
+        else // x is odd
+        {
+            if (hexScriptTopLeft)
+            {
+                hexScriptTopLeft.OverlaySetActive(boardScript.isHexValid(x - 1, y + 1));
+                hexScriptTopLeft.xWorld = x - 1;
+                hexScriptTopLeft.yWorld = y + 1;
+            }
+
+            if (hexScriptTopRight)
+            {
+                hexScriptTopRight.OverlaySetActive(boardScript.isHexValid(x + 1, y + 1));
+                hexScriptTopRight.xWorld = x + 1;
+                hexScriptTopRight.yWorld = y + 1;
+            }
+
+            if (hexScriptBottomLeft)
+            {
+                hexScriptBottomLeft.OverlaySetActive(boardScript.isHexValid(x - 1, y));
+                hexScriptBottomLeft.xWorld = x - 1;
+                hexScriptBottomLeft.yWorld = y;
+            }
+
+            if (hexScriptBottomRight)
+            {
+                hexScriptBottomRight.OverlaySetActive(boardScript.isHexValid(x, y - 1));
                 hexScriptBottomRight.xWorld = x + 1;
                 hexScriptBottomRight.yWorld = y;
             }
@@ -211,7 +211,7 @@ public class HexOverlayManager : MonoBehaviour
 
     GameObject InstantiateOverlay(int x, int y)
     {
-        // Check if x and y are out of bounds
+        // Check if x and y are out of bounds or a wall
         if (!boardScript.isHexValid(x, y))
         {
             return null;

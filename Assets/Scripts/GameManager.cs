@@ -57,17 +57,12 @@ public class GameManager : MonoBehaviour
     {
         playerInstance.transform.position = boardScript.GetHexPosition(x, y);
         hexOverlayScript.moveOverlay(x, y);
-    }
-
-    public void UpdatePlayer(int x, int y)
-    {
         boardScript.SetHexVisited(x, y, true);
     }
 
     public void inputSequence(int x, int y)
     {
         MovePlayer(x, y);
-        UpdatePlayer(x, y);
 
         // DEBUG
         xDebug = x;

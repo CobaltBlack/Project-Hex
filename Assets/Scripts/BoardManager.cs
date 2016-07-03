@@ -67,6 +67,11 @@ public class BoardManager : MonoBehaviour
             return false;
         }
 
+        if (GetHexProperty(x, y) == HexType.WALL)
+        {
+            return false;
+        }
+
         return true;
     }
 
@@ -84,6 +89,11 @@ public class BoardManager : MonoBehaviour
             return;
         }
         gameBoard[x, y].visited = visited;
+    }
+
+    public HexType GetHexProperty(int x, int y)
+    {
+        return gameBoard[x, y].property;
     }
 
     // Set up an empty game board
