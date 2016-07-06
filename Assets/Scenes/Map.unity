@@ -2238,6 +2238,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1402658471}
+--- !u!1001 &1487531475
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 428136, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428136, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428136, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428136, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428136, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428136, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428136, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 428136, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 6d28ac23918ab364c8be02a83adbd45e, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1872917168
 GameObject:
   m_ObjectHideFlags: 0
@@ -2427,6 +2469,7 @@ GameObject:
   - 114: {fileID: 2003470267}
   - 114: {fileID: 2003470268}
   - 114: {fileID: 2003470266}
+  - 114: {fileID: 2003470269}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2544,6 +2587,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a3d033aa0bf19418a5b60f63bd5996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2003470269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2003470261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d11f4e1852456d44ea1be8a8520d376c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxNumOfItems: 20
+  startingGold: 100
+  playerItems: []
 --- !u!1 &2016628744
 GameObject:
   m_ObjectHideFlags: 0
