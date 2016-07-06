@@ -3,25 +3,39 @@ using System; // enables [serializable] attribute... allows us to modify how var
 using System.Collections.Generic; // Adding Generic enables lists
 using Random = UnityEngine.Random;
 
+/*
+ * HexOverlay
+ * 
+ * This script is in charge of initializing the game board.
+ * Also has functions to get various information about the state of the board.
+ *  
+ */
+
 public class BoardManager : MonoBehaviour
 {
-    public enum HexType { NORMAL, WALL, STORE, EXIT };
+    public enum HexType
+    {
+        NORMAL,
+        WALL,
+        STORE,
+        EXIT,
+    };
 
     //[Serializable] // (allows us to embed a class with sub properties in the inspector)
     public class MapHex
     {
-        public Vector3 transformPosition;
+        public Vector3 position;
         public HexType property;
 
         //public bool player;
         //public bool traversable;
         public bool visited;
 
-        public MapHex(Vector3 position, HexType hexProperty) // Constructor
+        public MapHex(Vector3 position, HexType property) // Constructor
         {
-            transformPosition = position;
-            property = hexProperty;
-            visited = false;
+            this.position = position;
+            this.property = property;
+            this.visited = false;
 
             //player = isPlayer; // can be kept track of by GameManager
             //traversable = isTraversable; // can be kept track of by using property
@@ -78,7 +92,7 @@ public class BoardManager : MonoBehaviour
     // Returns the Transform position of a hex by coordinate
     public Vector3 GetHexPosition(int x, int y)
     {
-        return gameBoard[x, y].transformPosition;
+        return gameBoard[x, y].position;
     }
 
     // Sets visited property of a hex

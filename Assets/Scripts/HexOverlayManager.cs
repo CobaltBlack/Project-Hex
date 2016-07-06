@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * HexOverlayManager
+ * 
+ * This script controls the clickable overlays that receives input from the player
+ *  
+ */
+
 public class HexOverlayManager : MonoBehaviour
 {
     public GameObject hexOverlay;

@@ -3,12 +3,21 @@ using System; // enables [serializable] attribute... allows us to modify how var
 using System.Collections.Generic; // Adding Generic enables lists
 using Random = UnityEngine.Random;
 
+/*
+ * GameManager
+ * 
+ * This script controls the general flow of the game 
+ * and also initializes other scripts to do everything else.
+ * 
+ */
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
     BoardManager boardScript;
     HexOverlayManager hexOverlayScript;
+    InventoryManager inventoryScript;
 
     public GameObject player;
     public GameObject playerInstance;
@@ -31,6 +40,7 @@ public class GameManager : MonoBehaviour
 
         boardScript = GetComponent<BoardManager>();
         hexOverlayScript = GetComponent<HexOverlayManager>();
+        inventoryScript = GetComponent<InventoryManager>();
 
         InitializeGame();
     }
@@ -49,8 +59,13 @@ public class GameManager : MonoBehaviour
         // Create "ring" of overlays that moves with the player
         Debug.Log("Instantiate overlay");
         hexOverlayScript.InstantiateOverlayAroundPlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
-
         MovePlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
+
+        // Initialize inventory
+        Debug.Log("Instantiate inventory");
+        inventoryScript.InventorySetup();
+
+        Debug.Log("Initialize game complete!");
     }
 
     public void MovePlayer(int x, int y)
@@ -60,7 +75,7 @@ public class GameManager : MonoBehaviour
         boardScript.SetHexVisited(x, y, true);
     }
 
-    public void inputSequence(int x, int y)
+    public void handleHexClick(int x, int y)
     {
         MovePlayer(x, y);
 

@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * HexOverlay
+ * 
+ * This script is attached to individual overlay objects and detects input from the player
+ *  
+ */
+
 public class HexOverlay : MonoBehaviour
 {
     SpriteRenderer overlaySprite;
@@ -28,7 +35,7 @@ public class HexOverlay : MonoBehaviour
 
     void OnMouseUp()
     {
-        GameManager.instance.inputSequence(xWorld, yWorld);
+        GameManager.instance.handleHexClick(xWorld, yWorld);
     }
 
     public void OverlaySetActive(bool isActive)

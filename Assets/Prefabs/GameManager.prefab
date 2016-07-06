@@ -42,12 +42,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b59e18ce813f2409c870ddb62de439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardScript: {fileID: 0}
-  hexOverlayScript: {fileID: 0}
   player: {fileID: 104228, guid: d4bca21881be7a1469bcdf26ba36cb25, type: 2}
   playerInstance: {fileID: 0}
   playerPosition: {x: 12, y: 9, z: 0}
-  x: 0
 --- !u!114 &11449528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -59,8 +56,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89ec5bc14f6d0f4e9bc4073c84897c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardScript: {fileID: 0}
-  gameScript: {fileID: 0}
   hexOverlay: {fileID: 198106, guid: 0a66992b1d50b0c4682cbb0a926ca3c9, type: 2}
 --- !u!114 &11480098
 MonoBehaviour:
@@ -73,11 +68,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25fb51a4fc508b840b633500b3794417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  columns: 19
+  rows: 19
   xWorldCenter: 0
   yWorldCenter: 0
-  trueCenter: {x: 0, y: 0, z: 0}
   hexRooms:
   - {fileID: 112906, guid: eda97fa62bde9d447bc4c35e01018394, type: 2}
+  trueCenter: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
