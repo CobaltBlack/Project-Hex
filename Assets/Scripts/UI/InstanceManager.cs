@@ -42,6 +42,7 @@ public class InstanceManager : MonoBehaviour
         string answerOne = " Continue...";
         answerOneAction = new UnityAction(instanceTestQuest_0_choiceOne);
 
+        modalPanel.TurnButtonsOff();
         modalPanel.ChoiceOne(question, answerOne, answerOneAction);
 
     }
