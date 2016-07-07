@@ -20,18 +20,15 @@ public class InventoryManager : MonoBehaviour
 
     int playerGoldAmount;
 
-    void Awake()
-    {
-        database = GameObject.FindGameObjectWithTag("ItemDatabase").GetComponent<ItemDatabase>();
-    }
-
     public void InventorySetup()
     {
+        database = GameObject.FindGameObjectWithTag("ItemDatabase").GetComponent<ItemDatabase>();
+
         playerItems = new List<Item>();
         playerGoldAmount = startingGold;
 
         // Give player test item
-        AddItem(0);
+        AddItem(1);
     }
 
     public bool doesPlayerHaveItem(Item item)
@@ -46,7 +43,7 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        playerItems.Add(database.items[itemId]);
+        playerItems.Add(database.getItemById(itemId));
     }
 
     public bool RemoveItem(int itemId)

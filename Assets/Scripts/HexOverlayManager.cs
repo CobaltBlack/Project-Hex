@@ -13,7 +13,6 @@ public class HexOverlayManager : MonoBehaviour
     public GameObject hexOverlay;
 
     BoardManager boardScript;
-    GameManager gameScript;
 
     Transform hexHolderTransform;
     HexOverlay hexScriptTop;
@@ -26,7 +25,6 @@ public class HexOverlayManager : MonoBehaviour
     void Awake()
     {
         boardScript = GetComponent<BoardManager>();
-        gameScript = GetComponent<GameManager>();
     }
 
     public void moveOverlay(int x, int y)
