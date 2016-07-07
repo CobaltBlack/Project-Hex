@@ -2,264 +2,80 @@
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
+using System.Collections.Generic;
+
+/*
+ * ModalPanelInstance
+ * 
+ * This script controls the main Instance modal panel that lets the player
+ * make a choice by pressing on a button
+ * 
+ */
 
 public class ModalPanelInstance : MonoBehaviour
 {
-
     public Text question;
-    public Text answerOne;
-    public Text answerTwo;
-    public Text answerThree;
-    public Text answerFour;
-    public Text answerFive;
-    public Text answerSix;
-    //public Image iconImage; // no images in current iteration
-    public Button choiceOneButton;
-    public Button choiceTwoBouton;
-    public Button choiceThreeButton;
-    public Button choiceFourButton;
-    public Button choiceFiveButton;
-    public Button choiceSixButton;
+
+    // no images in current iteration
+    //public Image iconImage; 
     public GameObject modalPanelObject; // assign "Modal Panel - Instance" in inspector. Also, remember to tick off "Modal Panel - Instance" before running game.
+    public List<Button> answerButtons;
 
     private static ModalPanelInstance modalPanel;
-
-    public static ModalPanelInstance Instance()
+    public static ModalPanelInstance Instance
     {
-        if (!modalPanel)
+        get
         {
-            modalPanel = FindObjectOfType(typeof(ModalPanelInstance)) as ModalPanelInstance;
             if (!modalPanel)
             {
-                Debug.LogError("There needs to be one active ModalPanel script on a GameObject in your scene.");
+                modalPanel = FindObjectOfType(typeof(ModalPanelInstance)) as ModalPanelInstance;
+                if (!modalPanel)
+                {
+                    Debug.LogError("There needs to be one active ModalPanel script on a GameObject in your scene.");
+                }
             }
+            return modalPanel;
         }
-        return modalPanel;
     }
 
-    // 4 button default
-    public void ChoiceFour(string question, string answerOne, string answerTwo, string answerThree, string answerFour, UnityAction choiceOneEvent, UnityAction choiceTwoEvent, UnityAction choiceThreeEvent, UnityAction choiceFourEvent)
+    public void DisplayPrompt(Prompt prompt)
     {
+        Debug.Log(prompt.promptText);
+
+        // Turn all buttons off
+        TurnButtonsOff();
+
+        // Fill buttons with data from prompt
+        this.question.text = prompt.promptText;
+        for (int i = 0; i < prompt.promptAnswers.Count; i++)
+        {
+            PromptAnswer currAnswer = prompt.promptAnswers[i];
+            Button currButton = answerButtons[i];
+
+            currButton.GetComponentInChildren<Text>().text = currAnswer.answerText;
+            currButton.onClick.RemoveAllListeners(); // we might be listening to something, so we dont call something from last time
+            currButton.onClick.AddListener(currAnswer.answerUnityAction);
+        }
+
+        // Set buttons active
+        for (int i = 0; i < prompt.promptAnswers.Count; i++)
+        {
+            answerButtons[i].gameObject.SetActive(true);
+        }
+
         modalPanelObject.SetActive(true); // turn modal panel ON
-
-        choiceOneButton.onClick.RemoveAllListeners(); // we might be listening to something, so we dont call something from last time
-        choiceOneButton.onClick.AddListener(choiceOneEvent);
-        //choiceOneButton.onClick.AddListener(ClosePanel);
-
-        choiceTwoBouton.onClick.RemoveAllListeners();
-        choiceTwoBouton.onClick.AddListener(choiceTwoEvent);
-        //choiceTwoBouton.onClick.AddListener(ClosePanel);
-
-        choiceThreeButton.onClick.RemoveAllListeners();
-        choiceThreeButton.onClick.AddListener(choiceThreeEvent);
-        //choiceThreeButton.onClick.AddListener(ClosePanel);
-
-        choiceFourButton.onClick.RemoveAllListeners();
-        choiceFourButton.onClick.AddListener(choiceFourEvent);
-        //choiceFourButton.onClick.AddListener(ClosePanel);
-
-        this.question.text = question; // set question
-        this.answerOne.text = answerOne; // set answers
-        this.answerTwo.text = answerTwo;
-        this.answerThree.text = answerThree;
-        this.answerFour.text = answerFour;
-
-        //this.iconImage.gameObject.SetActive(false); // turn icon off
-
-        choiceOneButton.gameObject.SetActive(true); // turn buttons on
-        choiceTwoBouton.gameObject.SetActive(true);
-        choiceThreeButton.gameObject.SetActive(true);
-        choiceFourButton.gameObject.SetActive(true);
-    }
-
-    // 5 button variation
-    public void ChoiceFive(string question, UnityAction choiceOneEvent, UnityAction choiceTwoEvent, UnityAction choiceThreeEvent, UnityAction choiceFourEvent, UnityAction choiceFiveEvent)
-    {
-        modalPanelObject.SetActive(true);
-
-        choiceOneButton.onClick.RemoveAllListeners(); // we might be listening to something, so we dont call something from last time
-        choiceOneButton.onClick.AddListener(choiceOneEvent);
-        choiceOneButton.onClick.AddListener(ClosePanel);
-
-        choiceTwoBouton.onClick.RemoveAllListeners();
-        choiceTwoBouton.onClick.AddListener(choiceTwoEvent);
-        choiceTwoBouton.onClick.AddListener(ClosePanel);
-
-        choiceThreeButton.onClick.RemoveAllListeners();
-        choiceThreeButton.onClick.AddListener(choiceThreeEvent);
-        choiceThreeButton.onClick.AddListener(ClosePanel);
-
-        choiceFourButton.onClick.RemoveAllListeners();
-        choiceFourButton.onClick.AddListener(choiceFourEvent);
-        choiceFourButton.onClick.AddListener(ClosePanel);
-
-        choiceFiveButton.onClick.RemoveAllListeners();
-        choiceFiveButton.onClick.AddListener(choiceFiveEvent);
-        choiceFiveButton.onClick.AddListener(ClosePanel);
-
-        this.question.text = question; // set question
-
-        //this.iconImage.gameObject.SetActive(false); // turn icon off
-
-        choiceOneButton.gameObject.SetActive(true); // turn buttons on
-        choiceTwoBouton.gameObject.SetActive(true);
-        choiceThreeButton.gameObject.SetActive(true);
-        choiceFourButton.gameObject.SetActive(true);
-        choiceFiveButton.gameObject.SetActive(true);
-    }
-
-    // 6 button variation
-    public void ChoiceSix(string question, UnityAction choiceOneEvent, UnityAction choiceTwoEvent, UnityAction choiceThreeEvent, UnityAction choiceFourEvent, UnityAction choiceFiveEvent, UnityAction choiceSixEvent)
-    {
-        modalPanelObject.SetActive(true);
-
-        choiceOneButton.onClick.RemoveAllListeners(); // we might be listening to something, so we dont call something from last time
-        choiceOneButton.onClick.AddListener(choiceOneEvent);
-        choiceOneButton.onClick.AddListener(ClosePanel);
-
-        choiceTwoBouton.onClick.RemoveAllListeners();
-        choiceTwoBouton.onClick.AddListener(choiceTwoEvent);
-        choiceTwoBouton.onClick.AddListener(ClosePanel);
-
-        choiceThreeButton.onClick.RemoveAllListeners();
-        choiceThreeButton.onClick.AddListener(choiceThreeEvent);
-        choiceThreeButton.onClick.AddListener(ClosePanel);
-
-        choiceFourButton.onClick.RemoveAllListeners();
-        choiceFourButton.onClick.AddListener(choiceFourEvent);
-        choiceFourButton.onClick.AddListener(ClosePanel);
-
-        choiceFiveButton.onClick.RemoveAllListeners();
-        choiceFiveButton.onClick.AddListener(choiceFiveEvent);
-        choiceFiveButton.onClick.AddListener(ClosePanel);
-
-        choiceSixButton.onClick.RemoveAllListeners();
-        choiceSixButton.onClick.AddListener(choiceSixEvent);
-        choiceSixButton.onClick.AddListener(ClosePanel);
-
-        this.question.text = question; // set question
-
-        //this.iconImage.gameObject.SetActive(false); // turn icon off
-
-        choiceOneButton.gameObject.SetActive(true); // turn buttons on
-        choiceTwoBouton.gameObject.SetActive(true);
-        choiceThreeButton.gameObject.SetActive(true);
-        choiceFourButton.gameObject.SetActive(true);
-        choiceFiveButton.gameObject.SetActive(true);
-        choiceSixButton.gameObject.SetActive(true);
-    }
-
-    // 1 Button special
-    public void ChoiceOne(string question, string answerOne, UnityAction choiceOneEvent)
-    {
-        modalPanelObject.SetActive(true); // turn modal panel ON
-
-        choiceOneButton.onClick.RemoveAllListeners(); // we might be listening to something, so we dont call something from last time
-        choiceOneButton.onClick.AddListener(choiceOneEvent);
-        //choiceOneButton.onClick.AddListener(ClosePanel);
-
-        this.question.text = question; // set question
-        this.answerOne.text = answerOne; // set answers
-
-        //this.iconImage.gameObject.SetActive(false); // turn icon off
-
-        choiceOneButton.gameObject.SetActive(true); // turn buttons on
-    }
-
-    // 4 button default
-    public void ChoiceTwo(string question, string answerOne, string answerTwo, UnityAction choiceOneEvent, UnityAction choiceTwoEvent)
-    { 
-        modalPanelObject.SetActive(true); // turn modal panel ON
-
-        choiceOneButton.onClick.RemoveAllListeners(); // we might be listening to something, so we dont call something from last time
-        choiceOneButton.onClick.AddListener(choiceOneEvent);
-        //choiceOneButton.onClick.AddListener(ClosePanel);
-
-        choiceTwoBouton.onClick.RemoveAllListeners();
-        choiceTwoBouton.onClick.AddListener(choiceTwoEvent);
-        //choiceTwoBouton.onClick.AddListener(ClosePanel);
-
-        this.question.text = question; // set question
-        this.answerOne.text = answerOne; // set answers
-        this.answerTwo.text = answerTwo;
-
-        //this.iconImage.gameObject.SetActive(false); // turn icon off
-
-        choiceOneButton.gameObject.SetActive(true); // turn buttons on
-        choiceTwoBouton.gameObject.SetActive(true);
     }
 
     public void TurnButtonsOff()
     {
-        choiceOneButton.gameObject.SetActive(false); // turn all buttons off
-        choiceTwoBouton.gameObject.SetActive(false);
-        choiceThreeButton.gameObject.SetActive(false);
-        choiceFourButton.gameObject.SetActive(false);
-        choiceFiveButton.gameObject.SetActive(false);
-        choiceSixButton.gameObject.SetActive(false);
+        for (int i = 0; i < answerButtons.Count; i++)
+        {
+            answerButtons[i].gameObject.SetActive(false);
+        }
     }
 
     public void ClosePanel()
     {
         modalPanelObject.SetActive(false);
     }
-
-
-
-
-
-
-
-   
-
-    // TESTING - THIS IS INCOMPLETE / MIGHT BE BROKEN
-    public void Choice(string question, string answerOne, string answerTwo, string answerThree, string answerFour, 
-        UnityAction answerOneAction, UnityAction answerTwoAction, UnityAction answerThreeAction, UnityAction answerFourAction)
-    {
-        modalPanelObject.SetActive(true); // turn modal panel ON
-
-        choiceOneButton.gameObject.SetActive(false); // turn buttons off
-        choiceTwoBouton.gameObject.SetActive(false);
-        choiceThreeButton.gameObject.SetActive(false);
-        choiceFourButton.gameObject.SetActive(false);
-
-        this.question.text = question; // set question
-
-        this.answerOne.text = answerOne; // set answers
-        this.answerTwo.text = answerTwo;
-        this.answerThree.text = answerThree;
-        this.answerFour.text = answerFour;
-
-        if (answerOne != null)
-        {
-            choiceOneButton.onClick.RemoveAllListeners(); // set actions
-            choiceOneButton.onClick.AddListener(answerOneAction);
-            choiceOneButton.gameObject.SetActive(true); // turn buttons on
-        }
-
-        if (answerTwo != null)
-        {
-            choiceTwoBouton.onClick.RemoveAllListeners();
-            choiceTwoBouton.onClick.AddListener(answerTwoAction);
-            choiceTwoBouton.gameObject.SetActive(true);
-        }
-
-        if (answerThree != null)
-        {
-            choiceThreeButton.onClick.RemoveAllListeners();
-            choiceThreeButton.onClick.AddListener(answerThreeAction);
-            choiceThreeButton.gameObject.SetActive(true);
-        }
-
-        if (answerFour != null)
-        {
-            choiceFourButton.onClick.RemoveAllListeners();
-            choiceFourButton.onClick.AddListener(answerFourAction);
-            choiceFourButton.gameObject.SetActive(true);
-        }
-    }
-
-
-
-
-    }
+}

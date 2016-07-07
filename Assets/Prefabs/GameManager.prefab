@@ -11,10 +11,10 @@ GameObject:
   - 114: {fileID: 11435728}
   - 114: {fileID: 11480098}
   - 114: {fileID: 11449528}
-  - 114: {fileID: 11441784}
-  - 114: {fileID: 11453302}
-  - 114: {fileID: 11436000}
-  - 114: {fileID: 11435662}
+  - 114: {fileID: 11462888}
+  - 114: {fileID: 11475392}
+  - 114: {fileID: 11483412}
+  - 114: {fileID: 11418398}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -35,7 +35,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11435662
+--- !u!114 &11418398
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -63,7 +63,7 @@ MonoBehaviour:
   player: {fileID: 104228, guid: d4bca21881be7a1469bcdf26ba36cb25, type: 2}
   playerInstance: {fileID: 0}
   playerPosition: {x: 12, y: 9, z: 0}
---- !u!114 &11436000
+--- !u!114 &11449528
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -71,24 +71,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 185804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fced268a3b3f5734db15f86654941dde, type: 3}
+  m_Script: {fileID: 11500000, guid: e89ec5bc14f6d0f4e9bc4073c84897c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  question: {fileID: 0}
-  answerOne: {fileID: 0}
-  answerTwo: {fileID: 0}
-  answerThree: {fileID: 0}
-  answerFour: {fileID: 0}
-  answerFive: {fileID: 0}
-  answerSix: {fileID: 0}
-  choiceOneButton: {fileID: 0}
-  choiceTwoBouton: {fileID: 0}
-  choiceThreeButton: {fileID: 0}
-  choiceFourButton: {fileID: 0}
-  choiceFiveButton: {fileID: 0}
-  choiceSixButton: {fileID: 0}
-  modalPanelObject: {fileID: 0}
---- !u!114 &11441784
+  hexOverlay: {fileID: 198106, guid: 0a66992b1d50b0c4682cbb0a926ca3c9, type: 2}
+--- !u!114 &11462888
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -102,19 +89,7 @@ MonoBehaviour:
   displayText: {fileID: 0}
   displayTime: 2
   fadeTime: 1
---- !u!114 &11449528
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 185804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e89ec5bc14f6d0f4e9bc4073c84897c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hexOverlay: {fileID: 198106, guid: 0a66992b1d50b0c4682cbb0a926ca3c9, type: 2}
---- !u!114 &11453302
+--- !u!114 &11475392
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -143,6 +118,26 @@ MonoBehaviour:
   hexRooms:
   - {fileID: 112906, guid: eda97fa62bde9d447bc4c35e01018394, type: 2}
   trueCenter: {x: 0, y: 0, z: 0}
+--- !u!114 &11483412
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fced268a3b3f5734db15f86654941dde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  question: {fileID: 0}
+  modalPanelObject: {fileID: 0}
+  answerButtons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

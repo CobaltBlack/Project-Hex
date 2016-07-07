@@ -13,16 +13,19 @@ public class DisplayManager : MonoBehaviour
 
     private static DisplayManager displayManager;
 
-    public static DisplayManager Instance()
+    public static DisplayManager Instance
     {
-        if (!displayManager)
+        get
         {
-            displayManager = FindObjectOfType(typeof(DisplayManager)) as DisplayManager;
             if (!displayManager)
-                Debug.LogError("There needs to be one active DisplayManager script on a GameObject in your scene.");
-        }
+            {
+                displayManager = FindObjectOfType(typeof(DisplayManager)) as DisplayManager;
+                if (!displayManager)
+                    Debug.LogError("There needs to be one active DisplayManager script on a GameObject in your scene.");
+            }
 
-        return displayManager;
+            return displayManager;
+        }
     }
 
     public void DisplayMessage(string message)
