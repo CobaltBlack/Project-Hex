@@ -13,36 +13,6 @@ using Random = UnityEngine.Random;
 
 public class BoardManager : MonoBehaviour
 {
-    public enum HexType
-    {
-        NORMAL,
-        WALL,
-        STORE,
-        EXIT,
-    };
-
-    //[Serializable] // (allows us to embed a class with sub properties in the inspector)
-    public class MapHex
-    {
-        public Vector3 position;
-        public HexType property;
-
-        //public bool player;
-        //public bool traversable;
-        public bool visited;
-
-        public MapHex(Vector3 position, HexType property) // Constructor
-        {
-            this.position = position;
-            this.property = property;
-            this.visited = false;
-
-            //player = isPlayer; // can be kept track of by GameManager
-            //traversable = isTraversable; // can be kept track of by using property
-            //visited = isVisited;
-        }
-    }
-
     public int columns; // Gameboard dimension - columns
     public int rows; // Gameboard dimension - rows
 
@@ -56,16 +26,11 @@ public class BoardManager : MonoBehaviour
     [HideInInspector]
     public Vector3 trueCenter;
 
-    void Awake()
-    {
-        // holds WORLD coordinate
-        xWorldCenter = columns / 2;
-        yWorldCenter = rows / 2;
-    }
-
-
     public void BoardSetup()
     {
+        xWorldCenter = columns / 2;
+        yWorldCenter = rows / 2;
+
         InitializeGameBoard();
         InitializeWalls();
         InitializeWorldObjects();
@@ -151,7 +116,20 @@ public class BoardManager : MonoBehaviour
 
     void InitializeWalls()
     {
+        // Make the border all walls
+        // Top and Bottom edge
+        for (int x = 0; x < columns; x++)
+        {
+            gameBoard[x, 0].property = HexType.WALL;
+            gameBoard[x, rows - 1].property = HexType.WALL;
+        }
 
+        // Left and Right edge
+        for (int y = 1; y < rows - 1; y++)
+        {
+            gameBoard[0, y].property = HexType.WALL;
+            gameBoard[columns - 1, y].property = HexType.WALL;
+        }
     }
 
     void InitializeWorldObjects()

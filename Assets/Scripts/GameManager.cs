@@ -22,8 +22,8 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public GameObject playerInstance;
 
-    //[HideInInspector]
-    public Vector3 playerPosition;
+    public int playerInitialX;
+    public int playerInitialY;
 
     void Awake()
     {
@@ -53,13 +53,12 @@ public class GameManager : MonoBehaviour
 
         // initialize player
         Debug.Log("Instantiate player");
-        playerInstance = Instantiate(player, boardScript.trueCenter, Quaternion.identity) as GameObject;
-        //Debug.Log(playerInstance);
+        playerInstance = Instantiate(player, boardScript.GetHexPosition(playerInitialX, playerInitialY), Quaternion.identity) as GameObject;
 
         // Create "ring" of overlays that moves with the player
         Debug.Log("Instantiate overlay");
         hexOverlayScript.InstantiateOverlayAroundPlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
-        MovePlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
+        MovePlayer(playerInitialX, playerInitialY);
 
         // Initialize inventory
         Debug.Log("Instantiate inventory");

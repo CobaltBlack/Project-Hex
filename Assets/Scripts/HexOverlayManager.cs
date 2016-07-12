@@ -22,11 +22,6 @@ public class HexOverlayManager : MonoBehaviour
     HexOverlay hexScriptBottomLeft;
     HexOverlay hexScriptBottomRight;
 
-    void Awake()
-    {
-        boardScript = GetComponent<BoardManager>();
-    }
-
     public void moveOverlay(int x, int y)
     {
         hexHolderTransform.position = boardScript.GetHexPosition(x, y);
@@ -44,6 +39,7 @@ public class HexOverlayManager : MonoBehaviour
     // We move hexHolder to move all 6 overlays at the same time
     public void InstantiateOverlayAroundPlayer(int x, int y)
     {
+        boardScript = GetComponent<BoardManager>();
         hexHolderTransform = new GameObject("Overlay").transform; // child all "hexOverlay" under parent "Overlay"
         hexHolderTransform.position = boardScript.GetHexPosition(x, y);
         GameObject instance;
@@ -133,9 +129,11 @@ public class HexOverlayManager : MonoBehaviour
             }
         }
 
+        // 
         updateHexInfo(x, y);
     }
 
+    // Called after each movement to update the properties of each hex
     void updateHexInfo(int x, int y)
     {
         if (hexScriptTop)
@@ -207,7 +205,7 @@ public class HexOverlayManager : MonoBehaviour
 
             if (hexScriptBottomRight)
             {
-                hexScriptBottomRight.OverlaySetActive(boardScript.isHexValid(x, y - 1));
+                hexScriptBottomRight.OverlaySetActive(boardScript.isHexValid(x + 1, y));
                 hexScriptBottomRight.xWorld = x + 1;
                 hexScriptBottomRight.yWorld = y;
             }
