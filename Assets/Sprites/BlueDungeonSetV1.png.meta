@@ -1,0 +1,878 @@
+fileFormatVersion: 2
+guid: e553036acddfcba43920f40a3bdc6840
+timeCreated: 1468284545
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: BlueDungeonSetV1_0
+    21300002: BlueDungeonSetV1_1
+    21300004: BlueDungeonSetV1_2
+    21300006: BlueDungeonSetV1_3
+    21300008: BlueDungeonSetV1_4
+    21300010: BlueDungeonSetV1_5
+    21300012: BlueDungeonSetV1_6
+    21300014: BlueDungeonSetV1_7
+    21300016: BlueDungeonSetV1_8
+    21300018: BlueDungeonSetV1_9
+    21300020: BlueDungeonSetV1_10
+    21300022: BlueDungeonSetV1_11
+    21300024: BlueDungeonSetV1_12
+    21300026: BlueDungeonSetV1_13
+    21300028: BlueDungeonSetV1_14
+    21300030: BlueDungeonSetV1_15
+    21300032: BlueDungeonSetV1_16
+    21300034: BlueDungeonSetV1_17
+    21300036: BlueDungeonSetV1_18
+    21300038: BlueDungeonSetV1_19
+    21300040: BlueDungeonSetV1_20
+    21300042: BlueDungeonSetV1_21
+    21300044: BlueDungeonSetV1_22
+    21300046: BlueDungeonSetV1_23
+    21300048: BlueDungeonSetV1_24
+    21300050: BlueDungeonSetV1_25
+    21300052: BlueDungeonSetV1_26
+    21300054: BlueDungeonSetV1_27
+    21300056: BlueDungeonSetV1_28
+    21300058: BlueDungeonSetV1_29
+    21300060: BlueDungeonSetV1_30
+    21300062: BlueDungeonSetV1_31
+    21300064: BlueDungeonSetV1_32
+    21300066: BlueDungeonSetV1_33
+    21300068: BlueDungeonSetV1_34
+    21300070: BlueDungeonSetV1_35
+    21300072: BlueDungeonSetV1_36
+    21300074: BlueDungeonSetV1_37
+    21300076: BlueDungeonSetV1_38
+    21300078: BlueDungeonSetV1_39
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 32
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: BlueDungeonSetV1_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 271
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_1
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 271
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_2
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 271
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_3
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 271
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_4
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 271
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_5
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 271
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_6
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 270
+        width: 66
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -27, y: 18}
+        - {x: -33, y: 10}
+        - {x: -33, y: -16}
+        - {x: -26, y: -18}
+        - {x: 29, y: -18}
+        - {x: 33, y: -9}
+        - {x: 33, y: 17}
+        - {x: 27, y: 18}
+    - name: BlueDungeonSetV1_7
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 271
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+      - - {x: -15, y: 12}
+        - {x: 15, y: 12}
+        - {x: 15, y: -12}
+        - {x: -15, y: -11}
+    - name: BlueDungeonSetV1_8
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 207
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_9
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 207
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_10
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 207
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_11
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 207
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_12
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 207
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_13
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 207
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_14
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 206
+        width: 66
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 19, y: 18.5}
+        - {x: -20, y: 18.5}
+        - {x: -33, y: 2.5}
+        - {x: -33, y: -4.5}
+        - {x: -30, y: -9.5}
+        - {x: -18, y: -18.5}
+        - {x: 18, y: -18.5}
+        - {x: 31, y: -8.5}
+        - {x: 33, y: -4.5}
+        - {x: 33, y: 2.5}
+    - name: BlueDungeonSetV1_15
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 207
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+      - - {x: -15, y: 12}
+        - {x: 15, y: 12}
+        - {x: 15, y: -12}
+        - {x: -15, y: -11}
+    - name: BlueDungeonSetV1_16
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 143
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_17
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 143
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_18
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 143
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_19
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 143
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_20
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 143
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_21
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 143
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 13}
+        - {x: -33, y: -13}
+        - {x: -31, y: -17}
+        - {x: 21, y: -17}
+        - {x: 33, y: -13}
+        - {x: 33, y: 4}
+        - {x: 23, y: 17}
+    - name: BlueDungeonSetV1_22
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 143
+        width: 66
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 18}
+        - {x: -33, y: 2}
+        - {x: -33, y: -16}
+        - {x: -24, y: -18}
+        - {x: 30, y: -18}
+        - {x: 33, y: -15}
+        - {x: 33, y: 8}
+        - {x: 26, y: 18}
+    - name: BlueDungeonSetV1_23
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 143
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+      - - {x: -15, y: 12}
+        - {x: 15, y: 12}
+        - {x: 15, y: -12}
+        - {x: -15, y: -11}
+    - name: BlueDungeonSetV1_24
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 79
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_25
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 79
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_26
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 79
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_27
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 79
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_28
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 79
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_29
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 78
+        width: 66
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -27, y: 18.5}
+        - {x: -33, y: 10.5}
+        - {x: -33, y: -14.5}
+        - {x: -21, y: -18.5}
+        - {x: 29, y: -18.5}
+        - {x: 33, y: -10.5}
+        - {x: 33, y: 18.5}
+    - name: BlueDungeonSetV1_30
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 79
+        width: 66
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -26, y: 18}
+        - {x: -33, y: 8}
+        - {x: -33, y: -11}
+        - {x: -20, y: -18}
+        - {x: 22, y: -18}
+        - {x: 33, y: -5}
+        - {x: 33, y: 8}
+        - {x: 22, y: 18}
+    - name: BlueDungeonSetV1_31
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 79
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+      - - {x: -15, y: 12}
+        - {x: 15, y: 12}
+        - {x: 15, y: -12}
+        - {x: -15, y: -11}
+    - name: BlueDungeonSetV1_32
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 15
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_33
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 15
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_34
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 15
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_35
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 15
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_36
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 15
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+    - name: BlueDungeonSetV1_37
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 13
+        width: 66
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 18}
+        - {x: -33, y: 14}
+        - {x: -33, y: -6}
+        - {x: -20, y: -18}
+        - {x: 25, y: -18}
+        - {x: 33, y: -6}
+        - {x: 33, y: 18}
+    - name: BlueDungeonSetV1_38
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 14
+        width: 66
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 17.5}
+        - {x: -33, y: 9.5}
+        - {x: -33, y: -7.5}
+        - {x: -31, y: -11.5}
+        - {x: -26, y: -17.5}
+        - {x: 26, y: -17.5}
+        - {x: 33, y: -16.5}
+        - {x: 33, y: 4.5}
+        - {x: 23, y: 17.5}
+    - name: BlueDungeonSetV1_39
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 15
+        width: 66
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -3}
+        - {x: -19, y: -17}
+        - {x: 19, y: -17}
+        - {x: 33, y: -5}
+        - {x: 33, y: 13}
+        - {x: 21, y: 17}
+      - - {x: -15, y: 12}
+        - {x: 15, y: 12}
+        - {x: 15, y: -12}
+        - {x: -15, y: -11}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
