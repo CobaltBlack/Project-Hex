@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e553036acddfcba43920f40a3bdc6840
-timeCreated: 1468284545
+timeCreated: 1468299785
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -98,7 +98,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -117,7 +117,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -136,7 +136,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -155,7 +155,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -174,7 +174,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -193,7 +193,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -208,21 +208,21 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 591
-        y: 270
+        y: 271
         width: 66
-        height: 36
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -27, y: 18}
+      - - {x: -28, y: 17}
         - {x: -33, y: 10}
-        - {x: -33, y: -16}
-        - {x: -26, y: -18}
-        - {x: 29, y: -18}
+        - {x: -33, y: -15}
+        - {x: -28, y: -17}
+        - {x: 30, y: -17}
         - {x: 33, y: -9}
-        - {x: 33, y: 17}
-        - {x: 27, y: 18}
+        - {x: 33, y: 16}
+        - {x: 29, y: 17}
     - name: BlueDungeonSetV1_7
       rect:
         serializedVersion: 2
@@ -231,7 +231,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -254,7 +254,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -273,7 +273,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -292,7 +292,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -311,7 +311,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -330,7 +330,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -349,7 +349,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -364,23 +364,23 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 591
-        y: 206
+        y: 207
         width: 66
-        height: 37
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 19, y: 18.5}
-        - {x: -20, y: 18.5}
-        - {x: -33, y: 2.5}
-        - {x: -33, y: -4.5}
-        - {x: -30, y: -9.5}
-        - {x: -18, y: -18.5}
-        - {x: 18, y: -18.5}
-        - {x: 31, y: -8.5}
-        - {x: 33, y: -4.5}
-        - {x: 33, y: 2.5}
+      - - {x: 21, y: 17}
+        - {x: -29, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -4}
+        - {x: -30, y: -9}
+        - {x: -20, y: -17}
+        - {x: 19, y: -17}
+        - {x: 31, y: -8}
+        - {x: 33, y: -6}
+        - {x: 33, y: 13}
     - name: BlueDungeonSetV1_15
       rect:
         serializedVersion: 2
@@ -389,7 +389,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -412,7 +412,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -431,7 +431,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -450,7 +450,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -469,7 +469,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -488,7 +488,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -507,7 +507,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -524,19 +524,20 @@ TextureImporter:
         x: 591
         y: 143
         width: 66
-        height: 36
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -20, y: 18}
-        - {x: -33, y: 2}
-        - {x: -33, y: -16}
-        - {x: -24, y: -18}
-        - {x: 30, y: -18}
-        - {x: 33, y: -15}
-        - {x: 33, y: 8}
-        - {x: 26, y: 18}
+      - - {x: 23, y: 17}
+        - {x: -19, y: 17}
+        - {x: -33, y: 5}
+        - {x: -33, y: -15}
+        - {x: -24, y: -17}
+        - {x: 26, y: -17}
+        - {x: 33, y: -8}
+        - {x: 33, y: 5}
+        - {x: 29, y: 14}
     - name: BlueDungeonSetV1_23
       rect:
         serializedVersion: 2
@@ -545,7 +546,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -568,7 +569,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -587,7 +588,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -606,7 +607,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -625,7 +626,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -644,7 +645,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -659,39 +660,40 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 495
-        y: 78
+        y: 79
         width: 66
-        height: 37
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -27, y: 18.5}
-        - {x: -33, y: 10.5}
-        - {x: -33, y: -14.5}
-        - {x: -21, y: -18.5}
-        - {x: 29, y: -18.5}
-        - {x: 33, y: -10.5}
-        - {x: 33, y: 18.5}
+      - - {x: -21, y: 17}
+        - {x: -33, y: 12}
+        - {x: -33, y: -5}
+        - {x: -19, y: -17}
+        - {x: 21, y: -17}
+        - {x: 33, y: -3}
+        - {x: 33, y: 15}
+        - {x: 32, y: 17}
     - name: BlueDungeonSetV1_30
       rect:
         serializedVersion: 2
         x: 591
         y: 79
         width: 66
-        height: 36
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -26, y: 18}
-        - {x: -33, y: 8}
-        - {x: -33, y: -11}
-        - {x: -20, y: -18}
-        - {x: 22, y: -18}
-        - {x: 33, y: -5}
-        - {x: 33, y: 8}
-        - {x: 22, y: 18}
+      - - {x: -24, y: 17}
+        - {x: -33, y: 10}
+        - {x: -33, y: -6}
+        - {x: -23, y: -17}
+        - {x: 22, y: -17}
+        - {x: 33, y: -4}
+        - {x: 33, y: 9}
+        - {x: 24, y: 17}
     - name: BlueDungeonSetV1_31
       rect:
         serializedVersion: 2
@@ -700,7 +702,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -723,7 +725,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -742,7 +744,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -761,7 +763,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -780,7 +782,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -799,7 +801,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}
@@ -814,40 +816,39 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 495
-        y: 13
+        y: 15
         width: 66
-        height: 36
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -22, y: 18}
-        - {x: -33, y: 14}
-        - {x: -33, y: -6}
-        - {x: -20, y: -18}
-        - {x: 25, y: -18}
-        - {x: 33, y: -6}
-        - {x: 33, y: 18}
+      - - {x: -23, y: 17}
+        - {x: -33, y: 13}
+        - {x: -33, y: -5}
+        - {x: -19, y: -17}
+        - {x: 26, y: -17}
+        - {x: 33, y: -7}
+        - {x: 33, y: 17}
     - name: BlueDungeonSetV1_38
       rect:
         serializedVersion: 2
         x: 591
-        y: 14
+        y: 15
         width: 66
-        height: 35
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -22, y: 17.5}
-        - {x: -33, y: 9.5}
-        - {x: -33, y: -7.5}
-        - {x: -31, y: -11.5}
-        - {x: -26, y: -17.5}
-        - {x: 26, y: -17.5}
-        - {x: 33, y: -16.5}
-        - {x: 33, y: 4.5}
-        - {x: 23, y: 17.5}
+      - - {x: -23, y: 17}
+        - {x: -33, y: 10}
+        - {x: -33, y: -10}
+        - {x: -30, y: -17}
+        - {x: 28, y: -17}
+        - {x: 33, y: -16}
+        - {x: 33, y: 4}
+        - {x: 23, y: 17}
     - name: BlueDungeonSetV1_39
       rect:
         serializedVersion: 2
@@ -856,7 +857,7 @@ TextureImporter:
         width: 66
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -29, y: 17}

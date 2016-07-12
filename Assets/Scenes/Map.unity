@@ -565,7 +565,7 @@ Prefab:
     - target: {fileID: 11435728, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
       propertyPath: player
       value: 
-      objectReference: {fileID: 100158, guid: 9c6007ffb1905894bb3686218a3f67f8, type: 2}
+      objectReference: {fileID: 188284, guid: 87555d5d4b2b2e9439c03c028a64715d, type: 2}
     - target: {fileID: 11435728, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
       propertyPath: playerInitialX
       value: 9
