@@ -4,7 +4,7 @@ using System.Collections.Generic; // Adding Generic enables lists
 using Random = UnityEngine.Random;
 
 /*
- * HexOverlay
+ * BoardManager
  * 
  * This script is in charge of initializing the game board.
  * Also has functions to get various information about the state of the board.
