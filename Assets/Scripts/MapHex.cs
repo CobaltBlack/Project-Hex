@@ -4,6 +4,7 @@ using System.Collections;
 public enum HexType
 {
     NORMAL,
+    INSTANCE,
     WALL,
     STORE,
     EXIT,

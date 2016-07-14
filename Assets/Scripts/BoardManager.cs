@@ -54,6 +54,16 @@ public class BoardManager : MonoBehaviour
         return true;
     }
 
+    public bool isHexVisited(int x, int y)
+    {
+        if (gameBoard[x, y].visited == true)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     // Returns the Transform position of a hex by coordinate
     public Vector3 GetHexPosition(int x, int y)
     {

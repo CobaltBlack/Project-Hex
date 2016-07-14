@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     BoardManager boardScript;
     HexOverlayManager hexOverlayScript;
     InventoryManager inventoryScript;
+    InstanceManager instanceScript;
 
     public GameObject player;
     public GameObject playerInstance;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
         boardScript = GetComponent<BoardManager>();
         hexOverlayScript = GetComponent<HexOverlayManager>();
         inventoryScript = GetComponent<InventoryManager>();
+        instanceScript = GetComponent<InstanceManager>();
 
         InitializeGame();
     }
@@ -71,6 +73,12 @@ public class GameManager : MonoBehaviour
     {
         playerInstance.transform.position = boardScript.GetHexPosition(x, y);
         hexOverlayScript.moveOverlay(x, y);
+
+        if (boardScript.isHexVisited(x, y) == false && boardScript.GetHexProperty(x, y) == HexType.INSTANCE) // if visiting for the first time && property is INSTANCE, run testInstance
+        {
+            instanceScript.TestInstance();
+        }
+
         boardScript.SetHexVisited(x, y, true);
     }
 
