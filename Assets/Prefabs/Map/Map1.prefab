@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 468518}
   - 212: {fileID: 21205312}
   - 114: {fileID: 11440684}
+  - 58: {fileID: 5897802}
   m_Layer: 0
   m_Name: Node0
   m_TagString: Untagged
@@ -27,6 +28,7 @@ GameObject:
   - 4: {fileID: 403896}
   - 212: {fileID: 21207850}
   - 114: {fileID: 11419536}
+  - 58: {fileID: 5857038}
   m_Layer: 0
   m_Name: Node3 (exit)
   m_TagString: Untagged
@@ -61,6 +63,7 @@ GameObject:
   - 4: {fileID: 474894}
   - 212: {fileID: 21212452}
   - 114: {fileID: 11484290}
+  - 58: {fileID: 5814792}
   m_Layer: 0
   m_Name: Node4 (exit)
   m_TagString: Untagged
@@ -78,6 +81,7 @@ GameObject:
   - 4: {fileID: 491030}
   - 212: {fileID: 21252126}
   - 114: {fileID: 11431870}
+  - 58: {fileID: 5894316}
   m_Layer: 0
   m_Name: Node1 (exit)
   m_TagString: Untagged
@@ -95,6 +99,7 @@ GameObject:
   - 4: {fileID: 475980}
   - 212: {fileID: 21270172}
   - 114: {fileID: 11467942}
+  - 58: {fileID: 5845416}
   m_Layer: 0
   m_Name: Node2 (exit)
   m_TagString: Untagged
@@ -185,6 +190,76 @@ Transform:
   - {fileID: 468518}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!58 &5814792
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171866}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.6
+--- !u!58 &5845416
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 178826}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.6
+--- !u!58 &5857038
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116216}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.6
+--- !u!58 &5894316
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177710}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.6
+--- !u!58 &5897802
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108084}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.6
 --- !u!114 &11419536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -196,9 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickable: 0
-  player: 0
+  isClickable: 0
   isVisited: 0
+  player: 0
   nodesConnected:
   - {fileID: 108084}
 --- !u!114 &11431870
@@ -212,9 +287,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickable: 0
-  player: 0
+  isClickable: 0
   isVisited: 0
+  player: 0
   nodesConnected:
   - {fileID: 108084}
 --- !u!114 &11440684
@@ -228,9 +303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickable: 0
-  player: 0
+  isClickable: 0
   isVisited: 0
+  player: 0
   nodesConnected:
   - {fileID: 177710}
   - {fileID: 178826}
@@ -256,9 +331,7 @@ MonoBehaviour:
   exit3B: {fileID: 0}
   exit4A: {fileID: 171866}
   exit4B: {fileID: 0}
-  nodes: []
-  xWorld: 0
-  yWorld: 0
+  startingNode: {fileID: 108084}
 --- !u!114 &11467942
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -270,9 +343,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickable: 0
-  player: 0
+  isClickable: 0
   isVisited: 0
+  player: 0
   nodesConnected:
   - {fileID: 108084}
 --- !u!114 &11484290
@@ -286,9 +359,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickable: 0
-  player: 0
+  isClickable: 0
   isVisited: 0
+  player: 0
   nodesConnected:
   - {fileID: 108084}
 --- !u!212 &21205312

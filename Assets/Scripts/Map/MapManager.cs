@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
 /*
@@ -17,8 +17,8 @@ public class MapManager : MonoBehaviour
     public int columns; // Gameboard dimension - columns
     public int rows; // Gameboard dimension - rows
 
-    public int xWorldCenter;
-    public int yWorldCenter;
+    int xWorldCenter;
+    int yWorldCenter;
 
     public GameObject[] mapTiles;
     public GameObject[,] mapTileObject;
@@ -32,25 +32,20 @@ public class MapManager : MonoBehaviour
         xWorldCenter = columns / 2;
         yWorldCenter = rows / 2;
 
-        InitializeGameBoardV2();
-        Debug.Log("InitializeGameBoardV2 : complete");
+        InitializeGameBoard();
+        //Debug.Log("-InitializeGameBoard");
         InitializeNodes();
-        Debug.Log("InitializeNodes : complete");
-
-        // testing if line debug works
-        Debug.DrawLine(new Vector3(0, 0, 0), new Vector3(100, 100, 0),Color.green, 100, false);
+        //Debug.Log("-InitializeNodes");
     }
 
-    // Set up an empty game board
-    void InitializeGameBoard()
+    // not a very nice version of map generation. CURRENTLY NOT USED
+    void InitializeGameBoardV2()
     {
-        float xTemp, yTemp;
-
         mapTileObject = new GameObject[columns, rows];
 
-        // parent
-        Transform mapHolder = new GameObject("Map").transform;
+        Transform mapHolder = new GameObject("Map").transform; // parent
         GameObject toInstantiate;
+        float xTemp, yTemp;
 
         for (int x = 0; x < columns; x++)
         {
@@ -96,16 +91,14 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    // Set up an empty game board V2
-    void InitializeGameBoardV2()
+    // Set up an empty game board
+    void InitializeGameBoard()
     {
-        float xTemp, yTemp;
-
         mapTileObject = new GameObject[columns, rows];
 
-        // parent
-        Transform mapHolder = new GameObject("Map").transform;
+        Transform mapHolder = new GameObject("Map").transform; // parent
         GameObject toInstantiate;
+        float xTemp, yTemp;
 
         for (int x = 0; x < columns; x++)
         {
@@ -114,7 +107,7 @@ public class MapManager : MonoBehaviour
                 Vector3 tileLocation;
 
                 // find place
-                xTemp = (float)(x * multiplicationUnit / 2 - y * multiplicationUnit / 2); // multiplicationUnit = 16
+                xTemp = (float)(x * multiplicationUnit / 2 - y * multiplicationUnit / 2);
                 yTemp = (float)(y * multiplicationUnit / 2 + x * multiplicationUnit / 2);
                 tileLocation = new Vector3(xTemp, yTemp, 0f);
 
@@ -134,44 +127,66 @@ public class MapManager : MonoBehaviour
                 // editing GameObject
                 mapTileObject[x, y].transform.SetParent(mapHolder);  // parent under hexHolder "Map"
                 mapTileObject[x, y].name = "map_" + x + "_" + y; // name the hexes by coordinates
+
+                // take a TILE, check its BOTTOM (y-1) EXIT and LEFT (x-1) EXIT and if there is a touching TILE, access the NODES, ADD to the "nodesConnected" 
+                if (mapTileObject[x, y].GetComponent<MapTile>().exit3A && x > 0)
+                {
+                    mapTileObject[x, y].GetComponent<MapTile>().exit3A.GetComponent<MapNode>().nodesConnected.Add(mapTileObject[x - 1, y].GetComponent<MapTile>().exit1A);
+                }
+                if (mapTileObject[x, y].GetComponent<MapTile>().exit4A && y > 0)
+                {
+                    mapTileObject[x, y].GetComponent<MapTile>().exit4A.GetComponent<MapNode>().nodesConnected.Add(mapTileObject[x, y - 1].GetComponent<MapTile>().exit2A);
+                }
             }
         }
-    }
-
-    void InitializeNodes()
-    {
+        // note this might create a "double line" glitch, which may or may not be visible. to fix, run initialize node function BEFORE this component
+        // if this does eventually cause visual problems with added graphics, add this segment below InitializeNodes
         for (int x = 0; x < columns; x++)
         {
             for (int y = 0; y < rows; y++)
             {
-                for (int i = 0; i < mapTileObject[x, y].GetComponent<MapTile>().nodes.Length; i++)
+                // take a TILE, check its TOP (y+1) EXIT and RIGHT (x+1) EXIT and if there is a touching TILE, access the NODES, ADD to the "nodesConnected" 
+                if (y < rows - 1 && mapTileObject[x, y].GetComponent<MapTile>().exit2A && mapTileObject[x, y + 1].GetComponent<MapTile>().exit4A)
                 {
+                    mapTileObject[x, y].GetComponent<MapTile>().exit2A.GetComponent<MapNode>().nodesConnected.Add(mapTileObject[x, y + 1].GetComponent<MapTile>().exit4A);
+                }
+                if (x < columns - 1 && mapTileObject[x, y].GetComponent<MapTile>().exit1A && mapTileObject[x + 1, y].GetComponent<MapTile>().exit3A)
+                {
+                    mapTileObject[x, y].GetComponent<MapTile>().exit1A.GetComponent<MapNode>().nodesConnected.Add(mapTileObject[x + 1, y].GetComponent<MapTile>().exit3A);
+                }
+            }
+        }
+    }
+    
+    void InitializeNodes()
+    {
+        List<GameObject> childNodeList = new List<GameObject>();
 
-                    // connect all nodes in mapTileObject[x, y] node array
-                    
-                    Debug.DrawLine(mapTileObject[x, y].GetComponent<MapTile>().nodes[i].transform.position, mapTileObject[x, y].GetComponent<MapTile>().nodes[+1].transform.position,Color.green, 100, false);
-                    Debug.Log("lines have been drawn");
+        for (int x = 0; x < columns; x++)
+        {
+            for (int y = 0; y < rows; y++)
+            {
+                childNodeList.Clear();
+                foreach (Transform t in mapTileObject[x, y].transform)
+                {
+                    childNodeList.Add(t.gameObject);
+                }
 
-                    // look at mapTileObject[x, y].exit1A, match it with mapTileObject[x + 1, y].exit3A ... so on
-
-                    // if node with player on, make surrounding nodes clickkable
-
-                    mapTileObject[x, y] = mapTileObject[x, y];
+                for (int i = 0; i < childNodeList.Count; i++)
+                {
+                    for (int u = 0; u < childNodeList[i].GetComponent<MapNode>().nodesConnected.Count; u++)
+                    {
+                        // MAKE THIS INTO A REAL LINE EVENTUALLY
+                        //if (childNodeList[i] && childNodeList[i].GetComponent<MapNode>().nodesConnected[u]) // WOWOAOWOAWOOAWOWO DOUBLE CHECK THIS
+                        {
+                            Debug.DrawLine(childNodeList[i].transform.position, childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform.position, Color.green, 1000, false);
+                        }
+                    }
                 }
             }
 
             // look at all initialized MapTiles, scan their all registered node array, go through each node and connect them.
             // send player to the starting node, set the node around plaer to "clickable"
         }
-    }
-
-    void LookUp(int x, int y)
-    {
-
-    }
-
-    void Lookright()
-    {
-
     }
 }

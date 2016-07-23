@@ -1,25 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class MapNode : MonoBehaviour
 {
     SpriteRenderer nodeSprite;
 
-    public bool clickable = false;
-    public bool player = false;
+    // basic node attributes
+    public bool isClickable = false;
     public bool isVisited = false;
+    public bool player = false;
 
-    //public MapNode[] mapNode;
-
-    public GameObject[] nodesConnected;
-
-    public void connectNode()
-    {
-        for (int i = 0; i < nodesConnected.Length; i++)
-        {
-            MapNode mapNode = nodesConnected[i].GetComponent<MapNode>();
-        }
-    }
+    // list of neighbouring nodes
+    public List<GameObject> nodesConnected = new List<GameObject>();
 
     void Awake()
     {
@@ -28,27 +20,22 @@ public class MapNode : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (clickable)
+        if (isClickable)
         {
-            nodeSprite.material.color = Color.green; // color wont work because most of the sprite is transparent
-            //nodeSprite.enabled = false; // disable sprite for testing purposes
+            nodeSprite.material.color = Color.green;
         }
     }
 
     void OnMouseExit()
     {
-        if (clickable)
-        {
-            nodeSprite.material.color = Color.white;
-            //nodeSprite.enabled = true;
-        }
+        nodeSprite.material.color = Color.white;
     }
 
     void OnMouseUp()
     {
-        if (clickable)
+        if (isClickable)
         {
-            //send player to this location // have this function in map manager, then access it
+            MapGameManager.instance.MovePlayer(gameObject);
         }
     }
 }
