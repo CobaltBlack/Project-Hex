@@ -42,3 +42,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 2274316071
+    locked: 0
+  - name: Tiles
+    uniqueID: 3077356729
+    locked: 0
+  - name: Decorations
+    uniqueID: 1489607143
+    locked: 0
+  - name: Objects
+    uniqueID: 530830595
+    locked: 0
+  - name: Overlay
+    uniqueID: 3926952743
+    locked: 0
+  - name: Characters
+    uniqueID: 3262051835
+    locked: 0
+  - name: UI
+    uniqueID: 2600762693
+    locked: 0

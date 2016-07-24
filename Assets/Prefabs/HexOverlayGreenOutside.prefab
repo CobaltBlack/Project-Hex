@@ -62,8 +62,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a7d87de65dcac49b28304c1710dc5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xWorld: 0
-  yWorld: 0
+  x: 0
+  y: 0
 --- !u!212 &21240216
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: -368014553
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: fd86af8c287212a44965b06aa8861139, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
