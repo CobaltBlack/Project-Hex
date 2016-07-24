@@ -11,13 +11,9 @@ public class MovingObject : MonoBehaviour {
 
     public int speed;
 
-    // Returns an array of coordinates that represents
-    // the path to coordinate (x, y)
-    public HexTile[] moveToPosition(HexTile target)
+    // Move object to position
+    public void moveToPosition(HexTile target)
     {
-        HexTile[] path = { new HexTile() };
-
-
-        return path;
+        gameObject.transform.position = target.position;
     }
 }

@@ -13,8 +13,8 @@ public class HexOverlay : MonoBehaviour
     SpriteRenderer overlaySprite;
 
     // WORLD coordinate
-    public int xWorld;
-    public int yWorld;
+    public int x;
+    public int y;
 
     void Awake()
     {
@@ -35,7 +35,7 @@ public class HexOverlay : MonoBehaviour
 
     void OnMouseUp()
     {
-        GameManager.instance.handleHexClick(xWorld, yWorld);
+        CombatManager.instance.handleHexClick(x, y);
     }
 
     public void OverlaySetActive(bool isActive)

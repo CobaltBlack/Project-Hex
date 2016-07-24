@@ -2,6 +2,7 @@
 using System; // enables [serializable] attribute... allows us to modify how variables appear in the inspector in the editor
 using System.Collections.Generic; // Adding Generic enables lists
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 /*
  * GameManager
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour
 
     public int playerInitialX;
     public int playerInitialY;
+
+    public CombatParameters combatParameters;
 
     void Awake()
     {
@@ -67,6 +70,14 @@ public class GameManager : MonoBehaviour
         inventoryScript.InventorySetup();
 
         Debug.Log("Initialize game complete!");
+    }
+
+    public void StartCombat()
+    {
+        // Setup parameters
+
+        // Load combat scene
+        SceneManager.LoadScene("Combat");
     }
 
     public void MovePlayer(int x, int y)

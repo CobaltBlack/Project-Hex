@@ -10,6 +10,41 @@ using System.Collections;
 
 public class HexOverlayManager : MonoBehaviour
 {
+    GameObject overlayHolder;
+
+    // Instantiates a clickable overlay for each tile given
+    public void InstantiateOverlays(HexTile[] tiles)
+    {
+        overlayHolder = new GameObject("HexOverlays");
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            GameObject overlayObj = InstantiateOverlay(tiles[i]);
+            overlayObj.transform.SetParent(overlayHolder.transform);
+        }
+    }
+
+    public void RemoveAllOverlays()
+    {
+        Destroy(overlayHolder);
+    }
+
+    // Instantiates and returns an overlay for the given HexTile
+    GameObject InstantiateOverlay(HexTile tile)
+    {
+        // Instantiate gameObject
+        GameObject instance = Instantiate(hexOverlay, tile.position, Quaternion.identity) as GameObject;
+
+        // Set some attributes
+        instance.name = "hexOverlay";
+        HexOverlay overlayScript = instance.GetComponent<HexOverlay>();
+        overlayScript.x = tile.x;
+        overlayScript.y = tile.y;
+        return instance;
+    }
+
+    //==========================
+    // OLD IMPLEMENTATION ======
+    //==========================
     public GameObject hexOverlay;
 
     BoardManager boardScript;
@@ -139,15 +174,15 @@ public class HexOverlayManager : MonoBehaviour
         if (hexScriptTop)
         {
             hexScriptTop.OverlaySetActive(boardScript.isHexValid(x, y + 1));
-            hexScriptTop.xWorld = x;
-            hexScriptTop.yWorld = y + 1;
+            hexScriptTop.x = x;
+            hexScriptTop.y = y + 1;
         }
 
         if (hexScriptBottom)
         {
             hexScriptBottom.OverlaySetActive(boardScript.isHexValid(x, y - 1));
-            hexScriptBottom.xWorld = x;
-            hexScriptBottom.yWorld = y - 1;
+            hexScriptBottom.x = x;
+            hexScriptBottom.y = y - 1;
         }
 
         if (x % 2 == 0) // x is even
@@ -155,29 +190,29 @@ public class HexOverlayManager : MonoBehaviour
             if (hexScriptTopLeft)
             {
                 hexScriptTopLeft.OverlaySetActive(boardScript.isHexValid(x - 1, y));
-                hexScriptTopLeft.xWorld = x - 1;
-                hexScriptTopLeft.yWorld = y;
+                hexScriptTopLeft.x = x - 1;
+                hexScriptTopLeft.y = y;
             }
 
             if (hexScriptTopRight)
             {
                 hexScriptTopRight.OverlaySetActive(boardScript.isHexValid(x + 1, y));
-                hexScriptTopRight.xWorld = x + 1;
-                hexScriptTopRight.yWorld = y;
+                hexScriptTopRight.x = x + 1;
+                hexScriptTopRight.y = y;
             }
 
             if (hexScriptBottomLeft)
             {
                 hexScriptBottomLeft.OverlaySetActive(boardScript.isHexValid(x - 1, y - 1));
-                hexScriptBottomLeft.xWorld = x - 1;
-                hexScriptBottomLeft.yWorld = y - 1;
+                hexScriptBottomLeft.x = x - 1;
+                hexScriptBottomLeft.y = y - 1;
             }
 
             if (hexScriptBottomRight)
             {
                 hexScriptBottomRight.OverlaySetActive(boardScript.isHexValid(x + 1, y - 1));
-                hexScriptBottomRight.xWorld = x + 1;
-                hexScriptBottomRight.yWorld = y - 1;
+                hexScriptBottomRight.x = x + 1;
+                hexScriptBottomRight.y = y - 1;
             }
         }
         else // x is odd
@@ -185,29 +220,29 @@ public class HexOverlayManager : MonoBehaviour
             if (hexScriptTopLeft)
             {
                 hexScriptTopLeft.OverlaySetActive(boardScript.isHexValid(x - 1, y + 1));
-                hexScriptTopLeft.xWorld = x - 1;
-                hexScriptTopLeft.yWorld = y + 1;
+                hexScriptTopLeft.x = x - 1;
+                hexScriptTopLeft.y = y + 1;
             }
 
             if (hexScriptTopRight)
             {
                 hexScriptTopRight.OverlaySetActive(boardScript.isHexValid(x + 1, y + 1));
-                hexScriptTopRight.xWorld = x + 1;
-                hexScriptTopRight.yWorld = y + 1;
+                hexScriptTopRight.x = x + 1;
+                hexScriptTopRight.y = y + 1;
             }
 
             if (hexScriptBottomLeft)
             {
                 hexScriptBottomLeft.OverlaySetActive(boardScript.isHexValid(x - 1, y));
-                hexScriptBottomLeft.xWorld = x - 1;
-                hexScriptBottomLeft.yWorld = y;
+                hexScriptBottomLeft.x = x - 1;
+                hexScriptBottomLeft.y = y;
             }
 
             if (hexScriptBottomRight)
             {
                 hexScriptBottomRight.OverlaySetActive(boardScript.isHexValid(x + 1, y));
-                hexScriptBottomRight.xWorld = x + 1;
-                hexScriptBottomRight.yWorld = y;
+                hexScriptBottomRight.x = x + 1;
+                hexScriptBottomRight.y = y;
             }
         }
     }
@@ -223,7 +258,8 @@ public class HexOverlayManager : MonoBehaviour
         // Create the overlay
         Vector3 overlayPosition = boardScript.GetHexPosition(x, y);
         GameObject instance = Instantiate(hexOverlay, overlayPosition, Quaternion.identity) as GameObject;
-        instance.name = "hexOverlay"; // name the hexes by coordinates
+        instance.name = "hexOverlay";
         return instance;
     }
+
 }

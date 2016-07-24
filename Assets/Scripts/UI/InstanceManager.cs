@@ -37,7 +37,7 @@ public class InstanceManager : MonoBehaviour
 
     public void StartInstance(Instance instance)
     {
-        Debug.Log(instance.instanceName);
+        displayManager = DisplayManager.Instance;
         displayManager.DisplayMessage("Starting instance.");
 
         modalPanel.DisplayPrompt(instance.instancePrompt);
