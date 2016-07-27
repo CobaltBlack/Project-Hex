@@ -20,6 +20,8 @@ public class MapManager : MonoBehaviour
     int xWorldCenter;
     int yWorldCenter;
 
+    public GameObject line;
+
     public GameObject[] mapTiles;
     public GameObject[,] mapTileObject;
 
@@ -161,6 +163,7 @@ public class MapManager : MonoBehaviour
     void InitializeNodes()
     {
         List<GameObject> childNodeList = new List<GameObject>();
+        GameObject instance;
 
         for (int x = 0; x < columns; x++)
         {
@@ -180,6 +183,10 @@ public class MapManager : MonoBehaviour
                         //if (childNodeList[i] && childNodeList[i].GetComponent<MapNode>().nodesConnected[u]) // WOWOAOWOAWOOAWOWO DOUBLE CHECK THIS
                         {
                             Debug.DrawLine(childNodeList[i].transform.position, childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform.position, Color.green, 1000, false);
+
+                            instance = Instantiate(line, new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+                            instance.GetComponent<DrawLine>().start = childNodeList[i].transform.position;
+                            instance.GetComponent<DrawLine>().stop = childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform.position;
                         }
                     }
                 }

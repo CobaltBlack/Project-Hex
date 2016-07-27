@@ -33,15 +33,17 @@ public class DrawLine : MonoBehaviour
     void Update()
     {
         // For testing purposes
+        /*
         if (Input.GetButton("Fire1"))
         {
             stop = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
+        */
 
         Draw(start, stop);
     }
 
-    void Draw(Vector2 start, Vector2 stop)
+    public void Draw(Vector2 start, Vector2 stop)
     {
         Vector2 dir = stop - start;
 
