@@ -15,11 +15,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-
-    BoardManager boardManager;
-    HexOverlayManager hexOverlayManager;
+    
     InventoryManager inventoryManager;
-    InstanceManager instanceManager;
     PlayerManager playerManager;
     
     public CombatParameters combatParameters;
@@ -38,7 +35,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // To preserve game data such as score between stages
         
         inventoryManager = GetComponent<InventoryManager>();
-        instanceManager = GetComponent<InstanceManager>();
         playerManager = GetComponent<PlayerManager>();
 
         InitializeGame();
@@ -64,5 +60,4 @@ public class GameManager : MonoBehaviour
         // Load combat scene
         SceneManager.LoadScene("Combat");
     }
-
 }
