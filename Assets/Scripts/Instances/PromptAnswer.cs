@@ -5,10 +5,6 @@ using UnityEngine.Events;
 // Parent class of all PromptAnswers
 public abstract class PromptAnswer
 {
-    abstract public string getAnswerText();
-    abstract public void getAnswerAction();
-    abstract public int getRequiredItemId();
-
     public string answerText { get { return getAnswerText(); } }
     public UnityAction answerUnityAction { get { return new UnityAction(getAnswerAction); } }
     public int requiredItemId { get { return getRequiredItemId(); } }
@@ -22,4 +18,8 @@ public abstract class PromptAnswer
     {
         ModalPanelInstance.Instance.ClosePanel();
     }
+
+    protected abstract string getAnswerText();
+    protected abstract void getAnswerAction();
+    protected abstract int getRequiredItemId();
 }
