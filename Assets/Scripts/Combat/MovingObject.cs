@@ -41,8 +41,15 @@ public class MovingObject : MonoBehaviour
     // Runs all the actions in the action queue
     public void runCombatActions()
     {
-        StartCoroutine(runCombatActionsCoroutine());
         actionsComplete = true;
+        if (actionQueue.Count == 0)
+        {
+            CombatManager.instance.ProcessNextCharacterActions();
+        }
+        else
+        {
+            StartCoroutine(runCombatActionsCoroutine());
+        }
     }
 
     // Removes all actions currently in the queue
@@ -56,6 +63,7 @@ public class MovingObject : MonoBehaviour
     // Using coroutine allows the program to Wait until animations are complete
     IEnumerator runCombatActionsCoroutine()
     {
+        
         foreach (var action in actionQueue)
         {
             // Update UI visuals for executing action

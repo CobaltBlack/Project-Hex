@@ -182,6 +182,9 @@ public class CombatManager : MonoBehaviour
     // Disables UI buttons and controls
     void EndPlayerTurn()
     {
+        // Exit if currently not the player's turn
+        if (turnState != TurnState.PLAYER_TURN) { return; }
+
         Debug.Log("End player turn. Disabling controls");
         turnState = TurnState.PROCESS_PLAYER_TURN;
 
