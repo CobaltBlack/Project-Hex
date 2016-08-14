@@ -16,10 +16,11 @@ public enum EnemyType
     DEMONS,
 };
 
+// CombatParameters are used to describe the terrain and enemies of the combat encounter
 public class CombatParameters
 {
     public TerrainType terrainType;
     public int terrainSize; // exact metrics to be determined
-    public Enemy[] enemies;
+    public EnemyObject[] enemies;
     public float difficultyMultiplier;
 }

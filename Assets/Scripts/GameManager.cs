@@ -16,10 +16,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    BoardManager boardScript;
-    HexOverlayManager hexOverlayScript;
-    InventoryManager inventoryScript;
-    InstanceManager instanceScript;
+    BoardManager boardManager;
+    HexOverlayManager hexOverlayManager;
+    InventoryManager inventoryManager;
+    InstanceManager instanceManager;
+    PlayerManager playerManager;
 
     public GameObject player;
     public GameObject playerInstance;
@@ -42,10 +43,11 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject); // To preserve game data such as score between stages
 
-        boardScript = GetComponent<BoardManager>();
-        hexOverlayScript = GetComponent<HexOverlayManager>();
-        inventoryScript = GetComponent<InventoryManager>();
-        instanceScript = GetComponent<InstanceManager>();
+        boardManager = GetComponent<BoardManager>();
+        hexOverlayManager = GetComponent<HexOverlayManager>();
+        inventoryManager = GetComponent<InventoryManager>();
+        instanceManager = GetComponent<InstanceManager>();
+        playerManager = GetComponent<PlayerManager>();
 
         InitializeGame();
     }
@@ -54,20 +56,22 @@ public class GameManager : MonoBehaviour
     {
         // set up board
         Debug.Log("Initialize gameboard");
-        boardScript.BoardSetup();
+        boardManager.BoardSetup();
 
         // initialize player
         Debug.Log("Instantiate player");
-        playerInstance = Instantiate(player, boardScript.GetHexPosition(playerInitialX, playerInitialY), Quaternion.identity) as GameObject;
+        playerInstance = Instantiate(player, boardManager.GetHexPosition(playerInitialX, playerInitialY), Quaternion.identity) as GameObject;
 
         // Create "ring" of overlays that moves with the player
         Debug.Log("Instantiate overlay");
-        hexOverlayScript.InstantiateOverlayAroundPlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
+        hexOverlayManager.InstantiateOverlayAroundPlayer(boardManager.xWorldCenter, boardManager.yWorldCenter);
         MovePlayer(playerInitialX, playerInitialY);
 
         // Initialize inventory
         Debug.Log("Instantiate inventory");
-        inventoryScript.InventorySetup();
+        inventoryManager.InventorySetup();
+
+        playerManager.SetupPlayer();
 
         Debug.Log("Initialize game complete!");
     }
@@ -82,15 +86,15 @@ public class GameManager : MonoBehaviour
 
     public void MovePlayer(int x, int y)
     {
-        playerInstance.transform.position = boardScript.GetHexPosition(x, y);
-        hexOverlayScript.moveOverlay(x, y);
+        playerInstance.transform.position = boardManager.GetHexPosition(x, y);
+        hexOverlayManager.moveOverlay(x, y);
 
-        if (boardScript.isHexVisited(x, y) == false && boardScript.GetHexProperty(x, y) == HexType.INSTANCE) // if visiting for the first time && property is INSTANCE, run testInstance
+        if (boardManager.isHexVisited(x, y) == false && boardManager.GetHexProperty(x, y) == HexType.INSTANCE) // if visiting for the first time && property is INSTANCE, run testInstance
         {
-            instanceScript.TestInstance();
+            instanceManager.TestInstance();
         }
 
-        boardScript.SetHexVisited(x, y, true);
+        boardManager.SetHexVisited(x, y, true);
     }
 
     public void handleHexClick(int x, int y)
@@ -114,8 +118,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("xDebug, yDebug " + xDebug + ", " + yDebug);
             //Debug.Log("x(TRUE): " + boardScript.gameBoard[xDebug, yDebug].x);
             //Debug.Log("y(TRUE): " + boardScript.gameBoard[xDebug, yDebug].y);
-            Debug.Log("property: " + boardScript.gameBoard[xDebug, yDebug].property);
-            Debug.Log("visited: " + boardScript.gameBoard[xDebug, yDebug].visited);
+            Debug.Log("property: " + boardManager.gameBoard[xDebug, yDebug].property);
+            Debug.Log("visited: " + boardManager.gameBoard[xDebug, yDebug].visited);
         }
     }
 }

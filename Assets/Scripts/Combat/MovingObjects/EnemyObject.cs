@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MovingObject {
+public class EnemyObject : MovingObject {
 
     void Start()
     {
-     
-    }
 
+    }
 }
