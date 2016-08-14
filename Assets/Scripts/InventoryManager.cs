@@ -11,7 +11,6 @@ using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
-
     public int maxNumOfItems;
     public int startingGold;
     public List<Item> playerItems; // Current items possessed by player

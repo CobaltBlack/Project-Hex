@@ -7,94 +7,76 @@ using UnityEngine.Events;
 // Example of creating an instance
 public class ExampleInstance : Instance
 {
-    public override string instanceName
+    protected override string getInstanceName()
     {
-        get { return "Example Instance"; }
+        return "Example Instance";
     }
 
-    public override Prompt instancePrompt
+    protected override Prompt getInstancePrompt()
     {
-        // IntroPrompt() is a prompt defined below
-        get { return new IntroPrompt(); }
+        return new IntroPrompt();
     }
 
-    public override InstanceType instanceType
+    protected override InstanceType getInstanceType()
     {
-        get { return InstanceType.DIALOGUE; }
+        return InstanceType.DIALOGUE;
     }
 
-    // Defining the first prompt
-    private class IntroPrompt : Prompt
+    // Define the first prompt
+    class IntroPrompt : Prompt
     {
-        public override string promptText
+
+        protected override string getPromptText()
         {
-            get
-            {
-                return "Has anyone really been far as decided to use even go want to do look more like?";
-            }
+            return "Has anyone really been far as decided to use even go want to do look more like?";
         }
 
-        public override List<PromptAnswer> promptAnswers
+        protected override List<PromptAnswer> getPromptAnswers()
         {
-            get
-            {
-                // Define answers below (within the same prompt class to avoid naming conflicts)
-                List<PromptAnswer> answers = new List<PromptAnswer>();
-                answers.Add(new Answer_1());
-                answers.Add(new Answer_2());
-                answers.Add(new Answer_3());
-                answers.Add(new Answer_4());
-                return answers;
-            }
+            // Define answers below (within the same prompt class to avoid naming conflicts)
+            List<PromptAnswer> answers = new List<PromptAnswer>();
+            answers.Add(new Answer_1());
+            answers.Add(new Answer_2());
+            answers.Add(new Answer_3());
+            answers.Add(new Answer_4());
+            return answers;
         }
 
-        // Defining a PromptAnswer
+        // Define a PromptAnswer
         class Answer_1 : PromptAnswer
         {
-            public override string answerText
-            {
-                get
-                {
-                    return "(Go to next prompt) You've got to be kidding me. I've been further even more decided to use even go need to do look more as anyone can.";
-                }
-            }
-
             // This action will be performed when clicked.
             // You can use it to start another prompt.
-            public override void answerAction()
+            protected override void getAnswerAction()
             {
                 Debug.Log("Omg this did something ### 1");
                 OpenPrompt(new Prompt2());
             }
 
-            public override int requiredItemId
+            protected override string getAnswerText()
             {
-                get
-                {
-                    return -1;
-                }
+                return "(Go to next prompt) You've got to be kidding me. I've been further even more decided to use even go need to do look more as anyone can.";
+            }
+
+            protected override int getRequiredItemId()
+            {
+                return -1;
             }
         }
 
         class Answer_2 : PromptAnswer
         {
-            public override string answerText
+            protected override string getAnswerText()
             {
-                get
-                {
-                    return "Can you really be far even as decided half as much to use go wish for that?";
-                }
+                return "Can you really be far even as decided half as much to use go wish for that?";
             }
 
-            public override int requiredItemId
+            protected override int getRequiredItemId()
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
 
-            public override void answerAction()
+            protected override void getAnswerAction()
             {
                 Debug.Log("Omg this did something ### 2");
                 ClosePrompt();
@@ -103,23 +85,17 @@ public class ExampleInstance : Instance
 
         class Answer_3 : PromptAnswer
         {
-            public override string answerText
+            protected override string getAnswerText()
             {
-                get
-                {
-                    return "My guess is that when one really been far even as decided once to use even go want, it is then that he has really been far even as decided to use even go want to do look more like.";
-                }
+                return "My guess is that when one really been far even as decided once to use even go want, it is then that he has really been far even as decided to use even go want to do look more like.";
             }
 
-            public override int requiredItemId
+            protected override int getRequiredItemId()
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
 
-            public override void answerAction()
+            protected override void getAnswerAction()
             {
                 Debug.Log("Omg this did something ### 3");
                 ClosePrompt();
@@ -128,23 +104,17 @@ public class ExampleInstance : Instance
 
         class Answer_4 : PromptAnswer
         {
-            public override string answerText
+            protected override string getAnswerText()
             {
-                get
-                {
-                    return "It's just common sense.";
-                }
+                return "It's just common sense.";
             }
 
-            public override int requiredItemId
+            protected override int getRequiredItemId()
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
 
-            public override void answerAction()
+            protected override void getAnswerAction()
             {
                 Debug.Log("Omg this did something ### 4");
                 ClosePrompt();
@@ -152,48 +122,38 @@ public class ExampleInstance : Instance
         }
     }
 
-    private class Prompt2 : Prompt
+    // Define the second prompt
+    class Prompt2 : Prompt
     {
-        public override List<PromptAnswer> promptAnswers
+
+        protected override string getPromptText()
         {
-            get
-            {
-                List<PromptAnswer> answers = new List<PromptAnswer>();
-                answers.Add(new Answer1());
-                answers.Add(new Answer2());
-                answers.Add(new Answer3());
-                answers.Add(new Answer4());
-                return answers;
-            }
+            return "What the fuck did you just fucking say about me, you little bitch?";
         }
 
-        public override string promptText
+        protected override List<PromptAnswer> getPromptAnswers()
         {
-            get
-            {
-                return "What the fuck did you just fucking say about me, you little bitch?";
-            }
+            List<PromptAnswer> answers = new List<PromptAnswer>();
+            answers.Add(new Answer1());
+            answers.Add(new Answer2());
+            answers.Add(new Answer3());
+            answers.Add(new Answer4());
+            return answers;
         }
 
         class Answer1 : PromptAnswer
         {
-            public override string answerText
+            protected override string getAnswerText()
             {
-                get
-                {
-                    return "I’ll have you know I graduated top of my class in the Navy Seals";
-                }
+                return "I’ll have you know I graduated top of my class in the Navy Seals";
             }
 
-            public override int requiredItemId
+            protected override int getRequiredItemId()
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
 
-            public override void answerAction()
+            protected override void getAnswerAction()
             {
                 ClosePrompt();
             }
@@ -201,23 +161,17 @@ public class ExampleInstance : Instance
 
         class Answer2 : PromptAnswer
         {
-            public override string answerText
+            protected override string getAnswerText()
             {
-                get
-                {
-                    return "I’ve been involved in numerous secret raids on Al-Quaeda";
-                }
+                return "I’ve been involved in numerous secret raids on Al-Quaeda";
             }
 
-            public override int requiredItemId
+            protected override int getRequiredItemId()
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
 
-            public override void answerAction()
+            protected override void getAnswerAction()
             {
                 ClosePrompt();
             }
@@ -225,46 +179,34 @@ public class ExampleInstance : Instance
 
         class Answer3 : PromptAnswer
         {
-            public override string answerText
+            protected override string getAnswerText()
             {
-                get
-                {
-                    return "I have over 300 confirmed kills";
-                }
+                return "I have over 300 confirmed kills";
             }
 
-            public override int requiredItemId
+            protected override int getRequiredItemId()
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
 
-            public override void answerAction()
+            protected override void getAnswerAction()
             {
                 ClosePrompt();
             }
         }
         class Answer4 : PromptAnswer
         {
-            public override string answerText
+            protected override string getAnswerText()
             {
-                get
-                {
-                    return "I am trained in gorilla warfare";
-                }
+                return "I am trained in gorilla warfare";
             }
 
-            public override int requiredItemId
+            protected override int getRequiredItemId()
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
 
-            public override void answerAction()
+            protected override void getAnswerAction()
             {
                 ClosePrompt();
             }

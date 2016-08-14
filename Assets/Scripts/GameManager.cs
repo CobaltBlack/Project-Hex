@@ -16,17 +16,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    BoardManager boardScript;
-    HexOverlayManager hexOverlayScript;
-    InventoryManager inventoryScript;
-    InstanceManager instanceScript;
-
-    public GameObject player;
-    public GameObject playerInstance;
-
-    public int playerInitialX;
-    public int playerInitialY;
-
+    BoardManager boardManager;
+    HexOverlayManager hexOverlayManager;
+    InventoryManager inventoryManager;
+    InstanceManager instanceManager;
+    PlayerManager playerManager;
+    
     public CombatParameters combatParameters;
 
     void Awake()
@@ -41,33 +36,23 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject); // To preserve game data such as score between stages
-
-        boardScript = GetComponent<BoardManager>();
-        hexOverlayScript = GetComponent<HexOverlayManager>();
-        inventoryScript = GetComponent<InventoryManager>();
-        instanceScript = GetComponent<InstanceManager>();
+        
+        inventoryManager = GetComponent<InventoryManager>();
+        instanceManager = GetComponent<InstanceManager>();
+        playerManager = GetComponent<PlayerManager>();
 
         InitializeGame();
     }
 
     public void InitializeGame()
     {
-        // set up board
-        Debug.Log("Initialize gameboard");
-        boardScript.BoardSetup();
-
-        // initialize player
-        Debug.Log("Instantiate player");
-        playerInstance = Instantiate(player, boardScript.GetHexPosition(playerInitialX, playerInitialY), Quaternion.identity) as GameObject;
-
-        // Create "ring" of overlays that moves with the player
-        Debug.Log("Instantiate overlay");
-        hexOverlayScript.InstantiateOverlayAroundPlayer(boardScript.xWorldCenter, boardScript.yWorldCenter);
-        MovePlayer(playerInitialX, playerInitialY);
-
         // Initialize inventory
-        Debug.Log("Instantiate inventory");
-        inventoryScript.InventorySetup();
+        Debug.Log("Initialize inventory");
+        inventoryManager.InventorySetup();
+
+        // Initialize player data
+        Debug.Log("Initialize player data");
+        playerManager.SetupPlayer();
 
         Debug.Log("Initialize game complete!");
     }
@@ -80,43 +65,4 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Combat");
     }
 
-    public void MovePlayer(int x, int y)
-    {
-        playerInstance.transform.position = boardScript.GetHexPosition(x, y);
-        hexOverlayScript.moveOverlay(x, y);
-
-        if (boardScript.isHexVisited(x, y) == false && boardScript.GetHexProperty(x, y) == HexType.INSTANCE) // if visiting for the first time && property is INSTANCE, run testInstance
-        {
-            instanceScript.TestInstance();
-        }
-
-        boardScript.SetHexVisited(x, y, true);
-    }
-
-    public void handleHexClick(int x, int y)
-    {
-        MovePlayer(x, y);
-
-        // DEBUG
-        xDebug = x;
-        yDebug = y;
-    }
-
-    // DEBUG
-    private int xDebug;
-    private int yDebug;
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("space"))
-        {
-            Debug.Log("xDebug, yDebug " + xDebug + ", " + yDebug);
-            //Debug.Log("x(TRUE): " + boardScript.gameBoard[xDebug, yDebug].x);
-            //Debug.Log("y(TRUE): " + boardScript.gameBoard[xDebug, yDebug].y);
-            Debug.Log("property: " + boardScript.gameBoard[xDebug, yDebug].property);
-            Debug.Log("visited: " + boardScript.gameBoard[xDebug, yDebug].visited);
-        }
-    }
 }
-// THIS IS A TEST - PLEASE DELETE!

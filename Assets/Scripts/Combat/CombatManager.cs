@@ -1,22 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 enum TurnState
 {
     INIT, // Setting up the gameboard
-    NEW_TURN, // Ready to start new turn for player or enemies
-    WAIT_FOR_ACTION, // Waiting for player to input an action
-    PROCESS_ACTION, // Processing/animating player action
-    ENEMY_TURN, // Processing/animating enemy action
-}
-
-enum PlayerAction
-{
-    NONE,
-    MOVE,
-    USE_SKILL,
-    USE_CONSUMABLE,
+    START_PLAYER_TURN, // Enable player controls, buttons, etc
+    PLAYER_TURN, // Player can input actions
+    PROCESS_PLAYER_TURN, // Processing/animating player actions
+    START_ENEMY_TURN, // Start enemy turn
+    ENEMY_TURN, // Running enemy AI scripts to determine their actions
+    PROCESS_ENEMY_TURN, // Processing/animating enemy actions
 }
 
 public class CombatManager : MonoBehaviour
@@ -25,28 +20,18 @@ public class CombatManager : MonoBehaviour
     public static CombatManager instance = null;
 
     CombatBoardManager boardScript;
-    PlayerManager playerScript;
     HexOverlayManager overlayScript;
+
+    public GameObject playerInstance;
+    public PlayerObject playerScript;
 
     public int playerInitialX;
     public int playerInitialY;
 
-    // An item in the turn queue to determine whose turn it is next
-    class TurnQueueItem
-    {
-        public int moveTime;
-        public string ownerOfTurn; // could be player, or name of specific enemy
-        public TurnQueueItem(int moveTime, string ownerOfTurn)
-        {
-            this.moveTime = moveTime;
-            this.ownerOfTurn = ownerOfTurn;
-        }
-    }
-    List<TurnQueueItem> turnQueue = new List<TurnQueueItem>();
-    int currentTurnTime = 0;
-
-    TurnState turnState = TurnState.INIT;
-    PlayerAction currentAction = PlayerAction.NONE;
+    TurnState turnState = TurnState.INIT; // Current state of the game    
+    ActionType currentAction = ActionType.NONE; // Currently selected skill
+    MovingObject currentCharacter; // The character the player is currently controlling (hero or companions)
+    List<MovingObject> characterRunOrder; // The order in which the characters run their actions
 
     // ======================================
     // Public Functions
@@ -55,8 +40,8 @@ public class CombatManager : MonoBehaviour
     // Decides what happens when tile [x, y] is clicked based on current state
     public void handleHexClick(int x, int y)
     {
-        // Only proceed if game is waiting for player action
-        if (turnState != TurnState.WAIT_FOR_ACTION)
+        // Only proceed if it is player turn
+        if (turnState != TurnState.PLAYER_TURN)
         {
             return;
         }
@@ -64,19 +49,29 @@ public class CombatManager : MonoBehaviour
         // Do something based on currentAction
         switch (currentAction)
         {
-            case PlayerAction.MOVE:
+            case ActionType.MOVE:
                 // TODO
                 HandleMoveAction(x, y);
                 break;
-            case PlayerAction.USE_SKILL:
+            case ActionType.SKILL:
                 // TODO
                 break;
-            case PlayerAction.USE_CONSUMABLE:
+            case ActionType.ITEM:
                 // TODO
                 break;
-            case PlayerAction.NONE:
+            case ActionType.NONE:
             default:
                 break;
+        }
+    }
+
+    // Activates the skill clicked
+    public void handleSkillClick()
+    {
+        // Only proceed if it is player turn
+        if (turnState != TurnState.PLAYER_TURN)
+        {
+            return;
         }
     }
 
@@ -87,6 +82,7 @@ public class CombatManager : MonoBehaviour
     // Initialize 
     void Awake()
     {
+        Debug.Log("CombatManager Awake");
         // Singleton pattern
         if (instance == null)
         {
@@ -98,7 +94,6 @@ public class CombatManager : MonoBehaviour
         }
 
         boardScript = GetComponent<CombatBoardManager>();
-        playerScript = GetComponent<PlayerManager>();
         overlayScript = GetComponent<HexOverlayManager>();
 
         // Combat entrance animations
@@ -106,25 +101,41 @@ public class CombatManager : MonoBehaviour
         // Set up board, objects, UI
         InitializeCombat();
 
+        // Initialize UI elements (player skills, health, items)
+        InitializeUI();
+
         // Start the game
-        turnState = TurnState.NEW_TURN;
+        turnState = TurnState.START_PLAYER_TURN;
     }
 
     // Called on every frame
+    // Use for listening to hotkeys?
     void Update()
     {
-        // Do things based on current combat state
-        if (turnState == TurnState.WAIT_FOR_ACTION
-            || turnState == TurnState.PROCESS_ACTION
-            || turnState == TurnState.ENEMY_TURN
-            || turnState == TurnState.INIT)
+        // Listen for hotkeys
+
+        // Determine available actions by current turn state
+        switch (turnState)
         {
-            // Do nothing
-            return;
-        }
-        else if (turnState == TurnState.NEW_TURN)
-        {
-            StartNextTurn();
+            case TurnState.START_PLAYER_TURN:
+                // Enable UI buttons and controls to start player turn
+                turnState = TurnState.PLAYER_TURN;
+                StartPlayerTurn();
+                break;
+
+            case TurnState.PLAYER_TURN:
+                // Right click first cancels the selected skill,
+                // then dequeues the last action (if there are any)
+
+                break;
+
+            case TurnState.START_ENEMY_TURN:
+                turnState = TurnState.ENEMY_TURN;
+                StartEnemyTurn();
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -136,104 +147,96 @@ public class CombatManager : MonoBehaviour
         //boardScript.SetupBoard(GameManager.instance.combatParameters);
         CombatParameters combatParameters = new CombatParameters();
         boardScript.SetupBoard(combatParameters);
-
-        playerScript.InstantiatePlayer(playerInitialX, playerInitialY);
-
-        // Initialize UI elements (player skills, health, items)
-
-        // Add player to turn queue
-        Debug.Log("add player to queue");
-        AddToTurnQueue(playerScript.turnInterval, "player");
     }
 
-    // Process turn for next character (player or enemy)
-    void StartNextTurn()
+    // Leave the combat scene.
+    void EndCombat()
     {
-        Debug.Log("StartNextTurn");
-        // Get id of character whose turn is next
-        string nextTurnOwner = DequeueTurnQueue();
-        if (nextTurnOwner.Equals("player"))
-        {
-            turnState = TurnState.WAIT_FOR_ACTION;
-            StartPlayerTurn();
-        }
-        else
-        {
-            turnState = TurnState.ENEMY_TURN;
-            StartEnemyTurn(nextTurnOwner);
-        }
+
     }
 
-    // 
+    void InitializeUI()
+    {
+        Debug.Log("Initilaize UI");
+    }
+
+    // Enables UI buttons and controls for player turn
     void StartPlayerTurn()
     {
-        Debug.Log("StartPlayerTurn");
+        Debug.Log("Start Player Turn");
+        currentCharacter = playerScript;
+        // Clear all queued actions
+        playerScript.dequeueAllActions();
 
-        // Enable skill buttons
+        // Enable skill buttons and controls
 
         // Display overlays around player for movement
-        HexTile[] overlayTiles = boardScript.GetSurroundingTiles(playerScript.positionX, playerScript.positionY);
+        HexTile[] overlayTiles = boardScript.GetSurroundingTiles(currentCharacter.positionX, currentCharacter.positionY);
         overlayScript.InstantiateOverlays(overlayTiles);
 
         // Clicking overlays cause the player to MOVE
-        currentAction = PlayerAction.MOVE;
-
-        AddToTurnQueue(playerScript.turnInterval, "player");
+        currentAction = ActionType.MOVE;
     }
 
+    // Handles click on "End Turn" button
+    // Disables UI buttons and controls
     void EndPlayerTurn()
     {
+        // Exit if currently not the player's turn
+        if (turnState != TurnState.PLAYER_TURN) { return; }
+
+        Debug.Log("End player turn. Disabling controls");
+        turnState = TurnState.PROCESS_PLAYER_TURN;
+
+        // Disable UI and controls
         overlayScript.RemoveAllOverlays();
-        turnState = TurnState.NEW_TURN;
+
+        Debug.Log("Processing actions");
+        playerScript.actionsComplete = false;
+        ProcessNextCharacterActions();
     }
 
-    void StartEnemyTurn(string enemyName)
+    // TODO: Process actions of player and companions based on chosen order
+    public void ProcessNextCharacterActions()
     {
-        // Exit if enemy is dead
+        // Perform player actions if they haven't been done yet
+        if (!playerScript.actionsComplete)
+        {
+            playerScript.runCombatActions();
+        }
+        // Otherwise, the actions are done. The enemy turn can start
+        else
+        {
+            turnState = TurnState.START_ENEMY_TURN;
+        }
+    }
 
-        // Find enemy by name
+    // Process the actions for all enemies
+    void StartEnemyTurn()
+    {
+        Debug.Log("Starting Enemy turn");
+
+        // Loop through each enemy
+
+        // Skip if enemy is dead
 
         // Do enemy action based on its script
 
-        // Add enemy back into the turn queue
-        int enemyTurnInterval = 50;
-        AddToTurnQueue(enemyTurnInterval, enemyName);
+        // Back to player turn
+        turnState = TurnState.START_PLAYER_TURN;
     }
 
-    // Inserts an item to the turn queue based on turnInterval 
-    void AddToTurnQueue(int turnInterval, string ownerString)
+    // Called when a skill is selected
+    void HandleMoveAction(int x, int y)
     {
-        int nextTurnTime = currentTurnTime + turnInterval;
-        if (turnQueue.Count == 0)
-        {
-            turnQueue.Add(new TurnQueueItem(nextTurnTime, ownerString));
-        }
-        else
-        {
-            int i = 0;
-            while (i < turnQueue.Count && turnQueue[i].moveTime > nextTurnTime)
-            {
-                i++;
-            }
-            turnQueue.Insert(i, new TurnQueueItem(nextTurnTime, ownerString));
-        }
-    }
-
-    // Returns owner of next turn and removes it from the queue
-    // Updates current time to next time
-    string DequeueTurnQueue()
-    {
-        TurnQueueItem item = turnQueue[turnQueue.Count - 1];
-        currentTurnTime = item.moveTime;
-        string owner = item.ownerOfTurn;
-        turnQueue.RemoveAt(turnQueue.Count - 1);
-        return owner;
+        // Add MoveAction to the player's action queue
+        playerScript.queueMoveAction(x, y);
     }
 
     // Called when a skill is selected
     void HandleUseSkillAction()
     {
-        // If skill is not targeted, execute it right away
+        // If skill does not require a target, queue it right away
 
         // Otherwise:
 
@@ -245,22 +248,12 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    // Called when a skill is selected
-    void HandleMoveAction(int x, int y)
-    {
-        // Move player
-        playerScript.MovePlayer(x, y);
-        // End turn
-        EndPlayerTurn();
-    }
-
     // ==============================
     // Test button for debug purposes
     // ==============================
     public void TestButton()
     {
-        overlayScript.RemoveAllOverlays();
-        turnState = TurnState.NEW_TURN;
+        EndPlayerTurn();
     }
     // ==============================
 }

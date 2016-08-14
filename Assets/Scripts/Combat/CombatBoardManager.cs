@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class CombatBoardManager : MonoBehaviour
 {
+    public static CombatBoardManager instance = null;
 
     public HexTile[,] gameBoard;
     public int columns, rows;
@@ -16,6 +17,15 @@ public class CombatBoardManager : MonoBehaviour
     // Use this for initialization
     public void SetupBoard(CombatParameters parameters)
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+
         InitializeGameBoard();
         InitializeTerrain();
 
@@ -170,10 +180,7 @@ public class CombatBoardManager : MonoBehaviour
             gameBoard[columns - 1, y].tileType = HexTileType.WALL;
         }
     }
-
-
-
-
+    
     // Reads gameBoard and instantiates everything
     void InstantiateGameBoard()
     {
@@ -187,7 +194,7 @@ public class CombatBoardManager : MonoBehaviour
             for (int y = 0; y < rows; y++)
             {
                 // Get tile prefab
-                toInstantiate = getTilePrefabByType(gameBoard[x, y].tileType);
+                toInstantiate = getTileObjectByType(gameBoard[x, y].tileType);
                 instance = Instantiate(toInstantiate, GetHexPosition(x, y), Quaternion.identity) as GameObject;
 
                 // Add hexes to parent
@@ -200,11 +207,26 @@ public class CombatBoardManager : MonoBehaviour
     // Player and enemy objects
     void InstantiateObjects()
     {
+        // TODO: Somehow determine the starting positions of the player and enemies
+
+        // Instantiate the player
+        int playerInitX = 5;
+        int playerInitY = 5;
+
+        GameObject toInstantiate = PlayerManager.instance.playerCharacter;
+        GameObject playerInstance = Instantiate(toInstantiate, GetHexPosition(playerInitX, playerInitY), Quaternion.identity) as GameObject;
+        CombatManager.instance.playerInstance = playerInstance;
+        CombatManager.instance.playerScript = playerInstance.GetComponent<PlayerObject>();
+        CombatManager.instance.playerScript.positionX = playerInitX;
+        CombatManager.instance.playerScript.positionY = playerInitY;
+
+        // Instantiate companions
 
         // Instantiate enemies based on combatParameters
+
     }
 
-    GameObject getTilePrefabByType(HexTileType type)
+    GameObject getTileObjectByType(HexTileType type)
     {
         GameObject tilePrefab;
         if (type == HexTileType.NORMAL)
