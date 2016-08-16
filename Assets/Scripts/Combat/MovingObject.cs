@@ -4,67 +4,67 @@ using System.Collections.Generic;
 
 public class MovingObject : MonoBehaviour
 {
-    public string objectName;
+    public string Name;
 
-    public int positionX;
-    public int positionY;
+    public int PositionX;
+    public int PositionY;
 
-    public int currentHp;
-    public int maxHp;
+    public int CurrentHp;
+    public int MaxHp;
 
-    public int currentAp;
-    public int maxAp;
+    public int CurrentAp;
+    public int MaxAp;
     
-    public bool actionsComplete = false;
-    public GameObject characterShadow = null;
+    public bool ActionsComplete = false;
+    public GameObject CharacterShadow = null;
 
-    public List<CombatAction> actionQueue = new List<CombatAction>();
+    public List<CombatAction> ActionQueue = new List<CombatAction>();
 
     // Adds a move action to the end of the queue
-    public void queueMoveAction(int x, int y)
+    public void QueueMoveAction(int x, int y)
     {
         MoveAction moveAction = new MoveAction(x, y);
-        actionQueue.Add(moveAction);
+        ActionQueue.Add(moveAction);
 
         // Update UI visuals for new action queued
     }
 
     // Removes a queued action by index
-    public void dequeueAction(int index)
+    public void DequeueAction(int index)
     {
-        actionQueue.RemoveAt(index);
+        ActionQueue.RemoveAt(index);
 
         // Update UI visuals for action removed
     }
 
     // Runs all the actions in the action queue
-    public void runCombatActions()
+    public void RunCombatActions()
     {
-        actionsComplete = true;
-        if (actionQueue.Count == 0)
+        ActionsComplete = true;
+        if (ActionQueue.Count == 0)
         {
-            CombatManager.instance.ProcessNextCharacterActions();
+            CombatManager.Instance.ProcessNextCharacterActions();
         }
         else
         {
-            StartCoroutine(runCombatActionsCoroutine());
+            StartCoroutine(RunCombatActionsCoroutine());
         }
     }
 
     // Removes all actions currently in the queue
-    public void dequeueAllActions()
+    public void DequeueAllActions()
     {
-        actionQueue.Clear();
+        ActionQueue.Clear();
 
         // Update UI visuals
     }
 
     // Move object to position with animation
-    public void moveToPosition(int x, int y)
+    public void MoveToPosition(int x, int y)
     {
-        positionX = x;
-        positionY = y;
-        gameObject.transform.position = CombatBoardManager.instance.GetHexPosition(x, y);
+        PositionX = x;
+        PositionY = y;
+        gameObject.transform.position = CombatBoardManager.Instance.GetHexPosition(x, y);
 
         // TODO: Run Dijkstra's or some pathfindng algorithm
 
@@ -73,24 +73,24 @@ public class MovingObject : MonoBehaviour
     }
 
     // Using coroutine allows the program to Wait until animations are complete
-    IEnumerator runCombatActionsCoroutine()
+    IEnumerator RunCombatActionsCoroutine()
     {
 
-        foreach (var action in actionQueue)
+        foreach (var action in ActionQueue)
         {
             // Update UI visuals for executing action
 
             // Run actions
-            switch (action.actionType)
+            switch (action.ActionType)
             {
-                case ActionType.MOVE:
-                    runMoveAction((MoveAction)action);
+                case ActionType.Move:
+                    RunMoveAction((MoveAction)action);
                     break;
 
-                case ActionType.SKILL:
+                case ActionType.Skill:
                     break;
 
-                case ActionType.ITEM:
+                case ActionType.Item:
                     break;
 
                 default:
@@ -103,11 +103,11 @@ public class MovingObject : MonoBehaviour
 
         // Process actions of next character, if there are any
         // Otherwise, this starts the enemy turn
-        CombatManager.instance.ProcessNextCharacterActions();
+        CombatManager.Instance.ProcessNextCharacterActions();
     }
 
-    void runMoveAction(MoveAction action)
+    void RunMoveAction(MoveAction action)
     {
-        moveToPosition(action.targetX, action.targetY);
+        MoveToPosition(action.TargetX, action.TargetY);
     }
 }

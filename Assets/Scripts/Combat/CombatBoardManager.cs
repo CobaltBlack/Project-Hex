@@ -2,29 +2,45 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/* CombatBoardManager
+ * 
+ * This scripts manages the combat board and provides useful functions for accessing tiles.
+ * 
+ * The board is made of hex tiles, arranged in "odd-q" vertical layout.
+ * Reference: http://www.redblobgames.com/grids/hexagons
+ * 
+ * The origin (0, 0) starts in the top left corner. 
+ * x increases moving towards the right.
+ * y increases moving downwards.
+*/
+
 public class CombatBoardManager : MonoBehaviour
 {
-    public static CombatBoardManager instance = null;
+    public static CombatBoardManager Instance = null;
 
-    public HexTile[,] gameBoard;
-    public int columns, rows;
+    public HexTile[,] GameBoard;
+    public int Columns, Rows;
 
-    public GameObject[] normalTiles;
-    public GameObject[] rockTiles;
-    public GameObject[] wallTiles;
-    public GameObject[] lavaTiles;
+    public GameObject[] NormalTiles;
+    public GameObject[] RockTiles;
+    public GameObject[] WallTiles;
+    public GameObject[] LavaTiles;
 
-    public int playerInitX = 5;
-    public int playerInitY = 5;
+    public int PlayerInitX = 5;
+    public int PlayerInitY = 5;
+
+    // =========================
+    // Public functions
+    // =========================
 
     // Use this for initialization
     public void SetupBoard(CombatParameters parameters)
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
@@ -42,63 +58,64 @@ public class CombatBoardManager : MonoBehaviour
         List<HexTile> adjacentTiles = new List<HexTile>();
 
         // Above
-        if (isHexValid(x, y + 1))
+        if (IsHexValid(x, y - 1))
         {
-            adjacentTiles.Add(gameBoard[x, y + 1]);
+            adjacentTiles.Add(GameBoard[x, y - 1]);
         }
 
         // Below
-        if (isHexValid(x, y - 1))
+        if (IsHexValid(x, y + 1))
         {
-            adjacentTiles.Add(gameBoard[x, y - 1]);
+            adjacentTiles.Add(GameBoard[x, y + 1]);
         }
 
         // x is even
-        if (x % 2 == 0)
+        // (&) is the bitwise AND operator
+        if ((x & 1) == 0)
         {
             // Top Left
-            if (isHexValid(x - 1, y))
+            if (IsHexValid(x - 1, y - 1))
             {
-                adjacentTiles.Add(gameBoard[x - 1, y]);
+                adjacentTiles.Add(GameBoard[x - 1, y - 1]);
             }
             // Top Right
-            if (isHexValid(x + 1, y))
+            if (IsHexValid(x + 1, y - 1))
             {
-                adjacentTiles.Add(gameBoard[x + 1, y]);
+                adjacentTiles.Add(GameBoard[x + 1, y - 1]);
             }
             // Bottom Left
-            if (isHexValid(x - 1, y - 1))
+            if (IsHexValid(x - 1, y))
             {
-                adjacentTiles.Add(gameBoard[x - 1, y - 1]);
+                adjacentTiles.Add(GameBoard[x - 1, y]);
             }
             // Bottom Right
-            if (isHexValid(x + 1, y - 1))
+            if (IsHexValid(x + 1, y))
             {
-                adjacentTiles.Add(gameBoard[x + 1, y - 1]);
+                adjacentTiles.Add(GameBoard[x + 1, y]);
             }
         }
         // x is odd
         else
         {
-            // Top Left
-            if (isHexValid(x - 1, y + 1))
-            {
-                adjacentTiles.Add(gameBoard[x - 1, y + 1]);
-            }
             // Top Right
-            if (isHexValid(x + 1, y + 1))
+            if (IsHexValid(x + 1, y))
             {
-                adjacentTiles.Add(gameBoard[x + 1, y + 1]);
+                adjacentTiles.Add(GameBoard[x + 1, y]);
             }
             // Bottom Left
-            if (isHexValid(x - 1, y))
+            if (IsHexValid(x - 1, y + 1))
             {
-                adjacentTiles.Add(gameBoard[x - 1, y]);
+                adjacentTiles.Add(GameBoard[x - 1, y + 1]);
             }
             // Bottom Right
-            if (isHexValid(x + 1, y))
+            if (IsHexValid(x + 1, y + 1))
             {
-                adjacentTiles.Add(gameBoard[x + 1, y]);
+                adjacentTiles.Add(GameBoard[x + 1, y + 1]);
+            }
+            // Top Left
+            if (IsHexValid(x - 1, y))
+            {
+                adjacentTiles.Add(GameBoard[x - 1, y]);
             }
         }
 
@@ -108,18 +125,20 @@ public class CombatBoardManager : MonoBehaviour
     // Returns the Transform position of a hex by coordinate
     public Vector3 GetHexPosition(int x, int y)
     {
-        return gameBoard[x, y].position;
+        Debug.Log(x);
+        Debug.Log(y);
+        return GameBoard[x, y].Position;
     }
 
     // Returns whether the hex is valid (not a wall or out of bounds)
-    public bool isHexValid(int x, int y)
+    public bool IsHexValid(int x, int y)
     {
-        if (0 > x || x >= columns || 0 > y || y >= rows)
+        if (0 > x || x >= Columns || 0 > y || y >= Rows)
         {
             return false;
         }
 
-        if (GetHexType(x, y) == HexTileType.WALL)
+        if (GetHexType(x, y) == HexTileType.Wall)
         {
             return false;
         }
@@ -129,37 +148,41 @@ public class CombatBoardManager : MonoBehaviour
 
     public HexTileType GetHexType(int x, int y)
     {
-        return gameBoard[x, y].tileType;
+        return GameBoard[x, y].TileType;
     }
+
+    // =========================
+    // Private functions
+    // =========================
 
     // Set up an empty game board
     void InitializeGameBoard()
     {
-        gameBoard = new HexTile[columns, rows];
+        GameBoard = new HexTile[Columns, Rows];
         float xTemp, yTemp;
-        for (int x = 0; x < columns; x++)
+        for (int x = 0; x < Columns; x++)
         {
-            for (int y = 0; y < rows; y++)
+            for (int y = 0; y < Rows; y++)
             {
-                HexTileType tileType = HexTileType.NORMAL;
+                HexTileType tileType = HexTileType.Normal;
 
                 // hex protocol
                 Vector3 hexLocation;
                 if (x % 2 == 0) // if even
                 {
                     xTemp = (float)(x * 1.5);
-                    yTemp = y;
+                    yTemp = -y;
                     hexLocation = new Vector3(xTemp, yTemp, 0f);
                 }
-                else // if odd, shift tile up half a space (y + 0.5)
+                else // if odd, shift tile downwards half a space (-y - 0.5)
                 {
                     xTemp = (float)(x * 1.5);
-                    yTemp = (float)(y + 0.5);
+                    yTemp = (float)(-y - 0.5);
                     hexLocation = new Vector3(xTemp, yTemp, 0f);
                 }
 
                 // Save in gameBoard
-                gameBoard[x, y] = new HexTile(x, y, hexLocation, tileType);
+                GameBoard[x, y] = new HexTile(x, y, hexLocation, tileType);
             }
         }
     }
@@ -170,20 +193,20 @@ public class CombatBoardManager : MonoBehaviour
     {
         // Make the border all walls
         // Top and Bottom edge
-        for (int x = 0; x < columns; x++)
+        for (int x = 0; x < Columns; x++)
         {
-            gameBoard[x, 0].tileType = HexTileType.WALL;
-            gameBoard[x, rows - 1].tileType = HexTileType.WALL;
+            GameBoard[x, 0].TileType = HexTileType.Wall;
+            GameBoard[x, Rows - 1].TileType = HexTileType.Wall;
         }
 
         // Left and Right edge
-        for (int y = 1; y < rows - 1; y++)
+        for (int y = 1; y < Rows - 1; y++)
         {
-            gameBoard[0, y].tileType = HexTileType.WALL;
-            gameBoard[columns - 1, y].tileType = HexTileType.WALL;
+            GameBoard[0, y].TileType = HexTileType.Wall;
+            GameBoard[Columns - 1, y].TileType = HexTileType.Wall;
         }
     }
-    
+
     // Reads gameBoard and instantiates everything
     void InstantiateGameBoard()
     {
@@ -192,12 +215,12 @@ public class CombatBoardManager : MonoBehaviour
 
         GameObject instance, toInstantiate;
 
-        for (int x = 0; x < columns; x++)
+        for (int x = 0; x < Columns; x++)
         {
-            for (int y = 0; y < rows; y++)
+            for (int y = 0; y < Rows; y++)
             {
                 // Get tile prefab
-                toInstantiate = getTileObjectByType(gameBoard[x, y].tileType);
+                toInstantiate = GetTileObjectByType(GameBoard[x, y].TileType);
                 instance = Instantiate(toInstantiate, GetHexPosition(x, y), Quaternion.identity) as GameObject;
 
                 // Add hexes to parent
@@ -213,12 +236,11 @@ public class CombatBoardManager : MonoBehaviour
         // TODO: Somehow determine the starting positions of the player and enemies
 
         // Instantiate the player
-        GameObject toInstantiate = PlayerManager.instance.playerCharacter;
-        GameObject playerInstance = Instantiate(toInstantiate, GetHexPosition(playerInitX, playerInitY), Quaternion.identity) as GameObject;
-        CombatManager.instance.playerInstance = playerInstance;
-        CombatManager.instance.playerScript = playerInstance.GetComponent<PlayerObject>();
-        CombatManager.instance.playerScript.positionX = playerInitX;
-        CombatManager.instance.playerScript.positionY = playerInitY;
+        GameObject toInstantiate = PlayerManager.Instance.PlayerCharacterPrefab;
+        GameObject playerInstance = Instantiate(toInstantiate, GetHexPosition(PlayerInitX, PlayerInitY), Quaternion.identity) as GameObject;
+        playerInstance.GetComponent<PlayerObject>().PositionX = PlayerInitX;
+        playerInstance.GetComponent<PlayerObject>().PositionY = PlayerInitY;
+        CombatManager.Instance.SetPlayerObject(playerInstance);
 
         // Instantiate companions
 
@@ -226,16 +248,16 @@ public class CombatBoardManager : MonoBehaviour
 
     }
 
-    GameObject getTileObjectByType(HexTileType type)
+    GameObject GetTileObjectByType(HexTileType type)
     {
         GameObject tilePrefab;
-        if (type == HexTileType.NORMAL)
+        if (type == HexTileType.Normal)
         {
-            tilePrefab = normalTiles[Random.Range(0, normalTiles.Length)];
+            tilePrefab = NormalTiles[Random.Range(0, NormalTiles.Length)];
         }
-        else if (type == HexTileType.WALL)
+        else if (type == HexTileType.Wall)
         {
-            tilePrefab = normalTiles[Random.Range(0, normalTiles.Length)];
+            tilePrefab = NormalTiles[Random.Range(0, NormalTiles.Length)];
         }
         else
         {

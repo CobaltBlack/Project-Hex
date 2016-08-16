@@ -3,25 +3,26 @@ using System.Collections;
 
 public enum HexTileType
 {
-    NORMAL,
-    ROCK,
-    LAVA,
-    WALL,
+    Normal,
+    Rock,
+    Water,
+    Lava,
+    Wall,
 };
 
 public class HexTile {
 
-    public int x;
-    public int y;
-    public Vector3 position;
-    public HexTileType tileType;
+    public int X, Y;
+    public int CubeX, CubeY;
+    public Vector3 Position;
+    public HexTileType TileType;
 
     // Constructor
     public HexTile(int x, int y, Vector3 position, HexTileType type)
     {
-        this.x = x;
-        this.y = y;
-        this.position = position;
-        this.tileType = type;
+        this.X = x;
+        this.Y = y;
+        this.Position = position;
+        this.TileType = type;
     }
 }

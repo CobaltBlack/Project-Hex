@@ -10,22 +10,22 @@ using System.Collections;
  */
 public class PlayerManager : MonoBehaviour
 {
-    public static PlayerManager instance = null;
-    public const int MAX_MORALITY = 100;
-    public const int MAX_SANITY = 100;
+    public static PlayerManager Instance = null;
+    public const int MaxMorality = 100;
+    public const int MaxSanity = 100;
 
     // ======================================
     // Game related player stats
     // ======================================
-    public GameObject playerCharacter;
+    public GameObject PlayerCharacterPrefab;
 
-    public int currentHp { get { return _currentHp; } }
-    public int maxHp { get { return _maxHp; } }
+    public int CurrentHp { get { return _CurrentHp; } }
+    public int MaxHp { get { return _MaxHp; } }
 
-    public int morality { get { return _morality; } }
-    public int sanity { get { return _sanity; } }
+    public int Morality { get { return _Morality; } }
+    public int Sanity { get { return _Sanity; } }
 
-    public int actionPoints { get { return _actionPoints; } }
+    public int ActionPoints { get { return _ActionPoints; } }
 
     // Skills
 
@@ -40,11 +40,11 @@ public class PlayerManager : MonoBehaviour
     // Load save file, initialize player data
     public void SetupPlayer()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
@@ -58,12 +58,12 @@ public class PlayerManager : MonoBehaviour
     // If the player's health is 0, the player dies and the game is over
     public void ModifyHp(int modifyAmount)
     {
-        _currentHp += modifyAmount;
-        if (currentHp > maxHp)
+        _CurrentHp += modifyAmount;
+        if (CurrentHp > MaxHp)
         {
-            _currentHp = maxHp;
+            _CurrentHp = MaxHp;
         }
-        else if (currentHp <= 0)
+        else if (CurrentHp <= 0)
         {
             // Call GameOver()
         }
@@ -72,51 +72,51 @@ public class PlayerManager : MonoBehaviour
     // Modifies the player's morality by modifyAmount
     public void ModifyMorality(int modifyAmount)
     {
-        _morality += modifyAmount;
-        if (_morality < 0)
+        _Morality += modifyAmount;
+        if (_Morality < 0)
         {
-            _morality = 0;
+            _Morality = 0;
         }
-        else if (_morality > MAX_MORALITY)
+        else if (_Morality > MaxMorality)
         {
-            _morality = MAX_MORALITY;
+            _Morality = MaxMorality;
         }
     }
 
     // Modifies the player's sanity by modifyAmount
     public void ModifySanity(int modifyAmount)
     {
-        _sanity += modifyAmount;
-        if (_sanity < 0)
+        _Sanity += modifyAmount;
+        if (_Sanity < 0)
         {
-            _sanity = 0;
+            _Sanity = 0;
         }
-        else if (_sanity > MAX_SANITY)
+        else if (_Sanity > MaxSanity)
         {
-            _sanity = MAX_SANITY;
+            _Sanity = MaxSanity;
         }
     }
 
     // ======================================
     // Private Variables and Functions
     // ======================================
-    private int _currentHp;
-    private int _maxHp;
+    private int _CurrentHp;
+    private int _MaxHp;
 
-    private int _morality;
-    private int _sanity;
+    private int _Morality;
+    private int _Sanity;
 
-    private int _actionPoints;
+    private int _ActionPoints;
 
     // TODO:
     // Load data from save file.
     void InitializePlayerData()
     {
-        _currentHp = 50;
-        _maxHp = 50;
-        _morality = 50;
-        _sanity = 50;
-        _actionPoints = 50;
+        _CurrentHp = 50;
+        _MaxHp = 50;
+        _Morality = 50;
+        _Sanity = 50;
+        _ActionPoints = 50;
         RefreshPlayerStats();
     }
 

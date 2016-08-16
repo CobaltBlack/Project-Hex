@@ -3,20 +3,21 @@ using System.Collections;
 
 public enum InstanceType
 {
-    BATTLE,
-    QUEST,
-    DIALOGUE,
-    OTHER,
+    Battle,
+    Quest,
+    Dialogue,
+    Boss,
+    Other,
 };
 
 // Parent class of all Instances
 public abstract class Instance
 {
-    public string instanceName { get { return getInstanceName(); } }
-    public Prompt instancePrompt { get { return getInstancePrompt(); } }
-    public InstanceType instanceType { get { return getInstanceType(); } }
+    public string Name { get { return GetInstanceName(); } }
+    public Prompt InitialPrompt { get { return GetInitialPrompt(); } }
+    public InstanceType Type { get { return GetInstanceType(); } }
 
-    protected abstract string getInstanceName();
-    protected abstract Prompt getInstancePrompt();
-    protected abstract InstanceType getInstanceType();
+    protected abstract string GetInstanceName();
+    protected abstract Prompt GetInitialPrompt();
+    protected abstract InstanceType GetInstanceType();
 }

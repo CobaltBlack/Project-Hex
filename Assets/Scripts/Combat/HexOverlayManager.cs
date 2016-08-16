@@ -9,37 +9,37 @@ using System.Collections;
 
 public class HexOverlayManager : MonoBehaviour
 {
-    public GameObject hexOverlay;
+    public GameObject HexOverlayObject;
 
-    GameObject overlayHolder;
+    GameObject OverlayContainer;
 
     // Instantiates a clickable overlay for each tile given
     public void InstantiateOverlays(HexTile[] tiles)
     {
-        overlayHolder = new GameObject("HexOverlays");
+        OverlayContainer = new GameObject("HexOverlays");
         for (int i = 0; i < tiles.Length; i++)
         {
             GameObject overlayObj = InstantiateOverlay(tiles[i]);
-            overlayObj.transform.SetParent(overlayHolder.transform);
+            overlayObj.transform.SetParent(OverlayContainer.transform);
         }
     }
 
     public void RemoveAllOverlays()
     {
-        Destroy(overlayHolder);
+        Destroy(OverlayContainer);
     }
 
     // Instantiates and returns an overlay for the given HexTile
     GameObject InstantiateOverlay(HexTile tile)
     {
         // Instantiate gameObject
-        GameObject instance = Instantiate(hexOverlay, tile.position, Quaternion.identity) as GameObject;
+        GameObject instance = Instantiate(HexOverlayObject, tile.Position, Quaternion.identity) as GameObject;
 
         // Set some attributes
         instance.name = "hexOverlay";
         HexOverlay overlayScript = instance.GetComponent<HexOverlay>();
-        overlayScript.x = tile.x;
-        overlayScript.y = tile.y;
+        overlayScript.X = tile.X;
+        overlayScript.Y = tile.Y;
         return instance;
     }
 }

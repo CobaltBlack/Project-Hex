@@ -5,32 +5,32 @@ using System;
 
 enum TurnState
 {
-    INIT, // Setting up the gameboard
-    START_PLAYER_TURN, // Enable player controls, buttons, etc
-    PLAYER_TURN, // Player can input actions
-    PROCESS_PLAYER_TURN, // Processing/animating player actions
-    START_ENEMY_TURN, // Start enemy turn
-    ENEMY_TURN, // Running enemy AI scripts to determine their actions
-    PROCESS_ENEMY_TURN, // Processing/animating enemy actions
+    Initializing, // Setting up the gameboard
+    StartPlayerTurn, // Enable player controls, buttons, etc
+    PlayerTurn, // Player can input actions
+    PlayerTurnProcessing, // Processing/animating player actions
+    StartEnemyTurn, // Start enemy turn
+    EnemyTurn, // Running enemy AI scripts to determine their actions
+    EnemyTurnProcessing, // Processing/animating enemy actions
 }
 
 public class CombatManager : MonoBehaviour
 {
     // Allows combat manager to be called from anywhere
-    public static CombatManager instance = null;
+    public static CombatManager Instance = null;
 
-    CombatBoardManager boardScript;
-    HexOverlayManager overlayScript;
-    
     // TODO: Handle multiple friendly characters
-    public GameObject playerInstance;
-    public PlayerObject playerScript;
+    public GameObject PlayerInstance;
+    public PlayerObject PlayerScript;
 
-    public int playerInitialX;
-    public int playerInitialY;
+    public int PlayerInitialX;
+    public int PlayerInitialY;
 
-    TurnState turnState = TurnState.INIT; // Current state of the game    
-    ActionType currentAction = ActionType.NONE; // Currently selected skill
+    CombatBoardManager BoardScript;
+    HexOverlayManager OverlayScript;
+
+    TurnState turnState = TurnState.Initializing; // Current state of the game    
+    ActionType currentAction = ActionType.None; // Currently selected skill
     FriendlyObject currentCharacter; // The character the player is currently controlling (hero or companions)
     List<FriendlyObject> characterRunOrder; // The order in which the characters run their actions
 
@@ -38,11 +38,17 @@ public class CombatManager : MonoBehaviour
     // Public Functions
     // ======================================
 
+    public void SetPlayerObject(GameObject player)
+    {
+        PlayerInstance = player;
+        PlayerScript = player.GetComponent<PlayerObject>();
+    }
+
     // Decides what happens when tile [x, y] is clicked based on current state
-    public void handleHexClick(int x, int y)
+    public void HandleHexClick(int x, int y)
     {
         // Only proceed if it is player turn
-        if (turnState != TurnState.PLAYER_TURN)
+        if (turnState != TurnState.PlayerTurn)
         {
             return;
         }
@@ -50,27 +56,27 @@ public class CombatManager : MonoBehaviour
         // Do something based on currentAction
         switch (currentAction)
         {
-            case ActionType.MOVE:
+            case ActionType.Move:
                 // TODO
                 HandleMoveAction(x, y);
                 break;
-            case ActionType.SKILL:
+            case ActionType.Skill:
                 // TODO
                 break;
-            case ActionType.ITEM:
+            case ActionType.Item:
                 // TODO
                 break;
-            case ActionType.NONE:
+            case ActionType.None:
             default:
                 break;
         }
     }
 
     // Activates the skill clicked
-    public void handleSkillClick()
+    public void HandleSkillClick()
     {
         // Only proceed if it is player turn
-        if (turnState != TurnState.PLAYER_TURN)
+        if (turnState != TurnState.PlayerTurn)
         {
             return;
         }
@@ -85,17 +91,17 @@ public class CombatManager : MonoBehaviour
     {
         Debug.Log("CombatManager Awake");
         // Singleton pattern
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
             Destroy(gameObject);
         }
 
-        boardScript = GetComponent<CombatBoardManager>();
-        overlayScript = GetComponent<HexOverlayManager>();
+        BoardScript = GetComponent<CombatBoardManager>();
+        OverlayScript = GetComponent<HexOverlayManager>();
 
         // Combat entrance animations
 
@@ -106,7 +112,7 @@ public class CombatManager : MonoBehaviour
         InitializeUI();
 
         // Start the game
-        turnState = TurnState.START_PLAYER_TURN;
+        turnState = TurnState.StartPlayerTurn;
     }
 
     // Called on every frame
@@ -118,20 +124,20 @@ public class CombatManager : MonoBehaviour
         // Determine available actions by current turn state
         switch (turnState)
         {
-            case TurnState.START_PLAYER_TURN:
+            case TurnState.StartPlayerTurn:
                 // Enable UI buttons and controls to start player turn
-                turnState = TurnState.PLAYER_TURN;
+                turnState = TurnState.PlayerTurn;
                 StartPlayerTurn();
                 break;
 
-            case TurnState.PLAYER_TURN:
+            case TurnState.PlayerTurn:
                 // Right click first cancels the selected skill,
                 // then dequeues the last action (if there are any)
 
                 break;
 
-            case TurnState.START_ENEMY_TURN:
-                turnState = TurnState.ENEMY_TURN;
+            case TurnState.StartEnemyTurn:
+                turnState = TurnState.EnemyTurn;
                 StartEnemyTurn();
                 break;
 
@@ -147,7 +153,7 @@ public class CombatManager : MonoBehaviour
         // TODO: Configure combat parameters elsewhere before entering combat
         //boardScript.SetupBoard(GameManager.instance.combatParameters);
         CombatParameters combatParameters = new CombatParameters();
-        boardScript.SetupBoard(combatParameters);
+        BoardScript.SetupBoard(combatParameters);
     }
 
     // Leave the combat scene.
@@ -165,39 +171,40 @@ public class CombatManager : MonoBehaviour
     void StartPlayerTurn()
     {
         Debug.Log("Start Player Turn");
-        currentCharacter = playerScript;
+        currentCharacter = PlayerScript;
 
         // Clear all queued actions
-        playerScript.dequeueAllActions();
+        PlayerScript.DequeueAllActions();
 
         // Enable skill buttons and controls
 
         // Display overlays around player for movement
-        HexTile[] overlayTiles = boardScript.GetSurroundingTiles(currentCharacter.positionX, currentCharacter.positionY);
-        overlayScript.InstantiateOverlays(overlayTiles);
+        HexTile[] overlayTiles = BoardScript.GetSurroundingTiles(currentCharacter.PositionX, currentCharacter.PositionY);
+        OverlayScript.InstantiateOverlays(overlayTiles);
 
         // Clicking overlays cause the player to MOVE
-        currentAction = ActionType.MOVE;
+        currentAction = ActionType.Move;
     }
 
     // Handles click on "End Turn" button
     // Disables UI buttons and controls
+    // Begins processing queued actions
     void EndPlayerTurn()
     {
         // Cannot end turn if currently not the player's turn
-        if (turnState != TurnState.PLAYER_TURN) { return; }
+        if (turnState != TurnState.PlayerTurn) { return; }
 
         Debug.Log("End player turn. Disabling controls");
-        turnState = TurnState.PROCESS_PLAYER_TURN;
+        turnState = TurnState.PlayerTurnProcessing;
 
         // Disable UI and controls
-        overlayScript.RemoveAllOverlays();
+        OverlayScript.RemoveAllOverlays();
 
         // Hide shadows for all friendly characters
-        playerScript.hideShadow();
+        PlayerScript.HideShadow();
 
         Debug.Log("Processing actions");
-        playerScript.actionsComplete = false;
+        PlayerScript.ActionsComplete = false;
         ProcessNextCharacterActions();
     }
 
@@ -205,14 +212,14 @@ public class CombatManager : MonoBehaviour
     public void ProcessNextCharacterActions()
     {
         // Perform player actions if they haven't been done yet
-        if (!playerScript.actionsComplete)
+        if (!PlayerScript.ActionsComplete)
         {
-            playerScript.runCombatActions();
+            PlayerScript.RunCombatActions();
         }
         // Otherwise, the actions are done. The enemy turn can start
         else
         {
-            turnState = TurnState.START_ENEMY_TURN;
+            turnState = TurnState.StartEnemyTurn;
         }
     }
 
@@ -228,21 +235,21 @@ public class CombatManager : MonoBehaviour
         // Do enemy action based on its script
 
         // Back to player turn
-        turnState = TurnState.START_PLAYER_TURN;
+        turnState = TurnState.StartPlayerTurn;
     }
 
     // Called when a tile is clicked, with the intent of moving
     void HandleMoveAction(int x, int y)
     {
         // Clear the overlays
-        overlayScript.RemoveAllOverlays();
+        OverlayScript.RemoveAllOverlays();
 
         // Add MoveAction to the current character's action queue
-        currentCharacter.queueMoveAction(x, y);
+        currentCharacter.QueueMoveAction(x, y);
 
         // Reinstantiate the hexoverlays at the position of the "shadow"
-        HexTile[] overlayTiles = boardScript.GetSurroundingTiles(currentCharacter.shadowPositionX, currentCharacter.shadowPositionY);
-        overlayScript.InstantiateOverlays(overlayTiles);
+        HexTile[] overlayTiles = BoardScript.GetSurroundingTiles(currentCharacter.ShadowPositionX, currentCharacter.ShadowPositionY);
+        OverlayScript.InstantiateOverlays(overlayTiles);
     }
 
     // Called when a skill is selected

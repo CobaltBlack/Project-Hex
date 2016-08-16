@@ -2,13 +2,13 @@
 using System.Collections;
 public enum ActionType
 {
-    NONE,
-    MOVE,
-    SKILL,
-    ITEM,
+    None,
+    Move,
+    Skill,
+    Item,
 }
 
 public class CombatAction {
-    public int requiredAp;
-    public ActionType actionType;
+    public int RequiredAp;
+    public ActionType ActionType;
 }

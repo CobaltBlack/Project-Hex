@@ -13,10 +13,10 @@ public class PlayerObject : FriendlyObject
     void Start()
     {
         // Get hp, ap, etc from player script
-        int currentHp = PlayerManager.instance.maxHp;
-        int maxHp = PlayerManager.instance.maxHp;
+        CurrentHp = PlayerManager.Instance.MaxHp;
+        MaxHp = PlayerManager.Instance.MaxHp;
 
-        int maxAp = PlayerManager.instance.actionPoints;
-        int currentAp = maxAp;
+        MaxAp = PlayerManager.Instance.ActionPoints;
+        CurrentAp = MaxAp;
     }
 }

@@ -40,6 +40,6 @@ public class InstanceManager : MonoBehaviour
         displayManager = DisplayManager.Instance;
         displayManager.DisplayMessage("Starting instance.");
 
-        modalPanel.DisplayPrompt(instance.instancePrompt);
+        modalPanel.DisplayPrompt(instance.InitialPrompt);
     }
 }

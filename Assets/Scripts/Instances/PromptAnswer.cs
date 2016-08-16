@@ -5,9 +5,9 @@ using UnityEngine.Events;
 // Parent class of all PromptAnswers
 public abstract class PromptAnswer
 {
-    public string answerText { get { return getAnswerText(); } }
-    public UnityAction answerUnityAction { get { return new UnityAction(getAnswerAction); } }
-    public int requiredItemId { get { return getRequiredItemId(); } }
+    public string Text { get { return GetAnswerText(); } }
+    public UnityAction UnityAction { get { return new UnityAction(GetAnswerAction); } }
+    public int RequiredItemId { get { return GetRequiredItemId(); } }
 
     public void OpenPrompt(Prompt prompt)
     {
@@ -19,7 +19,7 @@ public abstract class PromptAnswer
         ModalPanelInstance.Instance.ClosePanel();
     }
 
-    protected abstract string getAnswerText();
-    protected abstract void getAnswerAction();
-    protected abstract int getRequiredItemId();
+    protected abstract string GetAnswerText();
+    protected abstract void GetAnswerAction();
+    protected abstract int GetRequiredItemId();
 }

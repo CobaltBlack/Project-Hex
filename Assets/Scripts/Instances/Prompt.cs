@@ -5,9 +5,9 @@ using System.Collections.Generic;
 // Parent class of all Prompts
 public abstract class Prompt
 {
-    public string promptText { get { return getPromptText(); } }
-    public List<PromptAnswer> promptAnswers { get { return getPromptAnswers(); } }
+    public string Text { get { return GetPromptText(); } }
+    public List<PromptAnswer> Answers { get { return GetPromptAnswers(); } }
 
-    protected abstract string getPromptText();
-    protected abstract List<PromptAnswer> getPromptAnswers();
+    protected abstract string GetPromptText();
+    protected abstract List<PromptAnswer> GetPromptAnswers();
 }

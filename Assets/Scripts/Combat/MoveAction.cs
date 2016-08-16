@@ -3,12 +3,12 @@ using System.Collections;
 
 public class MoveAction : CombatAction
 {
-    public int targetX, targetY;
+    public int TargetX, TargetY;
 
     public MoveAction(int targetX, int targetY)
     {
-        actionType = ActionType.MOVE;
-        this.targetX = targetX;
-        this.targetY = targetY;
+        ActionType = ActionType.Move;
+        this.TargetX = targetX;
+        this.TargetY = targetY;
     }
 }

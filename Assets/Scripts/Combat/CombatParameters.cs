@@ -3,24 +3,24 @@ using System.Collections;
 
 public enum TerrainType
 {
-    CASTLE,
-    CAVE,
-    GRASS,
+    Castle,
+    Cave,
+    Grass,
 };
 
 public enum EnemyType
 {
-    MONSTERS,
-    THUGS,
-    DRAGONS,
-    DEMONS,
+    Monsters,
+    Thugs,
+    Dragons,
+    Demons,
 };
 
 // CombatParameters are used to describe the terrain and enemies of the combat encounter
 public class CombatParameters
 {
-    public TerrainType terrainType;
-    public int terrainSize; // exact metrics to be determined
-    public EnemyObject[] enemies;
-    public float difficultyMultiplier;
+    public TerrainType TerrainType;
+    public int TerrainSize; // exact metrics to be determined
+    public EnemyObject[] Enemies;
+    public float DifficultyMultiplier;
 }

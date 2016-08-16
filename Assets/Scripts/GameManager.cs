@@ -14,28 +14,28 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance = null;
+    public static GameManager Instance = null;
     
-    InventoryManager inventoryManager;
-    PlayerManager playerManager;
+    InventoryManager InventoryManager;
+    PlayerManager PlayerManager;
     
-    public CombatParameters combatParameters;
+    public CombatParameters CombatParameters;
 
     void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject); // gameObject refers to game object this component is attached to // NOTE IS THERE A BUG? NO RETURN?
         }
 
         DontDestroyOnLoad(gameObject); // To preserve game data such as score between stages
         
-        inventoryManager = GetComponent<InventoryManager>();
-        playerManager = GetComponent<PlayerManager>();
+        InventoryManager = GetComponent<InventoryManager>();
+        PlayerManager = GetComponent<PlayerManager>();
 
         InitializeGame();
     }
@@ -44,11 +44,11 @@ public class GameManager : MonoBehaviour
     {
         // Initialize inventory
         Debug.Log("Initialize inventory");
-        inventoryManager.InventorySetup();
+        InventoryManager.InventorySetup();
 
         // Initialize player data
         Debug.Log("Initialize player data");
-        playerManager.SetupPlayer();
+        PlayerManager.SetupPlayer();
 
         Debug.Log("Initialize game complete!");
     }

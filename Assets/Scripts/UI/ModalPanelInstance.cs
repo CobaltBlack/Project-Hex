@@ -40,25 +40,25 @@ public class ModalPanelInstance : MonoBehaviour
 
     public void DisplayPrompt(Prompt prompt)
     {
-        Debug.Log(prompt.promptText);
+        Debug.Log(prompt.Text);
 
         // Turn all buttons off
         TurnButtonsOff();
 
         // Fill buttons with data from prompt
-        this.question.text = prompt.promptText;
-        for (int i = 0; i < prompt.promptAnswers.Count; i++)
+        this.question.text = prompt.Text;
+        for (int i = 0; i < prompt.Answers.Count; i++)
         {
-            PromptAnswer currAnswer = prompt.promptAnswers[i];
+            PromptAnswer currAnswer = prompt.Answers[i];
             Button currButton = answerButtons[i];
 
-            currButton.GetComponentInChildren<Text>().text = currAnswer.answerText;
+            currButton.GetComponentInChildren<Text>().text = currAnswer.Text;
             currButton.onClick.RemoveAllListeners(); // we might be listening to something, so we dont call something from last time
-            currButton.onClick.AddListener(currAnswer.answerUnityAction);
+            currButton.onClick.AddListener(currAnswer.UnityAction);
         }
 
         // Set buttons active
-        for (int i = 0; i < prompt.promptAnswers.Count; i++)
+        for (int i = 0; i < prompt.Answers.Count; i++)
         {
             answerButtons[i].gameObject.SetActive(true);
         }
