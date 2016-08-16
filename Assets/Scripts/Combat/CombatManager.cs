@@ -21,7 +21,8 @@ public class CombatManager : MonoBehaviour
 
     CombatBoardManager boardScript;
     HexOverlayManager overlayScript;
-
+    
+    // TODO: Handle multiple friendly characters
     public GameObject playerInstance;
     public PlayerObject playerScript;
 
@@ -30,8 +31,8 @@ public class CombatManager : MonoBehaviour
 
     TurnState turnState = TurnState.INIT; // Current state of the game    
     ActionType currentAction = ActionType.NONE; // Currently selected skill
-    MovingObject currentCharacter; // The character the player is currently controlling (hero or companions)
-    List<MovingObject> characterRunOrder; // The order in which the characters run their actions
+    FriendlyObject currentCharacter; // The character the player is currently controlling (hero or companions)
+    List<FriendlyObject> characterRunOrder; // The order in which the characters run their actions
 
     // ======================================
     // Public Functions
@@ -165,6 +166,7 @@ public class CombatManager : MonoBehaviour
     {
         Debug.Log("Start Player Turn");
         currentCharacter = playerScript;
+
         // Clear all queued actions
         playerScript.dequeueAllActions();
 
@@ -182,7 +184,7 @@ public class CombatManager : MonoBehaviour
     // Disables UI buttons and controls
     void EndPlayerTurn()
     {
-        // Exit if currently not the player's turn
+        // Cannot end turn if currently not the player's turn
         if (turnState != TurnState.PLAYER_TURN) { return; }
 
         Debug.Log("End player turn. Disabling controls");
@@ -190,6 +192,9 @@ public class CombatManager : MonoBehaviour
 
         // Disable UI and controls
         overlayScript.RemoveAllOverlays();
+
+        // Hide shadows for all friendly characters
+        playerScript.hideShadow();
 
         Debug.Log("Processing actions");
         playerScript.actionsComplete = false;
@@ -226,11 +231,18 @@ public class CombatManager : MonoBehaviour
         turnState = TurnState.START_PLAYER_TURN;
     }
 
-    // Called when a skill is selected
+    // Called when a tile is clicked, with the intent of moving
     void HandleMoveAction(int x, int y)
     {
-        // Add MoveAction to the player's action queue
-        playerScript.queueMoveAction(x, y);
+        // Clear the overlays
+        overlayScript.RemoveAllOverlays();
+
+        // Add MoveAction to the current character's action queue
+        currentCharacter.queueMoveAction(x, y);
+
+        // Reinstantiate the hexoverlays at the position of the "shadow"
+        HexTile[] overlayTiles = boardScript.GetSurroundingTiles(currentCharacter.shadowPositionX, currentCharacter.shadowPositionY);
+        overlayScript.InstantiateOverlays(overlayTiles);
     }
 
     // Called when a skill is selected

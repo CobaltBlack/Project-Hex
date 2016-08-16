@@ -8,7 +8,7 @@ using System.Collections;
  * This script is attached to the in-combat object of the player
  * 
  */
-public class PlayerObject : MovingObject
+public class PlayerObject : FriendlyObject
 {
     void Start()
     {
@@ -18,7 +18,5 @@ public class PlayerObject : MovingObject
 
         int maxAp = PlayerManager.instance.actionPoints;
         int currentAp = maxAp;
-
-        isFriendly = true;
     }
 }

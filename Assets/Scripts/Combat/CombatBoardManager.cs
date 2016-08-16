@@ -14,6 +14,9 @@ public class CombatBoardManager : MonoBehaviour
     public GameObject[] wallTiles;
     public GameObject[] lavaTiles;
 
+    public int playerInitX = 5;
+    public int playerInitY = 5;
+
     // Use this for initialization
     public void SetupBoard(CombatParameters parameters)
     {
@@ -210,9 +213,6 @@ public class CombatBoardManager : MonoBehaviour
         // TODO: Somehow determine the starting positions of the player and enemies
 
         // Instantiate the player
-        int playerInitX = 5;
-        int playerInitY = 5;
-
         GameObject toInstantiate = PlayerManager.instance.playerCharacter;
         GameObject playerInstance = Instantiate(toInstantiate, GetHexPosition(playerInitX, playerInitY), Quaternion.identity) as GameObject;
         CombatManager.instance.playerInstance = playerInstance;

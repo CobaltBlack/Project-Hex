@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class MovingObject : MonoBehaviour
 {
+    public string objectName;
+
     public int positionX;
     public int positionY;
 
@@ -12,10 +14,9 @@ public class MovingObject : MonoBehaviour
 
     public int currentAp;
     public int maxAp;
-
-    public bool isFriendly = false;
+    
     public bool actionsComplete = false;
-
+    public GameObject characterShadow = null;
 
     public List<CombatAction> actionQueue = new List<CombatAction>();
 
@@ -24,8 +25,6 @@ public class MovingObject : MonoBehaviour
     {
         MoveAction moveAction = new MoveAction(x, y);
         actionQueue.Add(moveAction);
-
-        // If friendly character, animate movements for character's shadow
 
         // Update UI visuals for new action queued
     }
@@ -60,10 +59,23 @@ public class MovingObject : MonoBehaviour
         // Update UI visuals
     }
 
+    // Move object to position with animation
+    public void moveToPosition(int x, int y)
+    {
+        positionX = x;
+        positionY = y;
+        gameObject.transform.position = CombatBoardManager.instance.GetHexPosition(x, y);
+
+        // TODO: Run Dijkstra's or some pathfindng algorithm
+
+        // TODO: Smoothly animate moving smoothly
+
+    }
+
     // Using coroutine allows the program to Wait until animations are complete
     IEnumerator runCombatActionsCoroutine()
     {
-        
+
         foreach (var action in actionQueue)
         {
             // Update UI visuals for executing action
@@ -97,18 +109,5 @@ public class MovingObject : MonoBehaviour
     void runMoveAction(MoveAction action)
     {
         moveToPosition(action.targetX, action.targetY);
-    }
-
-    // Move object to position (still used??)
-    void moveToPosition(int x, int y)
-    {
-        positionX = x;
-        positionY = y;
-        gameObject.transform.position = CombatBoardManager.instance.GetHexPosition(x, y);
-
-        // TODO: Run Dijkstra's or osme pathfindng algorithm
-
-        // TODO: Smoothly animate moving smoothly
-
     }
 }

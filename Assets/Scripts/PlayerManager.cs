@@ -25,12 +25,12 @@ public class PlayerManager : MonoBehaviour
     public int morality { get { return _morality; } }
     public int sanity { get { return _sanity; } }
 
-    public int actionPoints;
+    public int actionPoints { get { return _actionPoints; } }
 
     // Skills
 
     // Items
-    
+
     // Companions
 
     // ======================================
@@ -106,6 +106,8 @@ public class PlayerManager : MonoBehaviour
     private int _morality;
     private int _sanity;
 
+    private int _actionPoints;
+
     // TODO:
     // Load data from save file.
     void InitializePlayerData()
@@ -114,6 +116,7 @@ public class PlayerManager : MonoBehaviour
         _maxHp = 50;
         _morality = 50;
         _sanity = 50;
+        _actionPoints = 50;
         RefreshPlayerStats();
     }
 
