@@ -364,10 +364,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 11462888, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
-      propertyPath: displayText
-      value: 
-      objectReference: {fileID: 1282690654}
     - target: {fileID: 11483412, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
       propertyPath: question
       value: 
@@ -400,9 +396,11 @@ Prefab:
       propertyPath: answerButtons.Array.data[5]
       value: 
       objectReference: {fileID: 1196305302}
-    m_RemovedComponents:
-    - {fileID: 11480098, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
-    - {fileID: 11449528, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
+    - target: {fileID: 11462888, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
+      propertyPath: displayText
+      value: 
+      objectReference: {fileID: 1282690654}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1487531475

@@ -124,6 +124,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11487722, guid: 5eb281b42d58c3b4681cebc6aaa8891e, type: 2}
+      propertyPath: PlayerInitialX
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11487722, guid: 5eb281b42d58c3b4681cebc6aaa8891e, type: 2}
+      propertyPath: PlayerInitialY
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5eb281b42d58c3b4681cebc6aaa8891e, type: 2}
   m_IsPrefabParent: 0
@@ -417,7 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minZoom: 1
-  maxZoom: 5
+  maxZoom: 8
 --- !u!1 &1832612811
 GameObject:
   m_ObjectHideFlags: 0

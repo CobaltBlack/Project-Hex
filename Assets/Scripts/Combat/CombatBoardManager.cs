@@ -122,18 +122,51 @@ public class CombatBoardManager : MonoBehaviour
         return adjacentTiles.ToArray();
     }
 
+    // Get all tiles within range r, centered at (x, y)
+    // - includeCenter decides if the center tile is returned
+    // See reference for explanation of algorithm 
+    public HexTile[] GetTilesInRange(int x, int y, int r, bool includeCenter)
+    {
+        List<HexTile> inRangeTiles = new List<HexTile>();
+
+        // Convert center offset coord to cube coord
+        var centerCube = new CubeHex(x, y);
+
+        // Loop over all tiles within the range based on cube coordinates
+        for (var dx = -r; dx <= r; dx++)
+        {
+            var start = Mathf.Max(-r, -dx - r);
+            var end = Mathf.Min(r, -dx + r);
+            for (var dy = start; dy <= end; dy++)
+            {
+                var dz = -dx - dy;
+
+                // Add the dx, dy, and dz to the center coord
+                var tempCube = new CubeHex(centerCube.X + dx, centerCube.Y + dy, centerCube.Z + dz);
+                var tile = GetHexTileByCube(tempCube);
+
+                // Skip if tile is invalid, or it's the center tile and includeCenter is false
+                if (tile == null || (!includeCenter && tile.X == x && tile.Y == y))
+                {
+                    continue;
+                }
+                inRangeTiles.Add(tile);
+            }
+        }
+
+        return inRangeTiles.ToArray();
+    }
+
     // Returns the Transform position of a hex by coordinate
     public Vector3 GetHexPosition(int x, int y)
     {
-        Debug.Log(x);
-        Debug.Log(y);
         return GameBoard[x, y].Position;
     }
 
     // Returns whether the hex is valid (not a wall or out of bounds)
     public bool IsHexValid(int x, int y)
     {
-        if (0 > x || x >= Columns || 0 > y || y >= Rows)
+        if (!IsHexWithinBounds(x, y))
         {
             return false;
         }
@@ -143,6 +176,15 @@ public class CombatBoardManager : MonoBehaviour
             return false;
         }
 
+        return true;
+    }
+
+    public bool IsHexWithinBounds(int x, int y)
+    {
+        if (0 > x || x >= Columns || 0 > y || y >= Rows)
+        {
+            return false;
+        }
         return true;
     }
 
@@ -268,4 +310,66 @@ public class CombatBoardManager : MonoBehaviour
 
         return tilePrefab;
     }
+
+    // Returns a HexTile based on its cube coordinates
+    // See reference for info on cube coordinates
+    HexTile GetHexTileByCube(CubeHex cube)
+    {
+        var offsetHex = new OffsetHex(cube);
+        if (!IsHexWithinBounds(offsetHex.X, offsetHex.Y))
+        {
+            return null;
+        }
+        return GameBoard[offsetHex.X, offsetHex.Y];
+    }
+
+    class CubeHex
+    {
+        public int X;
+        public int Y;
+        public int Z;
+
+        // Constructor using odd-q offset coordinates
+        public CubeHex(int xOffset, int yOffset)
+        {
+            X = xOffset;
+            Z = yOffset - (xOffset - (xOffset & 1)) / 2;
+            Y = -X - Z;
+        }
+
+        // Constructor using cube coordinates
+        public CubeHex(int xCube, int yCube, int zCube)
+        {
+            X = xCube;
+            Y = yCube;
+            Z = zCube;
+        }
+
+        // Constructor using OffsetHex
+        public CubeHex(OffsetHex offsetHex) : this(offsetHex.X, offsetHex.Y) { }
+    }
+
+    class OffsetHex
+    {
+        public int X;
+        public int Y;
+
+        // Constructor using odd-q offset coordinates
+        public OffsetHex(int xOffset, int yOffset)
+        {
+            X = xOffset;
+            Y = yOffset;
+        }
+
+        // Constructor using cube coordinates
+        public OffsetHex(int xCube, int yCube, int zCube)
+        {
+            X = xCube;
+            Y = zCube + (xCube - (xCube & 1)) / 2;
+        }
+
+        // Constructor using CubeHex
+        public OffsetHex(CubeHex cube) : this(cube.X, cube.Y, cube.Z) { }
+    }
 }
+

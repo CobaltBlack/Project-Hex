@@ -23,9 +23,6 @@ public class CombatManager : MonoBehaviour
     public GameObject PlayerInstance;
     public PlayerObject PlayerScript;
 
-    public int PlayerInitialX;
-    public int PlayerInitialY;
-
     CombatBoardManager BoardScript;
     HexOverlayManager OverlayScript;
 
@@ -179,7 +176,7 @@ public class CombatManager : MonoBehaviour
         // Enable skill buttons and controls
 
         // Display overlays around player for movement
-        HexTile[] overlayTiles = BoardScript.GetSurroundingTiles(currentCharacter.PositionX, currentCharacter.PositionY);
+        HexTile[] overlayTiles = BoardScript.GetTilesInRange(currentCharacter.PositionX, currentCharacter.PositionY, GetMoveRange(), false);
         OverlayScript.InstantiateOverlays(overlayTiles);
 
         // Clicking overlays cause the player to MOVE
@@ -248,7 +245,7 @@ public class CombatManager : MonoBehaviour
         currentCharacter.QueueMoveAction(x, y);
 
         // Reinstantiate the hexoverlays at the position of the "shadow"
-        HexTile[] overlayTiles = BoardScript.GetSurroundingTiles(currentCharacter.ShadowPositionX, currentCharacter.ShadowPositionY);
+        HexTile[] overlayTiles = BoardScript.GetTilesInRange(currentCharacter.ShadowPositionX, currentCharacter.ShadowPositionY, GetMoveRange(), false);
         OverlayScript.InstantiateOverlays(overlayTiles);
     }
 
@@ -265,6 +262,12 @@ public class CombatManager : MonoBehaviour
 
         // Change mouse cursor (change it back afterwards)
 
+    }
+
+    // Calculates the move range for the current character based on remaining AP, terrain
+    int GetMoveRange()
+    {
+        return 2;
     }
 
     // ==============================

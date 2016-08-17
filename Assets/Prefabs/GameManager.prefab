@@ -9,8 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 410924}
   - 114: {fileID: 11435728}
-  - 114: {fileID: 11480098}
-  - 114: {fileID: 11449528}
   - 114: {fileID: 11462888}
   - 114: {fileID: 11475392}
   - 114: {fileID: 11483412}
@@ -61,22 +59,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b59e18ce813f2409c870ddb62de439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 188284, guid: 87555d5d4b2b2e9439c03c028a64715d, type: 2}
-  playerInstance: {fileID: 0}
-  playerInitialX: 9
-  playerInitialY: 9
---- !u!114 &11449528
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 185804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e89ec5bc14f6d0f4e9bc4073c84897c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hexOverlay: {fileID: 198266, guid: 5ec6ba98a8cca9644ac6f0364f58c27f, type: 2}
 --- !u!114 &11462888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -102,8 +84,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d491c40f69fb664ebaecc82f092034b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacter: {fileID: 119050, guid: 984afcfeea5bd6745a14b46c7d3307a2, type: 2}
-  actionPoints: 20
+  PlayerCharacterPrefab: {fileID: 119050, guid: 984afcfeea5bd6745a14b46c7d3307a2,
+    type: 2}
 --- !u!114 &11475392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -115,24 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a3d033aa0bf19418a5b60f63bd5996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11480098
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 185804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25fb51a4fc508b840b633500b3794417, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  columns: 19
-  rows: 19
-  xWorldCenter: 0
-  yWorldCenter: 0
-  hexRooms:
-  - {fileID: 134872, guid: e889b8509e0e0884ca7c6cb643cb43b9, type: 2}
-  trueCenter: {x: 0, y: 0, z: 0}
 --- !u!114 &11483412
 MonoBehaviour:
   m_ObjectHideFlags: 1
