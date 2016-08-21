@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
  * HexOverlayManager
@@ -14,10 +15,10 @@ public class HexOverlayManager : MonoBehaviour
     GameObject OverlayContainer;
 
     // Instantiates a clickable overlay for each tile given
-    public void InstantiateOverlays(HexTile[] tiles)
+    public void InstantiateOverlays(List<HexTile> tiles)
     {
         OverlayContainer = new GameObject("HexOverlays");
-        for (int i = 0; i < tiles.Length; i++)
+        for (int i = 0; i < tiles.Count; i++)
         {
             GameObject overlayObj = InstantiateOverlay(tiles[i]);
             overlayObj.transform.SetParent(OverlayContainer.transform);

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class FriendlyObject : MovingObject
 {
+    public GameObject CharacterShadow = null;
+
     void Start()
     {
         // Get hp, ap, etc from player script
@@ -14,10 +16,21 @@ public class FriendlyObject : MovingObject
     }
 
     // Animate the shadow if queueing a move command for friendly characters
-    public new void QueueMoveAction(int x, int y)
+    public override void QueueMoveAction(int targetX, int targetY)
     {
-        base.QueueMoveAction(x, y);
-        MoveShadow(x, y);
+        var path = CombatBoardManager.Instance.GetTilesInPath(ShadowX, ShadowY, targetX, targetY);
+        MoveAction moveAction = new MoveAction(targetX, targetY, path);
+        ActionQueue.Add(moveAction);
+        MoveShadow(moveAction);
+    }
+
+    public bool IsShadowActive
+    {
+        get
+        {
+            if (CharacterShadow != null && CharacterShadow.activeSelf) return true;
+            else return false;
+        }
     }
 
     // ====================================
@@ -25,25 +38,25 @@ public class FriendlyObject : MovingObject
     // - The shadow is displayed during the player turn when planning Move actions
     // ====================================
 
-    public int ShadowPositionX
+    public int ShadowX
     {
         get
         {
             if (CharacterShadow)
-                return CharacterShadow.GetComponent<MovingObject>().PositionX;
+                return CharacterShadow.GetComponent<MovingObject>().X;
             else
-                return PositionX;
+                return X;
         }
     }
 
-    public int ShadowPositionY
+    public int ShadowY
     {
         get
         {
             if (CharacterShadow)
-                return CharacterShadow.GetComponent<MovingObject>().PositionY;
+                return CharacterShadow.GetComponent<MovingObject>().Y;
             else
-                return PositionY;
+                return Y;
         }
     }
 
@@ -55,7 +68,7 @@ public class FriendlyObject : MovingObject
         if (!CharacterShadow)
         {
             // Instantiate a copy of current object and make it transparent
-            CharacterShadow = Instantiate(gameObject, CombatBoardManager.Instance.GetHexPosition(PositionX, PositionY), Quaternion.identity) as GameObject;
+            CharacterShadow = Instantiate(gameObject, CombatBoardManager.Instance.GetHexTile(X, Y).Position, Quaternion.identity) as GameObject;
             CharacterShadow.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, .5f);
         }
         // Otherwise, make it active
@@ -63,25 +76,27 @@ public class FriendlyObject : MovingObject
         {
             CharacterShadow.SetActive(true);
         }
-
     }
 
     // Hide the shadow when it is not needed
     public void HideShadow()
     {
-        if (CharacterShadow)
+        if (IsShadowActive)
         {
             CharacterShadow.SetActive(false);
         }
     }
 
-    void MoveShadow(int x, int y)
+    // Moves the shadow based on the moveAction
+    // Once movement is done, it redisplays the overlays
+    void MoveShadow(MoveAction moveAction)
     {
-        if (!CharacterShadow || !CharacterShadow.activeSelf)
+        if (!IsShadowActive)
         {
             ShowShadow();
         }
 
-        CharacterShadow.GetComponent<MovingObject>().MoveToPosition(x, y);
+        System.Action ShowOverlayCallback = CombatManager.Instance.ShowMovementOverlays;
+        CharacterShadow.GetComponent<FriendlyObject>().RunMoveAction(moveAction, ShowOverlayCallback);
     }
 }

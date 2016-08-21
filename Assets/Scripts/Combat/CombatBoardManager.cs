@@ -53,7 +53,7 @@ public class CombatBoardManager : MonoBehaviour
     }
 
     // Returns array of all tiles
-    public HexTile[] GetSurroundingTiles(int x, int y)
+    public List<HexTile> GetSurroundingTiles(int x, int y)
     {
         List<HexTile> adjacentTiles = new List<HexTile>();
 
@@ -97,6 +97,11 @@ public class CombatBoardManager : MonoBehaviour
         // x is odd
         else
         {
+            // Top Left
+            if (IsHexValid(x - 1, y))
+            {
+                adjacentTiles.Add(GameBoard[x - 1, y]);
+            }
             // Top Right
             if (IsHexValid(x + 1, y))
             {
@@ -112,20 +117,15 @@ public class CombatBoardManager : MonoBehaviour
             {
                 adjacentTiles.Add(GameBoard[x + 1, y + 1]);
             }
-            // Top Left
-            if (IsHexValid(x - 1, y))
-            {
-                adjacentTiles.Add(GameBoard[x - 1, y]);
-            }
         }
 
-        return adjacentTiles.ToArray();
+        return adjacentTiles;
     }
 
     // Get all tiles within range r, centered at (x, y)
     // - includeCenter decides if the center tile is returned
     // See reference for explanation of algorithm 
-    public HexTile[] GetTilesInRange(int x, int y, int r, bool includeCenter)
+    public List<HexTile> GetTilesInRange(int x, int y, int r, bool includeCenter)
     {
         List<HexTile> inRangeTiles = new List<HexTile>();
 
@@ -154,13 +154,98 @@ public class CombatBoardManager : MonoBehaviour
             }
         }
 
-        return inRangeTiles.ToArray();
+        return inRangeTiles;
     }
 
-    // Returns the Transform position of a hex by coordinate
-    public Vector3 GetHexPosition(int x, int y)
+    // Returns a List of HexTiles that defines the shortest path from start to end
+    // Uses A* pathfinding algorithm
+    // Algorithm adapted from the reference site
+    public List<HexTile> GetTilesInPath(int startX, int startY, int endX, int endY)
     {
-        return GameBoard[x, y].Position;
+        var startNode = GetHexTile(startX, startY);
+        var endNode = GetHexTile(endX, endY);
+        bool goalReached = false;
+
+        // Use SortedList as a priority queue
+        // Frontier represents the nodes to be visitied next, 
+        // ordered by how likely each node will reach the exit
+        var frontier = new SortedList<float, HexTile>();
+        frontier.Add(0, startNode);
+
+        // Define dictionaries for "previous node" and "current cost" for each node
+        var cameFrom = new Dictionary<HexTile, HexTile>();
+        var costSoFar = new Dictionary<HexTile, float>();
+        cameFrom[startNode] = startNode;
+        costSoFar[startNode] = 0;
+
+        // Loop while nodes are in the frontier
+        while (frontier.Count > 0)
+        {
+            // Get first node in the frontier
+            var currentNode = frontier.Values[0];
+            frontier.RemoveAt(0);
+
+            // If its the goal, then we are done
+            if (currentNode.Equals(endNode))
+            {
+                goalReached = true;
+                break;
+            }
+
+            // For each neighbor of currentNode
+            foreach (var neighbor in currentNode.Neighbors)
+            {
+                // Get cost from current node to neighbor
+                var newCost = costSoFar[currentNode] + 1;
+
+                // If neighbor does not have a cost yet, 
+                // or the cost from currentNode is smaller than the previously calculate cost
+                if (!costSoFar.ContainsKey(neighbor) || newCost < costSoFar[neighbor])
+                {
+                    // Update the cost for neighbor
+                    costSoFar[neighbor] = newCost;
+
+                    // Add to priorty queue based on cost and distance to the goal
+                    var priority = newCost + Random.Range(0f, 0.5f); // + Heuristic(next, goal
+                    frontier.Add(priority, neighbor);
+
+                    // Set the neighbor node to "come from" the current node
+                    cameFrom[neighbor] = currentNode;
+                }
+            }
+        }
+
+        print("A* tiles end");
+        // If goalReached flag is not true, the return empty path
+        List<HexTile> pathTiles = new List<HexTile>();
+        if (!goalReached) return pathTiles;
+
+        // Otherwise, follow the nodes from endNode all the way back to startNode
+        var pathNode = endNode;
+        pathTiles.Add(pathNode);
+        while (pathNode != startNode)
+        {
+            pathNode = cameFrom[pathNode];
+            pathTiles.Add(pathNode);
+        }
+
+        print("A* end");
+        // Reverse the list so that the startNode is in the beginning
+        pathTiles.Reverse();
+        return pathTiles;
+    }
+
+    // Returns the hex tile by coordinate
+    public HexTile GetHexTile(int x, int y)
+    {
+        if (IsHexWithinBounds(x, y))
+        {
+            return GameBoard[x, y];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     // Returns whether the hex is valid (not a wall or out of bounds)
@@ -171,7 +256,7 @@ public class CombatBoardManager : MonoBehaviour
             return false;
         }
 
-        if (GetHexType(x, y) == HexTileType.Wall)
+        if (GetHexTile(x, y).TileType == HexTileType.Wall)
         {
             return false;
         }
@@ -186,11 +271,6 @@ public class CombatBoardManager : MonoBehaviour
             return false;
         }
         return true;
-    }
-
-    public HexTileType GetHexType(int x, int y)
-    {
-        return GameBoard[x, y].TileType;
     }
 
     // =========================
@@ -224,7 +304,7 @@ public class CombatBoardManager : MonoBehaviour
                 }
 
                 // Save in gameBoard
-                GameBoard[x, y] = new HexTile(x, y, hexLocation, tileType);
+                GameBoard[x, y] = new HexTile(x, y, hexLocation, tileType, true);
             }
         }
     }
@@ -263,7 +343,7 @@ public class CombatBoardManager : MonoBehaviour
             {
                 // Get tile prefab
                 toInstantiate = GetTileObjectByType(GameBoard[x, y].TileType);
-                instance = Instantiate(toInstantiate, GetHexPosition(x, y), Quaternion.identity) as GameObject;
+                instance = Instantiate(toInstantiate, GetHexTile(x, y).Position, Quaternion.identity) as GameObject;
 
                 // Add hexes to parent
                 instance.transform.SetParent(hexHolder);
@@ -279,9 +359,9 @@ public class CombatBoardManager : MonoBehaviour
 
         // Instantiate the player
         GameObject toInstantiate = PlayerManager.Instance.PlayerCharacterPrefab;
-        GameObject playerInstance = Instantiate(toInstantiate, GetHexPosition(PlayerInitX, PlayerInitY), Quaternion.identity) as GameObject;
-        playerInstance.GetComponent<PlayerObject>().PositionX = PlayerInitX;
-        playerInstance.GetComponent<PlayerObject>().PositionY = PlayerInitY;
+        GameObject playerInstance = Instantiate(toInstantiate, GetHexTile(PlayerInitX, PlayerInitY).Position, Quaternion.identity) as GameObject;
+        playerInstance.GetComponent<PlayerObject>().X = PlayerInitX;
+        playerInstance.GetComponent<PlayerObject>().Y = PlayerInitY;
         CombatManager.Instance.SetPlayerObject(playerInstance);
 
         // Instantiate companions

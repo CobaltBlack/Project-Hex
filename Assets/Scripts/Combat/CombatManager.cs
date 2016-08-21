@@ -23,8 +23,8 @@ public class CombatManager : MonoBehaviour
     public GameObject PlayerInstance;
     public PlayerObject PlayerScript;
 
-    CombatBoardManager BoardScript;
-    HexOverlayManager OverlayScript;
+    CombatBoardManager BoardManager;
+    HexOverlayManager OverlayManager;
 
     TurnState turnState = TurnState.Initializing; // Current state of the game    
     ActionType currentAction = ActionType.None; // Currently selected skill
@@ -54,7 +54,6 @@ public class CombatManager : MonoBehaviour
         switch (currentAction)
         {
             case ActionType.Move:
-                // TODO
                 HandleMoveAction(x, y);
                 break;
             case ActionType.Skill:
@@ -79,6 +78,25 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    // Shows the movement overlays for the currently selected character
+    // Takes into account of current remaining AP and shadow
+    public void ShowMovementOverlays()
+    {
+        int currentX, currentY;
+        if (currentCharacter.IsShadowActive)
+        {
+            currentX = currentCharacter.ShadowX;
+            currentY = currentCharacter.ShadowY;
+        }
+        else
+        {
+            currentX = currentCharacter.X;
+            currentY = currentCharacter.Y;
+        }
+        var overlayTiles = BoardManager.GetTilesInRange(currentX, currentY, currentCharacter.MoveRange, false);
+        OverlayManager.InstantiateOverlays(overlayTiles);
+    }
+
     // ======================================
     // Private Functions
     // ======================================
@@ -97,8 +115,8 @@ public class CombatManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        BoardScript = GetComponent<CombatBoardManager>();
-        OverlayScript = GetComponent<HexOverlayManager>();
+        BoardManager = GetComponent<CombatBoardManager>();
+        OverlayManager = GetComponent<HexOverlayManager>();
 
         // Combat entrance animations
 
@@ -150,7 +168,7 @@ public class CombatManager : MonoBehaviour
         // TODO: Configure combat parameters elsewhere before entering combat
         //boardScript.SetupBoard(GameManager.instance.combatParameters);
         CombatParameters combatParameters = new CombatParameters();
-        BoardScript.SetupBoard(combatParameters);
+        BoardManager.SetupBoard(combatParameters);
     }
 
     // Leave the combat scene.
@@ -176,8 +194,7 @@ public class CombatManager : MonoBehaviour
         // Enable skill buttons and controls
 
         // Display overlays around player for movement
-        HexTile[] overlayTiles = BoardScript.GetTilesInRange(currentCharacter.PositionX, currentCharacter.PositionY, GetMoveRange(), false);
-        OverlayScript.InstantiateOverlays(overlayTiles);
+        ShowMovementOverlays();
 
         // Clicking overlays cause the player to MOVE
         currentAction = ActionType.Move;
@@ -195,7 +212,7 @@ public class CombatManager : MonoBehaviour
         turnState = TurnState.PlayerTurnProcessing;
 
         // Disable UI and controls
-        OverlayScript.RemoveAllOverlays();
+        OverlayManager.RemoveAllOverlays();
 
         // Hide shadows for all friendly characters
         PlayerScript.HideShadow();
@@ -239,14 +256,13 @@ public class CombatManager : MonoBehaviour
     void HandleMoveAction(int x, int y)
     {
         // Clear the overlays
-        OverlayScript.RemoveAllOverlays();
+        OverlayManager.RemoveAllOverlays();
 
         // Add MoveAction to the current character's action queue
         currentCharacter.QueueMoveAction(x, y);
 
         // Reinstantiate the hexoverlays at the position of the "shadow"
-        HexTile[] overlayTiles = BoardScript.GetTilesInRange(currentCharacter.ShadowPositionX, currentCharacter.ShadowPositionY, GetMoveRange(), false);
-        OverlayScript.InstantiateOverlays(overlayTiles);
+        //ShowMovementOverlays();
     }
 
     // Called when a skill is selected
