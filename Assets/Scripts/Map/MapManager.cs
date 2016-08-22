@@ -22,8 +22,9 @@ public class MapManager : MonoBehaviour
 
     public GameObject line;
 
+    public GameObject[] mapRuleBooks;
     public GameObject[] mapTiles;
-    public GameObject[,] mapTileObject;
+    public GameObject[,] mapTileGameObjects;
 
     // holds TRUE coordinate
     [HideInInspector]
@@ -34,7 +35,7 @@ public class MapManager : MonoBehaviour
         xWorldCenter = columns / 2;
         yWorldCenter = rows / 2;
 
-        InitializeGameBoard();
+        InitializeGameBoardV3();
         //Debug.Log("-InitializeGameBoard");
         InitializeNodes();
         //Debug.Log("-InitializeNodes");
@@ -43,7 +44,7 @@ public class MapManager : MonoBehaviour
     // not a very nice version of map generation. CURRENTLY NOT USED
     void InitializeGameBoardV2()
     {
-        mapTileObject = new GameObject[columns, rows];
+        mapTileGameObjects = new GameObject[columns, rows];
 
         Transform mapHolder = new GameObject("Map").transform; // parent
         GameObject toInstantiate;
@@ -62,14 +63,14 @@ public class MapManager : MonoBehaviour
 
                 if (x % 2 == 0) // if even
                 {
-                    xTemp = (float)(x * multiplicationUnit/2); // multiplicationUnit = 16
+                    xTemp = (float)(x * multiplicationUnit / 2); // multiplicationUnit = 16
                     yTemp = (float)(y * multiplicationUnit);
                     tileLocation = new Vector3(xTemp, yTemp, 0f);
                 }
                 else // if odd
                 {
-                    xTemp = (float)(x * multiplicationUnit/2); // multiplicationUnit = 16
-                    yTemp = (float)(y * multiplicationUnit + multiplicationUnit/2); // multiplicationUnit = 16
+                    xTemp = (float)(x * multiplicationUnit / 2); // multiplicationUnit = 16
+                    yTemp = (float)(y * multiplicationUnit + multiplicationUnit / 2); // multiplicationUnit = 16
                     tileLocation = new Vector3(xTemp, yTemp, 0f);
                 }
 
@@ -84,19 +85,239 @@ public class MapManager : MonoBehaviour
                 toInstantiate = mapTiles[tileChoice]; // Choose blank tile
 
                 // instantiation
-                mapTileObject[x, y] = Instantiate(toInstantiate, tileLocation, Quaternion.identity) as GameObject;
+                mapTileGameObjects[x, y] = Instantiate(toInstantiate, tileLocation, Quaternion.identity) as GameObject;
 
                 // editing GameObject
-                mapTileObject[x, y].transform.SetParent(mapHolder);  // parent under hexHolder "Map"
-                mapTileObject[x, y].name = "map_" + x + "_" + y; // name the hexes by coordinates
+                mapTileGameObjects[x, y].transform.SetParent(mapHolder);  // parent under hexHolder "Map"
+                mapTileGameObjects[x, y].name = "map_" + x + "_" + y; // name the hexes by coordinates
             }
         }
     }
 
+    /*
+    public List<GameObject> building_4Exit;
+    public List<GameObject> building_0Exit;
+
+    public List<GameObject> building_1Exit_N;
+    public List<GameObject> building_1Exit_W;
+    public List<GameObject> building_1Exit_S;
+    public List<GameObject> building_1Exit_E;
+
+    public List<GameObject> building_2Exit_NW;
+    public List<GameObject> building_2Exit_WS;
+    public List<GameObject> building_2Exit_SE;
+    public List<GameObject> building_2Exit_EN;
+
+    public List<GameObject> building_2Exit_NS;
+    public List<GameObject> building_2Exit_WE;
+
+    public List<GameObject> building_3Exit_NWS;
+    public List<GameObject> building_3Exit_WSE;
+    public List<GameObject> building_3Exit_SEN;
+    public List<GameObject> building_3Exit_ENW;
+
+
+    public List<GameObject> garden_4Exit;
+    public List<GameObject> garden_0Exit;
+
+    public List<GameObject> garden_1Exit_N;
+    public List<GameObject> garden_1Exit_W;
+    public List<GameObject> garden_1Exit_S;
+    public List<GameObject> garden_1Exit_E;
+
+    public List<GameObject> garden_2Exit_NW;
+    public List<GameObject> garden_2Exit_WS;
+    public List<GameObject> garden_2Exit_SE;
+    public List<GameObject> garden_2Exit_EN;
+
+    public List<GameObject> garden_2Exit_NS;
+    public List<GameObject> garden_2Exit_WE;
+
+    public List<GameObject> garden_3Exit_NWS;
+    public List<GameObject> garden_3Exit_WSE;
+    public List<GameObject> garden_3Exit_SEN;
+    public List<GameObject> garden_3Exit_ENW;
+    */
+
+    Transform mapHolder; // parent
+
+    void InitializeGameBoardV3()
+    {
+        mapHolder = new GameObject("Map").transform; // parent
+
+        // Pick a random ruleBook
+        GameObject mapChoice = Instantiate(mapRuleBooks[Random.Range(0, mapRuleBooks.Length)]) as GameObject;
+
+        // Read mapData
+        MapDataTemplate mapData = mapChoice.GetComponent<MapDataTemplate>();
+
+        // Initialize map size
+        mapTileGameObjects = new GameObject[mapData.columns, mapData.rows];
+
+        // lay down the fixed coordinate properties in the MapData, record them in mapTileGameObjects
+        int xOffSet = mapData.premade3x3OriginX;
+        int yOffSet = mapData.premade3x3OriginY;
+
+        PlaceGameObject(mapData.premade3x3[0, 0], 0 + xOffSet, 0 + yOffSet);
+        PlaceGameObject(mapData.premade3x3[0, 1], 0 + xOffSet, 1 + yOffSet);
+        PlaceGameObject(mapData.premade3x3[0, 2], 0 + xOffSet, 2 + yOffSet);
+
+        PlaceGameObject(mapData.premade3x3[1, 0], 1 + xOffSet, 0 + yOffSet);
+        PlaceGameObject(mapData.premade3x3[1, 1], 1 + xOffSet, 1 + yOffSet);
+        PlaceGameObject(mapData.premade3x3[1, 2], 1 + xOffSet, 2 + yOffSet);
+
+        PlaceGameObject(mapData.premade3x3[2, 0], 2 + xOffSet, 0 + yOffSet);
+        PlaceGameObject(mapData.premade3x3[2, 1], 2 + xOffSet, 1 + yOffSet);
+        PlaceGameObject(mapData.premade3x3[2, 2], 2 + xOffSet, 2 + yOffSet);
+
+        for (int x = 0; x < mapData.columns; x++)
+        {
+            for (int y = 0; y < mapData.rows; y++)
+            {
+                // check if a tile is alraedy placed. if so, do nothing this loop.
+                if (mapTileGameObjects[x, y])
+                {
+                    continue;
+                }
+
+                // reset tile requirements
+                bool hasNorthExit = false;
+                bool hasWestExit = false;
+                bool hasSouthExit = false;
+                bool hasEastExit = false;
+                EnumTileProperty property = EnumTileProperty.Default;
+
+                // check tile surrounding. note which exits MUST must match N1 W2 S3 E4
+
+                // N (1) exit check
+                if (x != mapData.columns - 1 && mapTileGameObjects[x + 1, y])
+                {
+                    // check if it has a S (3) entrance
+                    if(mapTileGameObjects[x + 1, y].GetComponent<MapTile>().exit3A)
+                    {
+                        // since there is S (3) entrance, we must have a N (1) exit on our tile to match
+                        hasNorthExit = true;
+                    }
+                }
+                // if there are no tiles against this exit, add an exit randomly
+                if(x != mapData.columns - 1 && !mapTileGameObjects[x + 1, y])
+                {
+                    bool randomBool = (Random.value < 0.5);
+                    hasNorthExit = randomBool;
+                }
+
+                // W (2) check
+                if (y != mapData.rows - 1 && mapTileGameObjects[x, y + 1])
+                {
+                    // check if it has a E (4) entrance
+                    if (mapTileGameObjects[x, y + 1].GetComponent<MapTile>().exit4A)
+                    {
+                        // since there is E (4) entrance, we must have a W (2) exit on our tile to match
+                        hasWestExit = true;
+                    }
+                }
+                if (y != mapData.rows - 1 && !mapTileGameObjects[x, y + 1])
+                {
+                    bool randomBool = (Random.value < 0.5);
+                    hasWestExit = randomBool;
+                }
+
+                // S (3) check
+                if (!(x == 0) && mapTileGameObjects[x - 1, y])
+                {
+                    // check if it has a N (1) entrance
+                    if (mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A)
+                    {
+                        // since there is N (1) entrance, we must have a S (3) exit on our tile to match
+                        hasSouthExit = true;
+                    }
+                }
+                if (!(x == 0) && !mapTileGameObjects[x - 1, y])
+                {
+                    bool randomBool = (Random.value < 0.5);
+                    hasSouthExit = randomBool;
+                }
+
+                // E (4) check
+                if (!(y == 0) && mapTileGameObjects[x, y - 1])
+                {
+                    // check if it has a W (2) entrance
+                    if (mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A)
+                    {
+                        // since there is W (2) entrance, we must have a E (4) exit on our tile to match
+                        hasEastExit = true;
+                    }
+                }
+                if (!(y == 0) && !mapTileGameObjects[x, y - 1])
+                {
+                    bool randomBool = (Random.value < 0.5);
+                    hasEastExit = randomBool;
+                }
+
+                // read this tiles zoning property
+                if (mapData.building_xFrom <= x && x <= mapData.building_xTo && mapData.building_yFrom <= y && y <= mapData.building_yTo) // if x and y is within zoning property of garden
+                {
+                    // this tile should be building
+                    property = EnumTileProperty.Building;
+                }
+                if (mapData.garden_xFrom <= x && x <= mapData.garden_xTo && mapData.garden_yFrom <= y && y <= mapData.garden_yTo) // if x and y is within zoning property of garden
+                {
+                    // this tile should be garden
+                    property = EnumTileProperty.Garden;
+                }
+
+                // construct a list of valid tiles
+
+                List<GameObject> validMapTiles = new List<GameObject>();
+
+                validMapTiles.Clear();
+
+                for (int i = 0; i < mapTiles.Length; i++)
+                {
+                    MapTile currentTile = mapTiles[i].GetComponent<MapTile>();
+
+                    if (property == currentTile.property) // check property
+                    {
+                        if (hasNorthExit == currentTile.exit1A && hasWestExit == currentTile.exit2A && hasSouthExit == currentTile.exit3A && hasEastExit == currentTile.exit4A) // check exit
+                        {
+                            validMapTiles.Add(mapTiles[i]);
+                        }
+                    }
+                }
+
+                // select a random tile from the correct "exit" and "zone" pool.
+                GameObject toInstantiate = validMapTiles[Random.Range(0, validMapTiles.Count)];
+
+                // place tile
+                PlaceGameObject(toInstantiate, x, y);
+
+                // register all nodes correctly
+                // currently not implemented
+
+            }
+        }
+    }
+
+    void PlaceGameObject(GameObject toInstantiate, int xCoordinate, int yCoordinate)
+    {
+        // find place
+        float xTemp = (float)(xCoordinate * multiplicationUnit / 2 - yCoordinate * multiplicationUnit / 2);
+        float yTemp = (float)(yCoordinate * multiplicationUnit / 2 + xCoordinate * multiplicationUnit / 2);
+        Vector3 tileLocation = new Vector3(xTemp, yTemp, 0f);
+
+        // instantiation
+        mapTileGameObjects[xCoordinate, yCoordinate] = Instantiate(toInstantiate, tileLocation, toInstantiate.transform.rotation) as GameObject;
+
+        // editing GameObject
+        mapTileGameObjects[xCoordinate, yCoordinate].transform.SetParent(mapHolder);  // parent under hexHolder "Map"
+        mapTileGameObjects[xCoordinate, yCoordinate].name = "map_" + xCoordinate + "_" + yCoordinate; // name the hexes by coordinates
+    }
+
+
     // Set up an empty game board
     void InitializeGameBoard()
     {
-        mapTileObject = new GameObject[columns, rows];
+        mapTileGameObjects = new GameObject[columns, rows];
 
         Transform mapHolder = new GameObject("Map").transform; // parent
         GameObject toInstantiate;
@@ -124,20 +345,20 @@ public class MapManager : MonoBehaviour
                 toInstantiate = mapTiles[tileChoice]; // Choose blank tile
 
                 // instantiation
-                mapTileObject[x, y] = Instantiate(toInstantiate, tileLocation, Quaternion.identity) as GameObject;
+                mapTileGameObjects[x, y] = Instantiate(toInstantiate, tileLocation, toInstantiate.transform.rotation) as GameObject;
 
                 // editing GameObject
-                mapTileObject[x, y].transform.SetParent(mapHolder);  // parent under hexHolder "Map"
-                mapTileObject[x, y].name = "map_" + x + "_" + y; // name the hexes by coordinates
+                mapTileGameObjects[x, y].transform.SetParent(mapHolder);  // parent under hexHolder "Map"
+                mapTileGameObjects[x, y].name = "map_" + x + "_" + y; // name the hexes by coordinates
 
                 // take a TILE, check its BOTTOM (y-1) EXIT and LEFT (x-1) EXIT and if there is a touching TILE, access the NODES, ADD to the "nodesConnected" 
-                if (mapTileObject[x, y].GetComponent<MapTile>().exit3A && x > 0)
+                if (mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A && x > 0)
                 {
-                    mapTileObject[x, y].GetComponent<MapTile>().exit3A.GetComponent<MapNode>().nodesConnected.Add(mapTileObject[x - 1, y].GetComponent<MapTile>().exit1A);
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A);
                 }
-                if (mapTileObject[x, y].GetComponent<MapTile>().exit4A && y > 0)
+                if (mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A && y > 0)
                 {
-                    mapTileObject[x, y].GetComponent<MapTile>().exit4A.GetComponent<MapNode>().nodesConnected.Add(mapTileObject[x, y - 1].GetComponent<MapTile>().exit2A);
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A);
                 }
             }
         }
@@ -148,13 +369,13 @@ public class MapManager : MonoBehaviour
             for (int y = 0; y < rows; y++)
             {
                 // take a TILE, check its TOP (y+1) EXIT and RIGHT (x+1) EXIT and if there is a touching TILE, access the NODES, ADD to the "nodesConnected" 
-                if (y < rows - 1 && mapTileObject[x, y].GetComponent<MapTile>().exit2A && mapTileObject[x, y + 1].GetComponent<MapTile>().exit4A)
+                if (y < rows - 1 && mapTileGameObjects[x, y].GetComponent<MapTile>().exit2A && mapTileGameObjects[x, y + 1].GetComponent<MapTile>().exit4A)
                 {
-                    mapTileObject[x, y].GetComponent<MapTile>().exit2A.GetComponent<MapNode>().nodesConnected.Add(mapTileObject[x, y + 1].GetComponent<MapTile>().exit4A);
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit2A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x, y + 1].GetComponent<MapTile>().exit4A);
                 }
-                if (x < columns - 1 && mapTileObject[x, y].GetComponent<MapTile>().exit1A && mapTileObject[x + 1, y].GetComponent<MapTile>().exit3A)
+                if (x < columns - 1 && mapTileGameObjects[x, y].GetComponent<MapTile>().exit1A && mapTileGameObjects[x + 1, y].GetComponent<MapTile>().exit3A)
                 {
-                    mapTileObject[x, y].GetComponent<MapTile>().exit1A.GetComponent<MapNode>().nodesConnected.Add(mapTileObject[x + 1, y].GetComponent<MapTile>().exit3A);
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit1A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x + 1, y].GetComponent<MapTile>().exit3A);
                 }
             }
         }
@@ -170,7 +391,7 @@ public class MapManager : MonoBehaviour
             for (int y = 0; y < rows; y++)
             {
                 childNodeList.Clear();
-                foreach (Transform t in mapTileObject[x, y].transform)
+                foreach (Transform t in mapTileGameObjects[x, y].transform)
                 {
                     childNodeList.Add(t.gameObject);
                 }

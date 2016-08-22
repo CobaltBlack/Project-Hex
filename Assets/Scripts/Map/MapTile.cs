@@ -6,6 +6,9 @@ public class MapTile : MonoBehaviour
     // tile size
     public int size = 0; // 0 = small, 1 = big
 
+    // property
+    public EnumTileProperty property;
+
     // EXIT information
     public GameObject exit1A;
     public GameObject exit1B;

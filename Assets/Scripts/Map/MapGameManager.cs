@@ -37,14 +37,14 @@ public class MapGameManager : MonoBehaviour
         mapScript.MapSetup();
 
         // save newNode
-        newNode = mapScript.mapTileObject[0, 0].GetComponent<MapTile>().startingNode;
+        newNode = mapScript.mapTileGameObjects[0, 0].GetComponent<MapTile>().startingNode;
 
         // SMART METHOD
         // initialize player
         Debug.Log("Instantiate player");
         playerInstance = Instantiate(player, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
 
-        GameObject origin = mapScript.mapTileObject[0, 0].GetComponent<MapTile>().startingNode;
+        GameObject origin = mapScript.mapTileGameObjects[0, 0].GetComponent<MapTile>().startingNode;
         origin.GetComponent<MapNode>().isVisited = true; // this is in place for preperation for addition of instances
         MovePlayer(origin);
 
@@ -53,15 +53,15 @@ public class MapGameManager : MonoBehaviour
         /* MANUAL METHOD
         // initialize player
         Debug.Log("Instantiate player");
-        playerInstance = Instantiate(player, mapScript.mapTileObject[0,0].GetComponent<MapTile>().startingNode.transform.position , Quaternion.identity) as GameObject;
+        playerInstance = Instantiate(player, mapScript.mapTileGameObjects[0,0].GetComponent<MapTile>().startingNode.transform.position , Quaternion.identity) as GameObject;
 
         // set the tile player starts on as visited
-        mapScript.mapTileObject[0, 0].GetComponent<MapTile>().startingNode.GetComponent<MapNode>().isVisited = true;
+        mapScript.mapTileGameObjects[0, 0].GetComponent<MapTile>().startingNode.GetComponent<MapNode>().isVisited = true;
 
         // make nodes around player clickable
-        for (int i = 0; i < mapScript.mapTileObject[0, 0].GetComponent<MapTile>().startingNode.GetComponent<MapNode>().nodesConnected.Count; i++)
+        for (int i = 0; i < mapScript.mapTileGameObjects[0, 0].GetComponent<MapTile>().startingNode.GetComponent<MapNode>().nodesConnected.Count; i++)
         {
-            mapScript.mapTileObject[0, 0].GetComponent<MapTile>().startingNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isClickable = true;
+            mapScript.mapTileGameObjects[0, 0].GetComponent<MapTile>().startingNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isClickable = true;
         }
 
         Debug.Log("Initialize game complete!");

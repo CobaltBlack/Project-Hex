@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &188942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 453920}
+  - 114: {fileID: 11429164}
+  m_Layer: 0
+  m_Name: Mansion Beta
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &453920
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.49682635, y: -0.7159997, z: -0.09375}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11429164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61217261fe71c04ead2fe06123a549e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  columns: 10
+  rows: 10
+  garden:
+    xFrom: 0
+    xTo: 0
+    yFrom: 0
+    yTo: 0
+  garden_xFrom: 0
+  garden_xTo: 10
+  garden_yFrom: 0
+  garden_yTo: 1
+  building:
+    xFrom: 0
+    xTo: 0
+    yFrom: 0
+    yTo: 0
+  building_xFrom: 0
+  building_xTo: 10
+  building_yFrom: 2
+  building_yTo: 10
+  premade3x3OriginX: 3
+  premade3x3OriginY: 1
+  tile_0_0: {fileID: 182244, guid: c1380b3ea7636f243b1461077baa0a8b, type: 2}
+  tile_0_1: {fileID: 136562, guid: 50d81fd77da6f1e4d845761e99c170dc, type: 2}
+  tile_0_2: {fileID: 161898, guid: b2596c9d67a3c4949951fc2d3a761da2, type: 2}
+  tile_1_0: {fileID: 167738, guid: ee4f480f4c073b04d934f370394b5f5c, type: 2}
+  tile_1_1: {fileID: 167738, guid: ee4f480f4c073b04d934f370394b5f5c, type: 2}
+  tile_1_2: {fileID: 138998, guid: 2ac454fd71edc7a4f976034b0faf2ff1, type: 2}
+  tile_2_0: {fileID: 132980, guid: aaa1ab59129a8f243b535ec01bb5227d, type: 2}
+  tile_2_1: {fileID: 147896, guid: dc9fe64ede64f7649aec73466d68e867, type: 2}
+  tile_2_2: {fileID: 120714, guid: 8d2e3ff46b51f4a44afec26034b35247, type: 2}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 188942}
+  m_IsPrefabParent: 1
