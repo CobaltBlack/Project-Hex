@@ -177,7 +177,7 @@ MonoBehaviour:
   rows: 4
   line: {fileID: 134850, guid: 3fbd8eae383e1834d87bace54a4a7387, type: 2}
   mapRuleBooks:
-  - {fileID: 188942, guid: a887986e96871444dab747adddf060d4, type: 2}
+  - {fileID: 187498, guid: 30698b6b275d7e540a3712285be9bd2e, type: 2}
   mapTiles:
   - {fileID: 126720, guid: 0436effc1a4fd4c44ab7bb8166431488, type: 2}
   - {fileID: 122098, guid: 4c7b525e247c2034abd9515c9931f3b7, type: 2}
@@ -275,6 +275,7 @@ MonoBehaviour:
   - {fileID: 182244, guid: c1380b3ea7636f243b1461077baa0a8b, type: 2}
   - {fileID: 132980, guid: aaa1ab59129a8f243b535ec01bb5227d, type: 2}
   trueCenter: {x: 0, y: 0, z: 0}
+  blankTile: {fileID: 111742, guid: c144cd36b85da394b8c151170e83dcd3, type: 2}
 --- !u!4 &382679326
 Transform:
   m_ObjectHideFlags: 0
@@ -441,7 +442,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 391337962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 7.9, y: 22.9, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -513,7 +514,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 436341880}
   m_LocalRotation: {x: 0, y: 0, z: 0.38268292, w: 0.9238798}
-  m_LocalPosition: {x: -20.324284, y: -13.775839, z: 0.765625}
+  m_LocalPosition: {x: -21.5, y: -15.08, z: 0.765625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 44.999897}
   m_Children: []
@@ -572,7 +573,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 538389564}
   m_LocalRotation: {x: 0, y: 0, z: 0.9238789, w: -0.38268512}
-  m_LocalPosition: {x: 28.270365, y: -14.763357, z: 0.765625}
+  m_LocalPosition: {x: 32.04, y: -18.71, z: 0.765625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -134.9998}
   m_Children: []
@@ -631,7 +632,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 583105381}
   m_LocalRotation: {x: 0, y: 0, z: 0.92387897, w: -0.38268498}
-  m_LocalPosition: {x: 13.385716, y: 19.414162, z: 0.765625}
+  m_LocalPosition: {x: 14.94, y: 20.81, z: 0.765625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -134.9998}
   m_Children: []
@@ -777,8 +778,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 772999747}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.585716, y: 4.885838, z: -0.765625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.2, y: 43.6, z: -0.765625}
+  m_LocalScale: {x: 1, y: 0.8, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1480832255}
@@ -853,7 +854,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 826486953}
   m_LocalRotation: {x: 0, y: 0, z: 0.92387867, w: -0.38268554}
-  m_LocalPosition: {x: -27.624283, y: 26.404163, z: 0.765625}
+  m_LocalPosition: {x: -30.23, y: 29.2, z: 0.765625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -134.9997}
   m_Children: []
@@ -1135,7 +1136,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1081855063}
   m_LocalRotation: {x: 0.9238793, y: 0.38268408, z: -0.00000065539996, w: -0.0000015822739}
-  m_LocalPosition: {x: 13.909042, y: -29.449982, z: 0.765625}
+  m_LocalPosition: {x: 17.87, y: -32.48, z: 0.77}
   m_LocalScale: {x: 1, y: 1, z: -1}
   m_LocalEulerAnglesHint: {x: -0.0002, y: 180.0002, z: 134.9999}
   m_Children: []
@@ -1194,7 +1195,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1125228195}
   m_LocalRotation: {x: 0, y: 0, z: 0.38268805, w: 0.92387766}
-  m_LocalPosition: {x: 3.5257163, y: -25.615837, z: 0.765625}
+  m_LocalPosition: {x: 8.83, y: -23.6, z: 0.765625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -314.9994}
   m_Children: []
@@ -1439,7 +1440,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1829893605}
   m_LocalRotation: {x: 0, y: 0, z: 0.9238789, w: -0.38268512}
-  m_LocalPosition: {x: 24.515717, y: -4.405838, z: 0.765625}
+  m_LocalPosition: {x: 22.99, y: -10.01, z: 0.765625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -134.9998}
   m_Children: []
