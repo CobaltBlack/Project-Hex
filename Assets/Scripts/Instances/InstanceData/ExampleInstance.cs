@@ -57,11 +57,6 @@ public class ExampleInstance : Instance
             {
                 return "(Go to next prompt) You've got to be kidding me. I've been further even more decided to use even go need to do look more as anyone can.";
             }
-
-            protected override int GetRequiredItemId()
-            {
-                return -1;
-            }
         }
 
         class Answer_2 : PromptAnswer
@@ -69,11 +64,6 @@ public class ExampleInstance : Instance
             protected override string GetAnswerText()
             {
                 return "Can you really be far even as decided half as much to use go wish for that?";
-            }
-
-            protected override int GetRequiredItemId()
-            {
-                throw new NotImplementedException();
             }
 
             protected override void GetAnswerAction()
@@ -90,11 +80,6 @@ public class ExampleInstance : Instance
                 return "My guess is that when one really been far even as decided once to use even go want, it is then that he has really been far even as decided to use even go want to do look more like.";
             }
 
-            protected override int GetRequiredItemId()
-            {
-                throw new NotImplementedException();
-            }
-
             protected override void GetAnswerAction()
             {
                 Debug.Log("Omg this did something ### 3");
@@ -107,11 +92,6 @@ public class ExampleInstance : Instance
             protected override string GetAnswerText()
             {
                 return "It's just common sense.";
-            }
-
-            protected override int GetRequiredItemId()
-            {
-                throw new NotImplementedException();
             }
 
             protected override void GetAnswerAction()
@@ -148,11 +128,6 @@ public class ExampleInstance : Instance
                 return "I’ll have you know I graduated top of my class in the Navy Seals";
             }
 
-            protected override int GetRequiredItemId()
-            {
-                throw new NotImplementedException();
-            }
-
             protected override void GetAnswerAction()
             {
                 ClosePrompt();
@@ -164,11 +139,6 @@ public class ExampleInstance : Instance
             protected override string GetAnswerText()
             {
                 return "I’ve been involved in numerous secret raids on Al-Quaeda";
-            }
-
-            protected override int GetRequiredItemId()
-            {
-                throw new NotImplementedException();
             }
 
             protected override void GetAnswerAction()
@@ -184,11 +154,6 @@ public class ExampleInstance : Instance
                 return "I have over 300 confirmed kills";
             }
 
-            protected override int GetRequiredItemId()
-            {
-                throw new NotImplementedException();
-            }
-
             protected override void GetAnswerAction()
             {
                 ClosePrompt();
@@ -199,11 +164,6 @@ public class ExampleInstance : Instance
             protected override string GetAnswerText()
             {
                 return "I am trained in gorilla warfare";
-            }
-
-            protected override int GetRequiredItemId()
-            {
-                throw new NotImplementedException();
             }
 
             protected override void GetAnswerAction()

@@ -187,8 +187,6 @@ public class CombatBoardManager : MonoBehaviour
         // Loop while nodes are in the frontier
         while (frontier.Count > 0)
         {
-            printFrontier(frontier);
-
             // Get last node in the frontier (highest priority)
             var lastIndex = frontier.Count - 1;
             var currentNode = frontier.Values[0];
@@ -251,20 +249,6 @@ public class CombatBoardManager : MonoBehaviour
         // Reverse the list so that the start of path is in the beginning
         pathTiles.Reverse();
         return pathTiles;
-    }
-
-    private void printFrontier(SortedList<float, HexTile> frontier)
-    {
-        string keys = "";
-        string values = "";
-        foreach (var key in frontier.Keys)
-        {
-            keys += key.ToString() + ", ";
-            //values += "[" + frontier[key].X.ToString() + ", " + frontier[key].Y.ToString() + "], ";
-        }
-
-        print(keys);
-        //print(values);
     }
 
     // Returns the hex tile by coordinate
