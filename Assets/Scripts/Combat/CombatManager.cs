@@ -19,24 +19,13 @@ public class CombatManager : MonoBehaviour
     // Allows combat manager to be called from anywhere
     public static CombatManager Instance = null;
 
-    // TODO: Handle multiple friendly characters
-    public GameObject PlayerInstance;
-    public PlayerObject PlayerScript;
-
-    CombatBoardManager BoardManager;
-    HexOverlayManager OverlayManager;
-
-    TurnState turnState = TurnState.Initializing; // Current state of the game    
-    ActionType currentAction = ActionType.None; // Currently selected skill
-    FriendlyObject currentCharacter; // The character the player is currently controlling (hero or companions)
-    List<FriendlyObject> characterRunOrder; // The order in which the characters run their actions
-
-    List<EnemyObject> Enemies = new List<EnemyObject>();
-    int currentEnemyIndex = 0;
-
     // ======================================
     // Public Functions
     // ======================================
+
+    // TODO: Handle multiple friendly characters
+    public GameObject PlayerInstance;
+    public PlayerObject PlayerScript;
 
     public void SetPlayerObject(GameObject player)
     {
@@ -46,20 +35,20 @@ public class CombatManager : MonoBehaviour
 
     public void AddEnemyObject(GameObject enemy)
     {
-        Enemies.Add(enemy.GetComponent<EnemyObject>());
+        _enemies.Add(enemy.GetComponent<EnemyObject>());
     }
 
     // Decides what happens when tile [x, y] is clicked based on current state
     public void HandleHexClick(int x, int y)
     {
         // Only proceed if it is player turn
-        if (turnState != TurnState.PlayerTurn)
+        if (_turnState != TurnState.PlayerTurn)
         {
             return;
         }
 
         // Do something based on currentAction
-        switch (currentAction)
+        switch (_currentAction)
         {
             case ActionType.Move:
                 HandleMoveAction(x, y);
@@ -80,7 +69,7 @@ public class CombatManager : MonoBehaviour
     public void HandleSkillClick()
     {
         // Only proceed if it is player turn
-        if (turnState != TurnState.PlayerTurn)
+        if (_turnState != TurnState.PlayerTurn)
         {
             return;
         }
@@ -91,17 +80,24 @@ public class CombatManager : MonoBehaviour
     public void ShowMovementOverlays()
     {
         int currentX, currentY;
-        if (currentCharacter.IsShadowActive)
+        if (_currentCharacter.IsShadowActive)
         {
-            currentX = currentCharacter.ShadowX;
-            currentY = currentCharacter.ShadowY;
+            currentX = _currentCharacter.ShadowX;
+            currentY = _currentCharacter.ShadowY;
         }
         else
         {
-            currentX = currentCharacter.X;
-            currentY = currentCharacter.Y;
+            currentX = _currentCharacter.X;
+            currentY = _currentCharacter.Y;
         }
-        var overlayTiles = BoardManager.GetTilesInRange(currentX, currentY, currentCharacter.MoveRange, false);
+        var overlayTiles = BoardManager.GetTilesInRange(currentX, currentY, _currentCharacter.MoveRange, false);
+
+        // TODO: Discard invalid tiles
+        foreach (var tile in overlayTiles)
+        {
+
+        }
+
         OverlayManager.InstantiateOverlays(overlayTiles);
     }
 
@@ -109,11 +105,22 @@ public class CombatManager : MonoBehaviour
     // Private Functions
     // ======================================
 
+    CombatBoardManager BoardManager;
+    HexOverlayManager OverlayManager;
+
+    TurnState _turnState = TurnState.Initializing; // Current state of the game    
+    ActionType _currentAction = ActionType.None; // Currently selected skill
+    FriendlyObject _currentCharacter; // The character the player is currently controlling (hero or companions)
+    List<FriendlyObject> _characterRunOrder; // The order in which the characters run their actions
+
+    List<EnemyObject> _enemies = new List<EnemyObject>();
+    int _currentEnemyIndex = 0; // Used to track which enemy's actions to perform next
+
     // Initialize 
     void Awake()
     {
         Debug.Log("CombatManager Awake");
-        // Singleton pattern
+
         if (Instance == null)
         {
             Instance = this;
@@ -135,7 +142,7 @@ public class CombatManager : MonoBehaviour
         InitializeUI();
 
         // Start the game
-        turnState = TurnState.StartPlayerTurn;
+        _turnState = TurnState.StartPlayerTurn;
     }
 
     // Called on every frame
@@ -145,11 +152,11 @@ public class CombatManager : MonoBehaviour
         // Listen for hotkeys
 
         // Determine available actions by current turn state
-        switch (turnState)
+        switch (_turnState)
         {
             case TurnState.StartPlayerTurn:
                 // Enable UI buttons and controls to start player turn
-                turnState = TurnState.PlayerTurn;
+                _turnState = TurnState.PlayerTurn;
                 StartPlayerTurn();
                 break;
 
@@ -160,7 +167,7 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case TurnState.StartEnemyTurn:
-                turnState = TurnState.EnemyTurn;
+                _turnState = TurnState.EnemyTurn;
                 StartEnemyTurn();
                 break;
 
@@ -191,7 +198,7 @@ public class CombatManager : MonoBehaviour
     void StartPlayerTurn()
     {
         Debug.Log("Start Player Turn");
-        currentCharacter = PlayerScript;
+        _currentCharacter = PlayerScript;
 
         // Clear all queued actions and reset AP
         PlayerScript.DequeueAllActions();
@@ -202,7 +209,7 @@ public class CombatManager : MonoBehaviour
         ShowMovementOverlays();
 
         // Clicking overlays cause the player to MOVE
-        currentAction = ActionType.Move;
+        _currentAction = ActionType.Move;
     }
 
     // Handles click on "End Turn" button
@@ -211,10 +218,10 @@ public class CombatManager : MonoBehaviour
     void EndPlayerTurn()
     {
         // Cannot end turn if currently not the player's turn
-        if (turnState != TurnState.PlayerTurn) { return; }
+        if (_turnState != TurnState.PlayerTurn) { return; }
 
         Debug.Log("End player turn. Disabling controls");
-        turnState = TurnState.PlayerTurnProcessing;
+        _turnState = TurnState.PlayerTurnProcessing;
 
         // Disable UI and controls
         OverlayManager.RemoveAllOverlays();
@@ -230,7 +237,7 @@ public class CombatManager : MonoBehaviour
     // TODO: Process actions of player and companions based on chosen order
     public void ProcessNextCharacterActions()
     {
-        if (turnState == TurnState.PlayerTurnProcessing)
+        if (_turnState == TurnState.PlayerTurnProcessing)
         {
             // Perform player actions if they haven't been done yet
             if (!PlayerScript.ActionsComplete)
@@ -240,20 +247,20 @@ public class CombatManager : MonoBehaviour
             // Otherwise, the actions are done. The enemy turn can start
             else
             {
-                turnState = TurnState.StartEnemyTurn;
+                _turnState = TurnState.StartEnemyTurn;
             }
         }
-        else if (turnState == TurnState.EnemyTurnProcessing)
+        else if (_turnState == TurnState.EnemyTurnProcessing)
         {
-            if (currentEnemyIndex < Enemies.Count)
+            if (_currentEnemyIndex < _enemies.Count)
             {
-                Enemies[currentEnemyIndex].RunCombatActions();
-                currentEnemyIndex++;
+                _currentEnemyIndex++;
+                _enemies[_currentEnemyIndex - 1].RunCombatActions();
             }
             else
-            {   
+            {
                 // Back to player turn
-                turnState = TurnState.StartPlayerTurn;
+                _turnState = TurnState.StartPlayerTurn;
             }
         }
     }
@@ -264,7 +271,7 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Starting Enemy turn");
 
         // Determine actions for each enemy this turn
-        foreach (var enemy in Enemies)
+        foreach (var enemy in _enemies)
         {
             // Skip if enemy is dead
 
@@ -274,8 +281,9 @@ public class CombatManager : MonoBehaviour
         }
 
         // Process the enemy actions
-        turnState = TurnState.EnemyTurnProcessing;
-        currentEnemyIndex = 0;
+        Debug.Log("Processing Enemy actions");
+        _turnState = TurnState.EnemyTurnProcessing;
+        _currentEnemyIndex = 0;
         ProcessNextCharacterActions();
     }
 
@@ -287,7 +295,7 @@ public class CombatManager : MonoBehaviour
         OverlayManager.RemoveAllOverlays();
 
         // Add MoveAction to the current character's action queue
-        currentCharacter.QueueMoveAction(x, y);
+        _currentCharacter.QueueMoveAction(x, y);
 
         // TODO: Do stuff with UI
     }
@@ -314,5 +322,4 @@ public class CombatManager : MonoBehaviour
     {
         EndPlayerTurn();
     }
-    // ==============================
 }

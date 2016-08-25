@@ -15,11 +15,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance = null;
-    
-    InventoryManager InventoryManager;
-    PlayerManager PlayerManager;
 
     public CombatParameters CombatParameters = new CombatParameters();
+
+    InventoryManager InventoryManager;
+    PlayerManager PlayerManager;
 
     void Awake()
     {

@@ -10,27 +10,26 @@ using System.Collections;
 
 public class HexOverlay : MonoBehaviour
 {
-    SpriteRenderer overlaySprite;
-
-    // WORLD coordinate
+    SpriteRenderer _overlaySprite;
+    
     public int X;
     public int Y;
 
     void Awake()
     {
-        overlaySprite = gameObject.GetComponent<SpriteRenderer>();
+        _overlaySprite = gameObject.GetComponent<SpriteRenderer>();
     }
 
     void OnMouseEnter()
     {
-        overlaySprite.material.color = Color.green; // color wont work because most of the sprite is transparent
-        overlaySprite.enabled = false; // disable sprite for testing purposes
+        _overlaySprite.material.color = Color.green; // color wont work because most of the sprite is transparent
+        _overlaySprite.enabled = false; // disable sprite for testing purposes
     }
 
     void OnMouseExit()
     {
-        overlaySprite.material.color = Color.white;
-        overlaySprite.enabled = true;
+        _overlaySprite.material.color = Color.white;
+        _overlaySprite.enabled = true;
     }
 
     void OnMouseUp()

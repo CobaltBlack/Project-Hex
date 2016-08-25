@@ -3,8 +3,8 @@ using System.Collections;
 
 public abstract class EnemyObject : MovingObject
 {
-    EnemyType Type;
-    EnemyRarity Rarity;
+    public EnemyType Type;
+    public EnemyRarity Rarity;
 
     public void SetData(EnemyData data)
     {
@@ -27,9 +27,14 @@ public abstract class EnemyObject : MovingObject
     }
 
     // Queues a MoveAction towards the player with remaining AP
-    protected void MoveTowardPlayer()
+    // Returns true if an action was queued. false if no action was queued.
+    protected bool MoveTowardPlayer()
     {
         var path = CombatBoardManager.Instance.GetTilesInPath(X, Y, GetPlayerCoordX(), GetPlayerCoordY());
+        if (path.Count <= 1)
+        {
+            return false;
+        }
 
         // Remove last tile because that's where the player is
         path.RemoveAt(path.Count - 1);
@@ -44,5 +49,7 @@ public abstract class EnemyObject : MovingObject
         var targetY = path[path.Count - 1].Y;
         MoveAction moveAction = new MoveAction(targetX, targetY, path);
         ActionQueue.Add(moveAction);
+        
+        return true;
     }
 }

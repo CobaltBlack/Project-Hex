@@ -17,12 +17,12 @@ public class MovingObject : MonoBehaviour
     public int MaxAp;
 
     public bool ActionsComplete = false;
-
     public List<CombatAction> ActionQueue = new List<CombatAction>();
 
-    // TODO: Calculate range based on remaining AP
+    // Remaining move range based on AP
     public int MoveRange { get { return CurrentAp / Constants.ApCostPerMove; } }
 
+    // Duration of the movement animation in seconds
     public float MoveTime = 0.1f;
 
     // ======================================
@@ -33,14 +33,11 @@ public class MovingObject : MonoBehaviour
     public virtual void QueueMoveAction(int targetX, int targetY)
     {
         var path = CombatBoardManager.Instance.GetTilesInPath(X, Y, targetX, targetY);
-        MoveAction moveAction = new MoveAction(targetX, targetY, path);
+        var moveAction = new MoveAction(targetX, targetY, path);
         ActionQueue.Add(moveAction);
 
         // Decrease currentAp
         CurrentAp -= path.Count * Constants.ApCostPerMove;
-
-        // Update UI visuals for new action queued
-
     }
 
     // Removes a queued action by index
@@ -56,7 +53,7 @@ public class MovingObject : MonoBehaviour
     public void RunCombatActions()
     {
         ActionsComplete = true;
-        _ActionIndex = 0;
+        _actionIndex = 0;
         ProcessNextCombatAction();
     }
 
@@ -73,26 +70,34 @@ public class MovingObject : MonoBehaviour
     // Private Functions
     // ======================================
 
-    int _ActionIndex = 0;
-    float _InverseMoveTime;
-    List<HexTile> _CurrentPath;
-    int _CurrentPathIndex;
+    int _actionIndex = 0;
+    float _inverseMoveTime;
+    List<HexTile> _currentPath;
+    int _currentPathIndex;
 
     Action _EndActionCallback = null;
+
+    SpriteRenderer _sprite;
+
+    void Awake()
+    {
+        _sprite = GetComponent<SpriteRenderer>();
+        UpdateSortingLayer();
+    }
 
     // Process the next combat action in the ActionQueue
     void ProcessNextCombatAction()
     {
         // If queue is done, run the queue of the next character
-        if (_ActionIndex >= ActionQueue.Count)
+        if (_actionIndex >= ActionQueue.Count)
         {
             CombatManager.Instance.ProcessNextCharacterActions();
             return;
         }
 
         // Run action based on its type
-        var action = ActionQueue[_ActionIndex];
-        _ActionIndex++;
+        var action = ActionQueue[_actionIndex];
+        _actionIndex++;
         switch (action.ActionType)
         {
             case ActionType.Move:
@@ -114,7 +119,7 @@ public class MovingObject : MonoBehaviour
     // callback indicates what function will be run when current execution completes
     public void RunMoveAction(MoveAction action, Action callback)
     {
-        _InverseMoveTime = 1f / MoveTime;
+        _inverseMoveTime = 1f / MoveTime;
 
         // Set the ending action
         _EndActionCallback = callback;
@@ -124,8 +129,8 @@ public class MovingObject : MonoBehaviour
         Y = action.TargetY;
 
         // Move to each tile in the path
-        _CurrentPath = action.Path;
-        _CurrentPathIndex = 0;
+        _currentPath = action.Path;
+        _currentPathIndex = 0;
         StartNextSmoothMove();
     }
 
@@ -134,15 +139,15 @@ public class MovingObject : MonoBehaviour
     void StartNextSmoothMove()
     {
         // If we are done, run the next action
-        if (_CurrentPathIndex >= _CurrentPath.Count)
+        if (_currentPathIndex >= _currentPath.Count)
         {
             EndCombatAction();
             return;
         }
 
         // Otherwise, do a SmoothMove
-        var nextTile = _CurrentPath[_CurrentPathIndex];
-        _CurrentPathIndex++;
+        var nextTile = _currentPath[_currentPathIndex];
+        _currentPathIndex++;
 
         var endPosition = nextTile.Position;
         StartCoroutine(SmoothMove(endPosition));
@@ -152,12 +157,14 @@ public class MovingObject : MonoBehaviour
     IEnumerator SmoothMove(Vector3 end)
     {
         float sqrRemainingDistance = (gameObject.transform.position - end).sqrMagnitude;
-
         while (sqrRemainingDistance > float.Epsilon)
         {
-            Vector3 newPosition = Vector3.MoveTowards(gameObject.transform.position, end, _InverseMoveTime * Time.deltaTime);
+            // Get next position to move based on time passed
+            var newPosition = Vector3.MoveTowards(gameObject.transform.position, end, _inverseMoveTime * Time.deltaTime);
             gameObject.transform.position = newPosition;
             sqrRemainingDistance = (gameObject.transform.position - end).sqrMagnitude;
+            UpdateSortingLayer();
+
             yield return null;
         }
 
@@ -169,5 +176,11 @@ public class MovingObject : MonoBehaviour
     {
         if (_EndActionCallback != null)
             _EndActionCallback();
+    }
+
+    // Updates the sprite's sorting layer so that they render in the right order
+    void UpdateSortingLayer()
+    {
+        _sprite.sortingOrder = (int)((-1) * transform.position.y);
     }
 }

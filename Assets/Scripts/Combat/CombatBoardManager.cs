@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 /* CombatBoardManager
  * 
@@ -16,7 +17,12 @@ using System.Collections.Generic;
 
 public class CombatBoardManager : MonoBehaviour
 {
+    // Allows board manager to be called from anywhere
     public static CombatBoardManager Instance = null;
+
+    // =========================
+    // Public functions
+    // =========================
 
     public HexTile[,] GameBoard;
     public int Columns, Rows;
@@ -28,12 +34,6 @@ public class CombatBoardManager : MonoBehaviour
 
     public int PlayerInitX = 5;
     public int PlayerInitY = 5;
-
-    CombatParameters _Parameters;
-
-    // =========================
-    // Public functions
-    // =========================
 
     // Use this for initialization
     public void SetupBoard(CombatParameters parameters)
@@ -47,7 +47,7 @@ public class CombatBoardManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _Parameters = parameters;
+        _parameters = parameters;
 
         InitializeGameBoard();
         InitializeTerrain();
@@ -165,6 +165,7 @@ public class CombatBoardManager : MonoBehaviour
     // Returns a List of HexTiles that defines the shortest path from start to end
     // Uses A* pathfinding algorithm
     // Algorithm adapted from the reference site
+    // The returned List does not contain the starting node
     public List<HexTile> GetTilesInPath(int startX, int startY, int endX, int endY)
     {
         var startNode = GetHexTile(startX, startY);
@@ -173,7 +174,7 @@ public class CombatBoardManager : MonoBehaviour
 
         // Use SortedList as a priority queue
         // Frontier represents the nodes to be visitied next, 
-        // ordered by how likely each node will reach the exit
+        // ordered by low to high priority
         var frontier = new SortedList<float, HexTile>();
         frontier.Add(0, startNode);
 
@@ -186,7 +187,10 @@ public class CombatBoardManager : MonoBehaviour
         // Loop while nodes are in the frontier
         while (frontier.Count > 0)
         {
-            // Get first node in the frontier
+            printFrontier(frontier);
+
+            // Get last node in the frontier (highest priority)
+            var lastIndex = frontier.Count - 1;
             var currentNode = frontier.Values[0];
             frontier.RemoveAt(0);
 
@@ -211,14 +215,15 @@ public class CombatBoardManager : MonoBehaviour
                     costSoFar[neighbor] = newCost;
 
                     // Add to priorty queue based on cost and distance to the goal
-                    var priority = newCost + Random.Range(0f, 1f); // + Heuristic(next, goal)
+                    var distanceToGoal = DistanceBetween(neighbor, endNode);
+                    var priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f); // + Heuristic(next, goal)
 
                     // Get another random value if the priority already exists.
                     // This hack is necessary because I couldn't find a sorted structure
                     // that supports duplicate keys.
                     while (frontier.ContainsKey(priority))
                     {
-                        priority = newCost + Random.Range(0f, 1f);
+                        priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f);
                     }
 
                     frontier.Add(priority, neighbor);
@@ -227,8 +232,9 @@ public class CombatBoardManager : MonoBehaviour
                     cameFrom[neighbor] = currentNode;
                 }
             }
+
         }
-        
+
         // If goalReached flag is not true, the return empty path
         List<HexTile> pathTiles = new List<HexTile>();
         if (!goalReached) return pathTiles;
@@ -241,10 +247,24 @@ public class CombatBoardManager : MonoBehaviour
             pathNode = cameFrom[pathNode];
             pathTiles.Add(pathNode);
         }
-        
-        // Reverse the list so that the startNode is in the beginning
+
+        // Reverse the list so that the start of path is in the beginning
         pathTiles.Reverse();
         return pathTiles;
+    }
+
+    private void printFrontier(SortedList<float, HexTile> frontier)
+    {
+        string keys = "";
+        string values = "";
+        foreach (var key in frontier.Keys)
+        {
+            keys += key.ToString() + ", ";
+            //values += "[" + frontier[key].X.ToString() + ", " + frontier[key].Y.ToString() + "], ";
+        }
+
+        print(keys);
+        //print(values);
     }
 
     // Returns the hex tile by coordinate
@@ -293,6 +313,8 @@ public class CombatBoardManager : MonoBehaviour
     // =========================
     // Private functions
     // =========================
+
+    CombatParameters _parameters;
 
     // Set up an empty game board
     void InitializeGameBoard()
@@ -393,7 +415,7 @@ public class CombatBoardManager : MonoBehaviour
         var EnemyInitY = 10;
 
         // TODO: Instantiate enemies based on combatParameters
-        foreach (var enemyData in _Parameters.Enemies)
+        foreach (var enemyData in _parameters.Enemies)
         {
             var toInstantiate = enemyData.Prefab;
             var enemyInstance = Instantiate(toInstantiate, GetHexTile(EnemyInitX, EnemyInitY).Position, Quaternion.identity) as GameObject;
@@ -411,11 +433,11 @@ public class CombatBoardManager : MonoBehaviour
         GameObject tilePrefab;
         if (type == HexTileType.Normal)
         {
-            tilePrefab = NormalTiles[Random.Range(0, NormalTiles.Length)];
+            tilePrefab = NormalTiles[UnityEngine.Random.Range(0, NormalTiles.Length)];
         }
         else if (type == HexTileType.Wall)
         {
-            tilePrefab = NormalTiles[Random.Range(0, NormalTiles.Length)];
+            tilePrefab = NormalTiles[UnityEngine.Random.Range(0, NormalTiles.Length)];
         }
         else
         {
@@ -437,6 +459,18 @@ public class CombatBoardManager : MonoBehaviour
             return null;
         }
         return GameBoard[offsetHex.X, offsetHex.Y];
+    }
+
+    // Gets tile distance between A and B
+    int DistanceBetween(HexTile tileA, HexTile tileB)
+    {
+        var a = new CubeHex(tileA);
+        var b = new CubeHex(tileB);
+        var maxParam = new int[3];
+        maxParam[0] = Mathf.Abs(a.X - b.X);
+        maxParam[1] = Mathf.Abs(a.Y - b.Y);
+        maxParam[2] = Mathf.Abs(a.Z - b.Z);
+        return Mathf.Max(maxParam);
     }
 
     class CubeHex
@@ -463,6 +497,9 @@ public class CombatBoardManager : MonoBehaviour
 
         // Constructor using OffsetHex
         public CubeHex(OffsetHex offsetHex) : this(offsetHex.X, offsetHex.Y) { }
+
+        // Constructor using HexTile
+        public CubeHex(HexTile tile) : this(tile.X, tile.Y) { }
     }
 
     class OffsetHex
