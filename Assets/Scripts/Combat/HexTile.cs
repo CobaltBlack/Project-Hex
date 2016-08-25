@@ -13,12 +13,14 @@ public enum HexTileType
 
 public class HexTile
 {
-
     public int X, Y;
     public int CubeX, CubeY;
     public Vector3 Position;
     public HexTileType TileType;
     public List<HexTile> Neighbors { get { return GetNeighbors(); } }
+    public MovingObject ObjectOnTile;
+    public MovingObject ObjectQueuedOnTile;
+
     public bool Traversable;
 
     // Constructor
@@ -33,7 +35,7 @@ public class HexTile
 
     List<HexTile> GetNeighbors()
     {
-        List<HexTile> neighborTiles = new List<HexTile>();
+        var neighborTiles = new List<HexTile>();
         HexTile tempTile;
 
         // Above

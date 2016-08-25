@@ -116,7 +116,7 @@ public class PlayerManager : MonoBehaviour
         _MaxHp = 50;
         _Morality = 50;
         _Sanity = 50;
-        _ActionPoints = 50;
+        _ActionPoints = 60;
         RefreshPlayerStats();
     }
 

@@ -19,9 +19,15 @@ public class FriendlyObject : MovingObject
     public override void QueueMoveAction(int targetX, int targetY)
     {
         var path = CombatBoardManager.Instance.GetTilesInPath(ShadowX, ShadowY, targetX, targetY);
-        MoveAction moveAction = new MoveAction(targetX, targetY, path);
+        var moveAction = new MoveAction(targetX, targetY, path);
         ActionQueue.Add(moveAction);
+
+        // Decrease currentAp
+        CurrentAp -= path.Count * Constants.ApCostPerMove;
+
         MoveShadow(moveAction);
+
+        // Update UI visuals for new action queued
     }
 
     public bool IsShadowActive

@@ -15,11 +15,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance = null;
-    
+
+    public CombatParameters CombatParameters = new CombatParameters();
+
     InventoryManager InventoryManager;
     PlayerManager PlayerManager;
-    
-    public CombatParameters CombatParameters;
 
     void Awake()
     {
@@ -53,9 +53,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Initialize game complete!");
     }
 
-    public void StartCombat()
+    public void StartCombatTest()
     {
         // Setup parameters
+        CombatParameters.Enemies.Clear();
+
+        var database = GameObject.FindGameObjectWithTag("EnemyDatabase").GetComponent<EnemyDatabase>();
+        var enemy = database.GetEnemyById(1);
+        CombatParameters.Enemies.Add(enemy);
+        CombatParameters.Enemies.Add(enemy);
 
         // Load combat scene
         SceneManager.LoadScene("Combat");
