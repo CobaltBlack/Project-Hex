@@ -18,8 +18,8 @@ public class GameManager : MonoBehaviour
     
     InventoryManager InventoryManager;
     PlayerManager PlayerManager;
-    
-    public CombatParameters CombatParameters;
+
+    public CombatParameters CombatParameters = new CombatParameters();
 
     void Awake()
     {
@@ -53,9 +53,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Initialize game complete!");
     }
 
-    public void StartCombat()
+    public void StartCombatTest()
     {
         // Setup parameters
+        CombatParameters.Enemies.Clear();
+
+        var database = GameObject.FindGameObjectWithTag("EnemyDatabase").GetComponent<EnemyDatabase>();
+        var enemy = database.GetEnemyById(1);
+        CombatParameters.Enemies.Add(enemy);
+        CombatParameters.Enemies.Add(enemy);
 
         // Load combat scene
         SceneManager.LoadScene("Combat");

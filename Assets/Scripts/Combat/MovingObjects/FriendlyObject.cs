@@ -21,6 +21,10 @@ public class FriendlyObject : MovingObject
         var path = CombatBoardManager.Instance.GetTilesInPath(ShadowX, ShadowY, targetX, targetY);
         MoveAction moveAction = new MoveAction(targetX, targetY, path);
         ActionQueue.Add(moveAction);
+
+        // Decrease currentAp
+        CurrentAp -= path.Count * Constants.ApCostPerMove;
+
         MoveShadow(moveAction);
     }
 

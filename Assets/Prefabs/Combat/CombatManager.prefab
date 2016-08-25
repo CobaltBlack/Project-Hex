@@ -85,8 +85,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerInstance: {fileID: 0}
   PlayerScript: {fileID: 0}
-  PlayerInitialX: 0
-  PlayerInitialY: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

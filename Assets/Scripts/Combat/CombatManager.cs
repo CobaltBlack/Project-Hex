@@ -31,6 +31,9 @@ public class CombatManager : MonoBehaviour
     FriendlyObject currentCharacter; // The character the player is currently controlling (hero or companions)
     List<FriendlyObject> characterRunOrder; // The order in which the characters run their actions
 
+    List<EnemyObject> Enemies = new List<EnemyObject>();
+    int currentEnemyIndex = 0;
+
     // ======================================
     // Public Functions
     // ======================================
@@ -39,6 +42,11 @@ public class CombatManager : MonoBehaviour
     {
         PlayerInstance = player;
         PlayerScript = player.GetComponent<PlayerObject>();
+    }
+
+    public void AddEnemyObject(GameObject enemy)
+    {
+        Enemies.Add(enemy.GetComponent<EnemyObject>());
     }
 
     // Decides what happens when tile [x, y] is clicked based on current state
@@ -165,10 +173,7 @@ public class CombatManager : MonoBehaviour
     void InitializeCombat()
     {
         // Initialize combat map and enemies
-        // TODO: Configure combat parameters elsewhere before entering combat
-        //boardScript.SetupBoard(GameManager.instance.combatParameters);
-        CombatParameters combatParameters = new CombatParameters();
-        BoardManager.SetupBoard(combatParameters);
+        BoardManager.SetupBoard(GameManager.Instance.CombatParameters);
     }
 
     // Leave the combat scene.
@@ -188,7 +193,7 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Start Player Turn");
         currentCharacter = PlayerScript;
 
-        // Clear all queued actions
+        // Clear all queued actions and reset AP
         PlayerScript.DequeueAllActions();
 
         // Enable skill buttons and controls
@@ -225,15 +230,31 @@ public class CombatManager : MonoBehaviour
     // TODO: Process actions of player and companions based on chosen order
     public void ProcessNextCharacterActions()
     {
-        // Perform player actions if they haven't been done yet
-        if (!PlayerScript.ActionsComplete)
+        if (turnState == TurnState.PlayerTurnProcessing)
         {
-            PlayerScript.RunCombatActions();
+            // Perform player actions if they haven't been done yet
+            if (!PlayerScript.ActionsComplete)
+            {
+                PlayerScript.RunCombatActions();
+            }
+            // Otherwise, the actions are done. The enemy turn can start
+            else
+            {
+                turnState = TurnState.StartEnemyTurn;
+            }
         }
-        // Otherwise, the actions are done. The enemy turn can start
-        else
+        else if (turnState == TurnState.EnemyTurnProcessing)
         {
-            turnState = TurnState.StartEnemyTurn;
+            if (currentEnemyIndex < Enemies.Count)
+            {
+                Enemies[currentEnemyIndex].RunCombatActions();
+                currentEnemyIndex++;
+            }
+            else
+            {   
+                // Back to player turn
+                turnState = TurnState.StartPlayerTurn;
+            }
         }
     }
 
@@ -242,27 +263,33 @@ public class CombatManager : MonoBehaviour
     {
         Debug.Log("Starting Enemy turn");
 
-        // Loop through each enemy
+        // Determine actions for each enemy this turn
+        foreach (var enemy in Enemies)
+        {
+            // Skip if enemy is dead
 
-        // Skip if enemy is dead
+            // Queue enemy actions based on its script
+            enemy.DequeueAllActions();
+            enemy.QueueTurnActions();
+        }
 
-        // Do enemy action based on its script
-
-        // Back to player turn
-        turnState = TurnState.StartPlayerTurn;
+        // Process the enemy actions
+        turnState = TurnState.EnemyTurnProcessing;
+        currentEnemyIndex = 0;
+        ProcessNextCharacterActions();
     }
 
     // Called when a tile is clicked, with the intent of moving
     void HandleMoveAction(int x, int y)
     {
         // Clear the overlays
+        // The overlays reappear once the shadow's movement is complete
         OverlayManager.RemoveAllOverlays();
 
         // Add MoveAction to the current character's action queue
         currentCharacter.QueueMoveAction(x, y);
 
-        // Reinstantiate the hexoverlays at the position of the "shadow"
-        //ShowMovementOverlays();
+        // TODO: Do stuff with UI
     }
 
     // Called when a skill is selected
@@ -278,12 +305,6 @@ public class CombatManager : MonoBehaviour
 
         // Change mouse cursor (change it back afterwards)
 
-    }
-
-    // Calculates the move range for the current character based on remaining AP, terrain
-    int GetMoveRange()
-    {
-        return 2;
     }
 
     // ==============================

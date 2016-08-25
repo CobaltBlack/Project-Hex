@@ -21,7 +21,7 @@ public class MovingObject : MonoBehaviour
     public List<CombatAction> ActionQueue = new List<CombatAction>();
 
     // TODO: Calculate range based on remaining AP
-    public int MoveRange { get { return 2; } }
+    public int MoveRange { get { return CurrentAp / Constants.ApCostPerMove; } }
 
     public float MoveTime = 0.1f;
 
@@ -37,14 +37,16 @@ public class MovingObject : MonoBehaviour
         ActionQueue.Add(moveAction);
 
         // Decrease currentAp
+        CurrentAp -= path.Count * Constants.ApCostPerMove;
 
         // Update UI visuals for new action queued
-        
+
     }
 
     // Removes a queued action by index
     public void DequeueAction(int index)
     {
+        CurrentAp -= ActionQueue[index].RequiredAp;
         ActionQueue.RemoveAt(index);
 
         // Update UI visuals for action removed
@@ -62,6 +64,7 @@ public class MovingObject : MonoBehaviour
     public void DequeueAllActions()
     {
         ActionQueue.Clear();
+        CurrentAp = MaxAp;
 
         // Update UI visuals
     }
@@ -89,6 +92,7 @@ public class MovingObject : MonoBehaviour
 
         // Run action based on its type
         var action = ActionQueue[_ActionIndex];
+        _ActionIndex++;
         switch (action.ActionType)
         {
             case ActionType.Move:
@@ -104,8 +108,6 @@ public class MovingObject : MonoBehaviour
             default:
                 break;
         }
-
-        _ActionIndex++;
     }
 
     // Processes the movement action
@@ -114,12 +116,12 @@ public class MovingObject : MonoBehaviour
     {
         _InverseMoveTime = 1f / MoveTime;
 
+        // Set the ending action
+        _EndActionCallback = callback;
+
         // Update object coordinates
         X = action.TargetX;
         Y = action.TargetY;
-
-        // Set the ending action
-        _EndActionCallback = callback;
 
         // Move to each tile in the path
         _CurrentPath = action.Path;
@@ -139,8 +141,10 @@ public class MovingObject : MonoBehaviour
         }
 
         // Otherwise, do a SmoothMove
-        var endPosition = _CurrentPath[_CurrentPathIndex].Position;
+        var nextTile = _CurrentPath[_CurrentPathIndex];
         _CurrentPathIndex++;
+
+        var endPosition = nextTile.Position;
         StartCoroutine(SmoothMove(endPosition));
     }
 
@@ -148,7 +152,7 @@ public class MovingObject : MonoBehaviour
     IEnumerator SmoothMove(Vector3 end)
     {
         float sqrRemainingDistance = (gameObject.transform.position - end).sqrMagnitude;
-        
+
         while (sqrRemainingDistance > float.Epsilon)
         {
             Vector3 newPosition = Vector3.MoveTowards(gameObject.transform.position, end, _InverseMoveTime * Time.deltaTime);

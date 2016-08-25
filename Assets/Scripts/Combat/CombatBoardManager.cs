@@ -29,6 +29,8 @@ public class CombatBoardManager : MonoBehaviour
     public int PlayerInitX = 5;
     public int PlayerInitY = 5;
 
+    CombatParameters _Parameters;
+
     // =========================
     // Public functions
     // =========================
@@ -45,11 +47,14 @@ public class CombatBoardManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        _Parameters = parameters;
+
         InitializeGameBoard();
         InitializeTerrain();
 
         InstantiateGameBoard();
-        InstantiateObjects();
+        InstantiateFriendlyObjects();
+        InstantiateEnemyObjects();
     }
 
     // Returns array of all tiles
@@ -206,7 +211,16 @@ public class CombatBoardManager : MonoBehaviour
                     costSoFar[neighbor] = newCost;
 
                     // Add to priorty queue based on cost and distance to the goal
-                    var priority = newCost + Random.Range(0f, 0.5f); // + Heuristic(next, goal
+                    var priority = newCost + Random.Range(0f, 1f); // + Heuristic(next, goal)
+
+                    // Get another random value if the priority already exists.
+                    // This hack is necessary because I couldn't find a sorted structure
+                    // that supports duplicate keys.
+                    while (frontier.ContainsKey(priority))
+                    {
+                        priority = newCost + Random.Range(0f, 1f);
+                    }
+
                     frontier.Add(priority, neighbor);
 
                     // Set the neighbor node to "come from" the current node
@@ -214,8 +228,7 @@ public class CombatBoardManager : MonoBehaviour
                 }
             }
         }
-
-        print("A* tiles end");
+        
         // If goalReached flag is not true, the return empty path
         List<HexTile> pathTiles = new List<HexTile>();
         if (!goalReached) return pathTiles;
@@ -223,13 +236,12 @@ public class CombatBoardManager : MonoBehaviour
         // Otherwise, follow the nodes from endNode all the way back to startNode
         var pathNode = endNode;
         pathTiles.Add(pathNode);
-        while (pathNode != startNode)
+        while (cameFrom[pathNode] != startNode)
         {
             pathNode = cameFrom[pathNode];
             pathTiles.Add(pathNode);
         }
-
-        print("A* end");
+        
         // Reverse the list so that the startNode is in the beginning
         pathTiles.Reverse();
         return pathTiles;
@@ -271,6 +283,11 @@ public class CombatBoardManager : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    public void SetMovingObjectAt(MovingObject obj, int x, int y)
+    {
+
     }
 
     // =========================
@@ -353,21 +370,40 @@ public class CombatBoardManager : MonoBehaviour
     }
 
     // Player and enemy objects
-    void InstantiateObjects()
+    void InstantiateFriendlyObjects()
     {
-        // TODO: Somehow determine the starting positions of the player and enemies
+        // TODO: Somehow determine the starting positions of the player
 
         // Instantiate the player
-        GameObject toInstantiate = PlayerManager.Instance.PlayerCharacterPrefab;
-        GameObject playerInstance = Instantiate(toInstantiate, GetHexTile(PlayerInitX, PlayerInitY).Position, Quaternion.identity) as GameObject;
+        var toInstantiate = PlayerManager.Instance.PlayerCharacterPrefab;
+        var playerInstance = Instantiate(toInstantiate, GetHexTile(PlayerInitX, PlayerInitY).Position, Quaternion.identity) as GameObject;
         playerInstance.GetComponent<PlayerObject>().X = PlayerInitX;
         playerInstance.GetComponent<PlayerObject>().Y = PlayerInitY;
         CombatManager.Instance.SetPlayerObject(playerInstance);
 
         // Instantiate companions
 
-        // Instantiate enemies based on combatParameters
 
+    }
+
+    void InstantiateEnemyObjects()
+    {
+        // TODO: Somehow determine the starting positions of the enemies
+        var EnemyInitX = 10;
+        var EnemyInitY = 10;
+
+        // TODO: Instantiate enemies based on combatParameters
+        foreach (var enemyData in _Parameters.Enemies)
+        {
+            var toInstantiate = enemyData.Prefab;
+            var enemyInstance = Instantiate(toInstantiate, GetHexTile(EnemyInitX, EnemyInitY).Position, Quaternion.identity) as GameObject;
+            enemyInstance.GetComponent<EnemyObject>().X = EnemyInitX;
+            enemyInstance.GetComponent<EnemyObject>().Y = EnemyInitY;
+            enemyInstance.GetComponent<EnemyObject>().SetData(enemyData);
+            CombatManager.Instance.AddEnemyObject(enemyInstance);
+            EnemyInitX++;
+            EnemyInitY++;
+        }
     }
 
     GameObject GetTileObjectByType(HexTileType type)
