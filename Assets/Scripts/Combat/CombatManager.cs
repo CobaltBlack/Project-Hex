@@ -93,10 +93,10 @@ public class CombatManager : MonoBehaviour
         var overlayTiles = BoardManager.GetTilesInRange(currentX, currentY, _currentCharacter.MoveRange, false);
 
         // TODO: Discard invalid tiles
-        foreach (var tile in overlayTiles)
-        {
+        //foreach (var tile in overlayTiles)
+        //{
 
-        }
+        //}
 
         OverlayManager.InstantiateOverlays(overlayTiles);
     }

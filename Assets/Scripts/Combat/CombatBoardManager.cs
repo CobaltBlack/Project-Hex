@@ -170,11 +170,11 @@ public class CombatBoardManager : MonoBehaviour
     {
         var startNode = GetHexTile(startX, startY);
         var endNode = GetHexTile(endX, endY);
-        bool goalReached = false;
+        var goalReached = false;
 
         // Use SortedList as a priority queue
         // Frontier represents the nodes to be visitied next, 
-        // ordered by low to high priority
+        // ordered by low to high estimated distance to goal
         var frontier = new SortedList<float, HexTile>();
         frontier.Add(0, startNode);
 
@@ -187,12 +187,11 @@ public class CombatBoardManager : MonoBehaviour
         // Loop while nodes are in the frontier
         while (frontier.Count > 0)
         {
-            // Get last node in the frontier (highest priority)
-            var lastIndex = frontier.Count - 1;
+            // Get first node in the frontier (smallest estimated distance to the goal)
             var currentNode = frontier.Values[0];
             frontier.RemoveAt(0);
 
-            // If its the goal, then we are done
+            // If it's the goal, then we are done
             if (currentNode.Equals(endNode))
             {
                 goalReached = true;
@@ -214,11 +213,11 @@ public class CombatBoardManager : MonoBehaviour
 
                     // Add to priorty queue based on cost and distance to the goal
                     var distanceToGoal = DistanceBetween(neighbor, endNode);
-                    var priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f); // + Heuristic(next, goal)
+                    var priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f);
 
                     // Get another random value if the priority already exists.
                     // This hack is necessary because I couldn't find a sorted structure
-                    // that supports duplicate keys.
+                    // that supports duplicate keys in C#.
                     while (frontier.ContainsKey(priority))
                     {
                         priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f);
@@ -234,7 +233,7 @@ public class CombatBoardManager : MonoBehaviour
         }
 
         // If goalReached flag is not true, the return empty path
-        List<HexTile> pathTiles = new List<HexTile>();
+        var pathTiles = new List<HexTile>();
         if (!goalReached) return pathTiles;
 
         // Otherwise, follow the nodes from endNode all the way back to startNode
