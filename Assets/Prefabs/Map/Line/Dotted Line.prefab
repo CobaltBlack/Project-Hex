@@ -11,7 +11,7 @@ GameObject:
   - 120: {fileID: 12063932}
   - 114: {fileID: 11479098}
   m_Layer: 0
-  m_Name: Line Renderer
+  m_Name: Dotted Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

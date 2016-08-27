@@ -173,10 +173,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   multiplicationUnit: 18
-  columns: 4
-  rows: 4
-  line: {fileID: 134850, guid: 3fbd8eae383e1834d87bace54a4a7387, type: 2}
-  lineV2: {fileID: 188530, guid: 45966d5588ef453499673e8991e771bb, type: 2}
   mapRuleBooks:
   - {fileID: 187498, guid: 30698b6b275d7e540a3712285be9bd2e, type: 2}
   mapTiles:
@@ -275,8 +271,8 @@ MonoBehaviour:
   - {fileID: 161898, guid: b2596c9d67a3c4949951fc2d3a761da2, type: 2}
   - {fileID: 182244, guid: c1380b3ea7636f243b1461077baa0a8b, type: 2}
   - {fileID: 132980, guid: aaa1ab59129a8f243b535ec01bb5227d, type: 2}
-  trueCenter: {x: 0, y: 0, z: 0}
   blankTile: {fileID: 111742, guid: c144cd36b85da394b8c151170e83dcd3, type: 2}
+  line: {fileID: 188530, guid: 45966d5588ef453499673e8991e771bb, type: 2}
 --- !u!4 &382679326
 Transform:
   m_ObjectHideFlags: 0
