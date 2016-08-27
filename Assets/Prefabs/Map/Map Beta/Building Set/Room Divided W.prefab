@@ -179,7 +179,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125310}
   m_LocalRotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
-  m_LocalPosition: {x: -29.9, y: -14.5, z: 0}
+  m_LocalPosition: {x: -14.904606, y: 52.11133, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
   m_Children:
@@ -275,10 +275,7 @@ MonoBehaviour:
   isVisited: 0
   player: 0
   nodesConnected:
-  - {fileID: 0}
   - {fileID: 143266}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &11408150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -295,6 +292,9 @@ MonoBehaviour:
   player: 0
   nodesConnected:
   - {fileID: 193730}
+  - {fileID: 115416}
+  - {fileID: 124390}
+  - {fileID: 144210}
 --- !u!114 &11435874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -310,10 +310,7 @@ MonoBehaviour:
   isVisited: 0
   player: 0
   nodesConnected:
-  - {fileID: 0}
   - {fileID: 143266}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &11445008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -351,10 +348,7 @@ MonoBehaviour:
   isVisited: 0
   player: 0
   nodesConnected:
-  - {fileID: 0}
   - {fileID: 143266}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &11468296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -370,10 +364,7 @@ MonoBehaviour:
   isVisited: 0
   player: 0
   nodesConnected:
-  - {fileID: 0}
   - {fileID: 143266}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!212 &21214214
 SpriteRenderer:
   m_ObjectHideFlags: 1

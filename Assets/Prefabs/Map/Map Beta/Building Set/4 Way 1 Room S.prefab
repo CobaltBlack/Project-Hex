@@ -158,7 +158,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 190600}
   m_LocalRotation: {x: 0, y: 0, z: -0.38268346, w: 0.9238795}
-  m_LocalPosition: {x: 24.54, y: 13.8, z: 0}
+  m_LocalPosition: {x: 9.938376, y: 186.38116, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45}
   m_Children:
@@ -322,6 +322,7 @@ MonoBehaviour:
   player: 0
   nodesConnected:
   - {fileID: 177552}
+  - {fileID: 193056}
 --- !u!114 &11408102
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -392,6 +393,7 @@ MonoBehaviour:
   player: 0
   nodesConnected:
   - {fileID: 177552}
+  - {fileID: 193056}
 --- !u!114 &11478862
 MonoBehaviour:
   m_ObjectHideFlags: 1

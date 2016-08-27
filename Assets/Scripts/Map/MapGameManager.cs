@@ -37,14 +37,14 @@ public class MapGameManager : MonoBehaviour
         mapScript.MapSetup();
 
         // save newNode
-        newNode = mapScript.mapTileGameObjects[0, 0].GetComponent<MapTile>().startingNode;
+        newNode = mapScript.mapTileGameObjects[10, 10].GetComponent<MapTile>().startingNode; // DONT REPEAT YOURSELF CHECK WITH THAT ONE@@@
 
         // SMART METHOD
         // initialize player
         Debug.Log("Instantiate player");
         playerInstance = Instantiate(player, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
 
-        GameObject origin = mapScript.mapTileGameObjects[0, 0].GetComponent<MapTile>().startingNode;
+        GameObject origin = mapScript.mapTileGameObjects[10, 10].GetComponent<MapTile>().startingNode; // DONT REPEAT YOURSELF CHECK WITH THAT ONE @@@
         origin.GetComponent<MapNode>().isVisited = true; // this is in place for preperation for addition of instances
         MovePlayer(origin);
 

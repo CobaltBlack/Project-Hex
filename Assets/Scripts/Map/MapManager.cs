@@ -21,6 +21,7 @@ public class MapManager : MonoBehaviour
     int yWorldCenter;
 
     public GameObject line;
+    public GameObject lineV2;
 
     public GameObject[] mapRuleBooks;
     public GameObject[] mapTiles;
@@ -37,7 +38,7 @@ public class MapManager : MonoBehaviour
 
         InitializeGameBoardV4();
         //Debug.Log("-InitializeGameBoard");
-        InitializeNodes();
+        //InitializeNodes();
         //Debug.Log("-InitializeNodes");
     }
 
@@ -313,25 +314,10 @@ public class MapManager : MonoBehaviour
         mapTileGameObjects[xCoordinate, yCoordinate].name = "map_" + xCoordinate + "_" + yCoordinate; // name the hexes by coordinates
     }
 
-    // Used to bundle GameObject and coordinates which accompany them for the toEpand LIST
-    struct ToExpandItem
-    {
-        public GameObject toExpandItem;
-        public int x;
-        public int y;
-
-        public ToExpandItem(GameObject toExpandItem, int x, int y)
-        {
-            this.toExpandItem = toExpandItem;
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     public GameObject blankTile;
 
-    // List of items which needs "expansion"
-    List<ToExpandItem> toExpand = new List<ToExpandItem>();
+    // List of tile locations which needs "expansion"
+    List<Vector2> toExpand = new List<Vector2>();
 
     void InitializeGameBoardV4()
     {
@@ -351,13 +337,13 @@ public class MapManager : MonoBehaviour
 
         while(toExpand.Count != 0)
         {
-            ToExpandItem currentItem = toExpand[0];
+            Vector2 currentItem = toExpand[0];
 
             // access current X and Y coordinates
-            int x = currentItem.x;
-            int y = currentItem.y;
+            int x = (int)currentItem.x;
+            int y = (int)currentItem.y;
 
-            // check if tile NORTH of this tile exists, if so, take that tile and execute the check surrounding protocol
+            // check if tile NORTH of this tile exists, if it doesnt, take that tile and execute the check surrounding protocol
             if (x != mapData.columns - 1 && !mapTileGameObjects[x + 1, y])
             {
                 x += 1;
@@ -489,10 +475,12 @@ public class MapManager : MonoBehaviour
 
             // place tile
             PlaceGameObjectV2(toInstantiate, x, y);
-
-            // register all nodes correctly
-            // currently not implemented
         }
+        // register all nodes correctly
+        ConnectExitNodes(mapData.columns, mapData.rows);
+
+        // draw the lines
+        InitializeNodes(mapData.columns, mapData.rows);
     }
 
     void PlaceGameObjectV2(GameObject toInstantiate, int xCoordinate, int yCoordinate)
@@ -511,9 +499,8 @@ public class MapManager : MonoBehaviour
         mapTileGameObjects[xCoordinate, yCoordinate].transform.SetParent(mapHolder);  // parent under hexHolder "Map"
         mapTileGameObjects[xCoordinate, yCoordinate].name = "map_" + xCoordinate + "_" + yCoordinate; // name the hexes by coordinates
 
-        // add to List
-        ToExpandItem item = new ToExpandItem(mapTileGameObjects[xCoordinate, yCoordinate], xCoordinate, yCoordinate);
-        toExpand.Add(item);
+        // add to List coordinates which need expansion
+        toExpand.Add(new Vector2(xCoordinate, yCoordinate));
     }
 
     List<GameObject> ConstructValidMapTilesList(EnumTileProperty property, bool hasNorthExit, bool hasWestExit, bool hasSouthExit, bool hasEastExit)
@@ -554,6 +541,67 @@ public class MapManager : MonoBehaviour
         PlaceGameObjectV2(mapData.premade3x3[2, 0], 2 + xOffSet, 0 + yOffSet);
         PlaceGameObjectV2(mapData.premade3x3[2, 1], 2 + xOffSet, 1 + yOffSet);
         PlaceGameObjectV2(mapData.premade3x3[2, 2], 2 + xOffSet, 2 + yOffSet);
+    }
+
+    void ConnectExitNodes(int columns, int rows)
+    {
+        for (int x = 0; x < columns; x++)
+        {
+            for (int y = 0; y < rows; y++)
+            {
+                /*
+                // connect north if it exists
+                // N (1) exit check
+                // north is not out of bound, current tile exists, current tile has North exit, North tile exists, North tile has South exit
+                if (x + 1 < columns && mapTileGameObjects[x, y] && mapTileGameObjects[x, y].GetComponent<MapTile>().exit1A && mapTileGameObjects[x + 1, y] && mapTileGameObjects[x + 1, y].GetComponent<MapTile>().exit3A)
+                {
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit1A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x + 1, y].GetComponent<MapTile>().exit3A);
+
+                }
+
+                // connect west if it exists
+                // W (2) check
+                if (mapTileGameObjects[x, y + 1])
+                {
+                }
+
+                // connect south if it exists
+                // S (3) check
+                if (mapTileGameObjects[x - 1, y])
+                {
+                }
+
+                // connect east if it exists
+                // E (4) check
+                if (mapTileGameObjects[x, y - 1])
+                {
+                }
+                */
+
+                // take a TILE, check its BOTTOM (y-1) EXIT and LEFT (x-1) EXIT and if there is a touching TILE, access the NODES, ADD to the "nodesConnected" 
+                // South tile is not out of bound, current tile exists, current tile has South exit, South tile exists, South tile has North exit
+                if (x - 1 >= 0 &&
+                    mapTileGameObjects[x, y] &&
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A &&
+                    mapTileGameObjects[x - 1, y] &&
+                    mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A)
+                {
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A);
+                    mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A);
+                }
+                if (y - 1 >= 0 &&
+                    mapTileGameObjects[x, y] &&
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A &&
+                    mapTileGameObjects[x, y - 1] &&
+                    mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A)
+                {
+                    mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A);
+                    mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A);
+                }
+            }
+        }
+
+
     }
 
     // Set up an empty game board
@@ -623,15 +671,22 @@ public class MapManager : MonoBehaviour
         }
     }
     
-    void InitializeNodes()
+    void InitializeNodes(int columns, int rows)
     {
         List<GameObject> childNodeList = new List<GameObject>();
-        GameObject instance;
+        //GameObject instance;
+        GameObject lineInstance;
 
         for (int x = 0; x < columns; x++)
         {
             for (int y = 0; y < rows; y++)
             {
+                // skip if this tile doesnt exist
+                if (!mapTileGameObjects[x, y])
+                {
+                    continue;
+                }
+
                 childNodeList.Clear();
                 foreach (Transform t in mapTileGameObjects[x, y].transform)
                 {
@@ -642,21 +697,23 @@ public class MapManager : MonoBehaviour
                 {
                     for (int u = 0; u < childNodeList[i].GetComponent<MapNode>().nodesConnected.Count; u++)
                     {
-                        // MAKE THIS INTO A REAL LINE EVENTUALLY
-                        //if (childNodeList[i] && childNodeList[i].GetComponent<MapNode>().nodesConnected[u]) // WOWOAOWOAWOOAWOWO DOUBLE CHECK THIS
+                        if (childNodeList[i] && childNodeList[i].GetComponent<MapNode>().nodesConnected[u]) // i forgot why this part was necessary ha ha ha
                         {
                             Debug.DrawLine(childNodeList[i].transform.position, childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform.position, Color.green, 1000, false);
 
-                            instance = Instantiate(line, new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+                            /* lineV1
+                            instance = Instantiate(line) as GameObject;
                             instance.GetComponent<DrawLine>().start = childNodeList[i].transform.position;
                             instance.GetComponent<DrawLine>().stop = childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform.position;
+                            */
+
+                            // lineV2 dotted line using line renderer
+                            lineInstance = Instantiate(lineV2) as GameObject;
+                            lineInstance.GetComponent<Line>().DrawLine(childNodeList[i].transform, childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform);
                         }
                     }
                 }
             }
-
-            // look at all initialized MapTiles, scan their all registered node array, go through each node and connect them.
-            // send player to the starting node, set the node around plaer to "clickable"
         }
     }
 }
