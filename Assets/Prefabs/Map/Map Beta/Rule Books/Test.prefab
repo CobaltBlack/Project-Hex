@@ -42,35 +42,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   columns: 20
   rows: 20
-  garden:
-    xFrom: 0
-    xTo: 0
-    yFrom: 0
-    yTo: 0
   garden_xFrom: 0
   garden_xTo: 0
   garden_yFrom: 0
   garden_yTo: 0
-  building:
-    xFrom: 0
-    xTo: 0
-    yFrom: 0
-    yTo: 0
   building_xFrom: 0
   building_xTo: 20
   building_yFrom: 0
   building_yTo: 20
   premade3x3OriginX: 8
   premade3x3OriginY: 8
-  tile_0_0: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
-  tile_0_1: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
-  tile_0_2: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
-  tile_1_0: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
-  tile_1_1: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
-  tile_1_2: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
-  tile_2_0: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
-  tile_2_1: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
-  tile_2_2: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_0_0: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_0_1: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_0_2: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_1_0: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_1_1: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_1_2: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_2_0: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_2_1: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
+  tile3x3_2_2: {fileID: 194768, guid: d3afddf150c226d4c8dce8d425ffb811, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
