@@ -108,8 +108,7 @@ public class PlayerManager : MonoBehaviour
 
     private int _ActionPoints;
 
-    // TODO:
-    // Load data from save file.
+    // TODO: Load data from save file.
     void InitializePlayerData()
     {
         _CurrentHp = 50;

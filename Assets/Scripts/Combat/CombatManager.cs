@@ -90,7 +90,8 @@ public class CombatManager : MonoBehaviour
             currentX = _currentCharacter.X;
             currentY = _currentCharacter.Y;
         }
-        var overlayTiles = BoardManager.GetTilesInRange(currentX, currentY, _currentCharacter.MoveRange, false);
+
+        var overlayTiles = BoardManager.GetTraversableTiles(currentX, currentY, _currentCharacter.MoveRange);
 
         // TODO: Discard invalid tiles
         //foreach (var tile in overlayTiles)

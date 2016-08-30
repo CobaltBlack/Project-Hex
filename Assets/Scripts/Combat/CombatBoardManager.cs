@@ -130,7 +130,9 @@ public class CombatBoardManager : MonoBehaviour
     // Get all tiles within range r, centered at (x, y)
     // - includeCenter decides if the center tile is returned
     // See reference for explanation of algorithm 
-    public List<HexTile> GetTilesInRange(int x, int y, int r, bool includeCenter)
+    // 
+    // Used for AOE skills
+    public List<HexTile> GetTilesInRange(int x, int y, int r)
     {
         List<HexTile> inRangeTiles = new List<HexTile>();
 
@@ -151,7 +153,7 @@ public class CombatBoardManager : MonoBehaviour
                 var tile = GetHexTileByCube(tempCube);
 
                 // Skip if tile is invalid, or it's the center tile and includeCenter is false
-                if (tile == null || (!includeCenter && tile.X == x && tile.Y == y))
+                if (tile == null)
                 {
                     continue;
                 }
@@ -160,6 +162,65 @@ public class CombatBoardManager : MonoBehaviour
         }
 
         return inRangeTiles;
+    }
+
+    // Get traversable tiles around x, y with given moveRange
+    // Uses Dijkstra because we want to find ALL reachable nodes from (x, y)
+    public List<HexTile> GetTraversableTiles(int x, int y, int moveRange)
+    {
+        var traversableTiles = new List<HexTile>();
+        var startNode = GetHexTile(x, y);
+
+        // Define dictionaries for "current cost" for each node
+        var costSoFar = new Dictionary<HexTile, float>();
+        costSoFar[startNode] = 0;
+
+        // Use SortedList as a priority queue
+        // Frontier represents the nodes to be visited next, 
+        // ordered by low to high estimated distance to goal
+        var frontier = new SortedList<float, HexTile>();
+        frontier.Add(0, startNode);
+
+        // Loop while nodes are in the frontier
+        while (frontier.Count > 0)
+        {
+            // Get a node in the frontier and add it to traversable
+            var currentNode = frontier.Values[0];
+            frontier.RemoveAt(0);
+
+            // For each neighbor of currentNode
+            foreach (var neighbor in currentNode.Neighbors)
+            {
+                // Get cost from current node to neighbor
+                var newCost = costSoFar[currentNode] + 1;
+
+                // If the newCost exceed moveRange, it is unreachable
+                if (newCost > moveRange)
+                    continue;
+
+                // If neighbor already has a previous cost smaller than newCost, skip it
+                if (costSoFar.ContainsKey(neighbor) && costSoFar[neighbor] <= newCost)
+                    continue;
+
+                // Update the cost for neighbor
+                costSoFar[neighbor] = newCost;
+
+                // Add to priorty queue based on cost and distance to the goal
+                var priority = newCost + UnityEngine.Random.Range(0f, 0.5f);
+
+                // Get another random value if the priority already exists.
+                // This hack is necessary because I couldn't find a sorted structure
+                // that supports duplicate keys in C#.
+                while (frontier.ContainsKey(priority))
+                {
+                    priority = newCost + UnityEngine.Random.Range(0f, 0.5f);
+                }
+
+                frontier.Add(priority, neighbor);
+            }
+        }
+
+        return traversableTiles;
     }
 
     // Returns a List of HexTiles that defines the shortest path from start to end
@@ -172,8 +233,12 @@ public class CombatBoardManager : MonoBehaviour
         var endNode = GetHexTile(endX, endY);
         var goalReached = false;
 
+        // If goal is not reachable, the path goes as close to the goal as possible
+        var closestDistanceToGoal = DistanceBetween(startNode, endNode);
+        var validNodeClosestToGoal = startNode;
+
         // Use SortedList as a priority queue
-        // Frontier represents the nodes to be visitied next, 
+        // Frontier represents the nodes to be visited next, 
         // ordered by low to high estimated distance to goal
         var frontier = new SortedList<float, HexTile>();
         frontier.Add(0, startNode);
@@ -204,40 +269,49 @@ public class CombatBoardManager : MonoBehaviour
                 // Get cost from current node to neighbor
                 var newCost = costSoFar[currentNode] + 1;
 
-                // If neighbor does not have a cost yet, 
-                // or the cost from currentNode is smaller than the previously calculate cost
-                if (!costSoFar.ContainsKey(neighbor) || newCost < costSoFar[neighbor])
+                // If neighbor already has a previous cost smaller than newCost, skip it
+                if (costSoFar.ContainsKey(neighbor) && costSoFar[neighbor] <= newCost)
+                    continue;
+
+                // Update the cost for neighbor
+                costSoFar[neighbor] = newCost;
+
+                // Add to priorty queue based on cost and distance to the goal
+                var distanceToGoal = DistanceBetween(neighbor, endNode);
+                var priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f);
+
+                // Get another random value if the priority already exists.
+                // This hack is necessary because I couldn't find a sorted structure
+                // that supports duplicate keys in C#.
+                while (frontier.ContainsKey(priority))
                 {
-                    // Update the cost for neighbor
-                    costSoFar[neighbor] = newCost;
+                    priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f);
+                }
 
-                    // Add to priorty queue based on cost and distance to the goal
-                    var distanceToGoal = DistanceBetween(neighbor, endNode);
-                    var priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f);
+                frontier.Add(priority, neighbor);
 
-                    // Get another random value if the priority already exists.
-                    // This hack is necessary because I couldn't find a sorted structure
-                    // that supports duplicate keys in C#.
-                    while (frontier.ContainsKey(priority))
-                    {
-                        priority = newCost + distanceToGoal + UnityEngine.Random.Range(0f, 0.5f);
-                    }
+                // Set the neighbor node to "come from" the current node
+                cameFrom[neighbor] = currentNode;
 
-                    frontier.Add(priority, neighbor);
-
-                    // Set the neighbor node to "come from" the current node
-                    cameFrom[neighbor] = currentNode;
+                // Update validNodeClosestToGoal in case endNode is unreachable
+                if (distanceToGoal < closestDistanceToGoal)
+                {
+                    closestDistanceToGoal = distanceToGoal;
+                    validNodeClosestToGoal = neighbor;
                 }
             }
-
         }
 
-        // If goalReached flag is not true, the return empty path
         var pathTiles = new List<HexTile>();
-        if (!goalReached) return pathTiles;
-
-        // Otherwise, follow the nodes from endNode all the way back to startNode
         var pathNode = endNode;
+
+        // If goalReached flag is false, then return path to validNodeClosestToGoal instead
+        if (!goalReached)
+        {
+            pathNode = validNodeClosestToGoal;
+        }
+
+        // Follow the nodes from endNode all the way back to startNode
         pathTiles.Add(pathNode);
         while (cameFrom[pathNode] != startNode)
         {
@@ -253,14 +327,12 @@ public class CombatBoardManager : MonoBehaviour
     // Returns the hex tile by coordinate
     public HexTile GetHexTile(int x, int y)
     {
-        if (IsHexWithinBounds(x, y))
-        {
-            return GameBoard[x, y];
-        }
-        else
+        if (!IsHexWithinBounds(x, y))
         {
             return null;
         }
+
+        return GameBoard[x, y];
     }
 
     // Returns whether the hex is valid (not a wall or out of bounds)
@@ -271,7 +343,7 @@ public class CombatBoardManager : MonoBehaviour
             return false;
         }
 
-        if (GetHexTile(x, y).TileType == HexTileType.Wall)
+        if (!GetHexTile(x, y).IsTraversable)
         {
             return false;
         }
@@ -326,7 +398,7 @@ public class CombatBoardManager : MonoBehaviour
                 }
 
                 // Save in gameBoard
-                GameBoard[x, y] = new HexTile(x, y, hexLocation, tileType, true);
+                GameBoard[x, y] = new HexTile(x, y, hexLocation, tileType);
             }
         }
     }
