@@ -220,6 +220,15 @@ public class CombatBoardManager : MonoBehaviour
             }
         }
 
+        // Remove the start node (we don't want the start node for movement)
+        costSoFar.Remove(startNode);
+
+        // Add all the tiles visited
+        foreach (var tile in costSoFar.Keys)
+        {
+            traversableTiles.Add(tile);
+        }
+
         return traversableTiles;
     }
 
