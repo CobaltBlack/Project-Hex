@@ -63,6 +63,8 @@ public class CombatManager : MonoBehaviour
             default:
                 break;
         }
+
+        UpdateUI();
     }
 
     // Activates the skill clicked
@@ -108,6 +110,7 @@ public class CombatManager : MonoBehaviour
 
     CombatBoardManager BoardManager;
     HexOverlayManager OverlayManager;
+    CombatUIManager UIManager;
 
     TurnState _turnState = TurnState.Initializing; // Current state of the game    
     ActionType _currentAction = ActionType.None; // Currently selected skill
@@ -133,6 +136,7 @@ public class CombatManager : MonoBehaviour
 
         BoardManager = GetComponent<CombatBoardManager>();
         OverlayManager = GetComponent<HexOverlayManager>();
+        UIManager = GetComponent<CombatUIManager>();
 
         // Combat entrance animations
 
@@ -187,12 +191,12 @@ public class CombatManager : MonoBehaviour
     // Leave the combat scene.
     void EndCombat()
     {
-
     }
 
     void InitializeUI()
     {
-        Debug.Log("Initilaize UI");
+        Debug.Log("Initialize UI");
+        UIManager.SetupUI();
     }
 
     // Enables UI buttons and controls for player turn
@@ -209,8 +213,11 @@ public class CombatManager : MonoBehaviour
         // Display overlays around player for movement
         ShowMovementOverlays();
 
-        // Clicking overlays cause the player to MOVE
+        // Clicking overlays would cause the player to MOVE
         _currentAction = ActionType.Move;
+
+        // Update UI
+        UpdateUI();
     }
 
     // Handles click on "End Turn" button
@@ -314,6 +321,13 @@ public class CombatManager : MonoBehaviour
 
         // Change mouse cursor (change it back afterwards)
 
+    }
+
+    // Refreshes all the UI elements based on current game state
+    void UpdateUI()
+    {
+        // AP Display
+        UIManager.UpdateApDisplay(_currentCharacter.CurrentAp, _currentCharacter.MaxAp);
     }
 
     // ==============================
