@@ -18,14 +18,16 @@ public class FriendlyObject : MovingObject
     // Animate the shadow if queueing a move command for friendly characters
     public override void QueueMoveAction(int targetX, int targetY)
     {
-        var path = CombatBoardManager.Instance.GetTilesInPath(ShadowX, ShadowY, targetX, targetY);
-        var moveAction = new MoveAction(targetX, targetY, path);
+        var path = CombatBoardManager.Instance.GetTilesInPath(ShadowX, ShadowY, targetX, targetY, false);
+        var moveAction = new MoveAction(path);
         ActionQueue.Add(moveAction);
 
         // Decrease currentAp
         CurrentAp -= path.Count * Constants.ApCostPerMove;
 
+        // Move shadow
         MoveShadow(moveAction);
+
 
         // Update UI visuals for new action queued
     }
@@ -102,7 +104,9 @@ public class FriendlyObject : MovingObject
             ShowShadow();
         }
 
+        CombatBoardManager.Instance.SetObjectOnTileQueued(moveAction.TargetX, moveAction.TargetY, this);
+
         System.Action ShowOverlayCallback = CombatManager.Instance.ShowMovementOverlays;
-        CharacterShadow.GetComponent<FriendlyObject>().RunMoveAction(moveAction, ShowOverlayCallback);
+        CharacterShadow.GetComponent<FriendlyObject>().RunMoveAction(moveAction, ShowOverlayCallback, false);
     }
 }

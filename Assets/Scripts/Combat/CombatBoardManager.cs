@@ -57,76 +57,6 @@ public class CombatBoardManager : MonoBehaviour
         InstantiateEnemyObjects();
     }
 
-    // Returns array of all tiles
-    public List<HexTile> GetSurroundingTiles(int x, int y)
-    {
-        List<HexTile> adjacentTiles = new List<HexTile>();
-
-        // Above
-        if (IsHexValid(x, y - 1))
-        {
-            adjacentTiles.Add(GameBoard[x, y - 1]);
-        }
-
-        // Below
-        if (IsHexValid(x, y + 1))
-        {
-            adjacentTiles.Add(GameBoard[x, y + 1]);
-        }
-
-        // x is even
-        // (&) is the bitwise AND operator
-        if ((x & 1) == 0)
-        {
-            // Top Left
-            if (IsHexValid(x - 1, y - 1))
-            {
-                adjacentTiles.Add(GameBoard[x - 1, y - 1]);
-            }
-            // Top Right
-            if (IsHexValid(x + 1, y - 1))
-            {
-                adjacentTiles.Add(GameBoard[x + 1, y - 1]);
-            }
-            // Bottom Left
-            if (IsHexValid(x - 1, y))
-            {
-                adjacentTiles.Add(GameBoard[x - 1, y]);
-            }
-            // Bottom Right
-            if (IsHexValid(x + 1, y))
-            {
-                adjacentTiles.Add(GameBoard[x + 1, y]);
-            }
-        }
-        // x is odd
-        else
-        {
-            // Top Left
-            if (IsHexValid(x - 1, y))
-            {
-                adjacentTiles.Add(GameBoard[x - 1, y]);
-            }
-            // Top Right
-            if (IsHexValid(x + 1, y))
-            {
-                adjacentTiles.Add(GameBoard[x + 1, y]);
-            }
-            // Bottom Left
-            if (IsHexValid(x - 1, y + 1))
-            {
-                adjacentTiles.Add(GameBoard[x - 1, y + 1]);
-            }
-            // Bottom Right
-            if (IsHexValid(x + 1, y + 1))
-            {
-                adjacentTiles.Add(GameBoard[x + 1, y + 1]);
-            }
-        }
-
-        return adjacentTiles;
-    }
-
     // Get all tiles within range r, centered at (x, y)
     // - includeCenter decides if the center tile is returned
     // See reference for explanation of algorithm 
@@ -166,6 +96,7 @@ public class CombatBoardManager : MonoBehaviour
 
     // Get traversable tiles around x, y with given moveRange
     // Uses Dijkstra because we want to find ALL reachable nodes from (x, y)
+    // Mainly used for player movement
     public List<HexTile> GetTraversableTiles(int x, int y, int moveRange)
     {
         var traversableTiles = new List<HexTile>();
@@ -189,7 +120,7 @@ public class CombatBoardManager : MonoBehaviour
             frontier.RemoveAt(0);
 
             // For each neighbor of currentNode
-            foreach (var neighbor in currentNode.Neighbors)
+            foreach (var neighbor in currentNode.TraversableNeighbors)
             {
                 // Get cost from current node to neighbor
                 var newCost = costSoFar[currentNode] + 1;
@@ -236,7 +167,7 @@ public class CombatBoardManager : MonoBehaviour
     // Uses A* pathfinding algorithm
     // Algorithm adapted from the reference site
     // The returned List does not contain the starting node
-    public List<HexTile> GetTilesInPath(int startX, int startY, int endX, int endY)
+    public List<HexTile> GetTilesInPath(int startX, int startY, int endX, int endY, bool ignoreObjects)
     {
         var startNode = GetHexTile(startX, startY);
         var endNode = GetHexTile(endX, endY);
@@ -272,8 +203,13 @@ public class CombatBoardManager : MonoBehaviour
                 break;
             }
 
+            // Get neighbors depending on if want to ignore objects in the path
+            List<HexTile> neighborsList;
+            if (ignoreObjects) neighborsList = currentNode.Neighbors;
+            else neighborsList = currentNode.TraversableNeighbors;
+
             // For each neighbor of currentNode
-            foreach (var neighbor in currentNode.Neighbors)
+            foreach (var neighbor in neighborsList)
             {
                 // Get cost from current node to neighbor
                 var newCost = costSoFar[currentNode] + 1;
@@ -369,10 +305,34 @@ public class CombatBoardManager : MonoBehaviour
         return true;
     }
 
-    public void SetMovingObjectAt(MovingObject obj, int x, int y)
+    // Sets obj to be queued on tile (x, y), so that no other objects can move to (x, y)
+    // Also makes the obj's previous tile free to me moved on
+    public void SetObjectOnTileQueued(int x, int y, MovingObject obj)
     {
+        // Friendly objects can make multiple movements, so we have to null the previous tile
+        if (obj is FriendlyObject)
+        {
+            var friendlyObj = (FriendlyObject)obj;
+            GetHexTile(friendlyObj.ShadowX, friendlyObj.ShadowY).ObjectOnTileQueued = null;
+            print(friendlyObj.ShadowX);
+            print(friendlyObj.ShadowY);
+        }
 
+        GetHexTile(obj.X, obj.Y).ObjectOnTile = null;
+        GetHexTile(x, y).ObjectOnTileQueued = obj;
     }
+
+    // If there is a queued object on the tile, make it ACTUALLY on the tile
+    public void SetObjectOnTile(int x, int y, MovingObject obj)
+    {
+        var tile = GetHexTile(x, y);
+        if (tile.ObjectOnTileQueued != null)
+        {
+            tile.ObjectOnTile = tile.ObjectOnTileQueued;
+            tile.ObjectOnTileQueued = null;
+        }
+    }
+
 
     // =========================
     // Private functions
@@ -455,17 +415,23 @@ public class CombatBoardManager : MonoBehaviour
         }
     }
 
-    // Player and enemy objects
+    // Friendly objects include the main hero and companions
     void InstantiateFriendlyObjects()
     {
         // TODO: Somehow determine the starting positions of the player
+        var tile = GetHexTile(PlayerInitX, PlayerInitY);
 
         // Instantiate the player
         var toInstantiate = PlayerManager.Instance.PlayerCharacterPrefab;
-        var playerInstance = Instantiate(toInstantiate, GetHexTile(PlayerInitX, PlayerInitY).Position, Quaternion.identity) as GameObject;
-        playerInstance.GetComponent<PlayerObject>().X = PlayerInitX;
-        playerInstance.GetComponent<PlayerObject>().Y = PlayerInitY;
+        var playerInstance = Instantiate(toInstantiate, tile.Position, Quaternion.identity) as GameObject;
+        var playerScript = playerInstance.GetComponent<PlayerObject>();
+
+        // Setup some data in related scripts
+        playerScript.X = PlayerInitX;
+        playerScript.Y = PlayerInitY;
+        tile.ObjectOnTile = playerScript;
         CombatManager.Instance.SetPlayerObject(playerInstance);
+        
 
         // Instantiate companions
 
@@ -481,12 +447,19 @@ public class CombatBoardManager : MonoBehaviour
         // TODO: Instantiate enemies based on combatParameters
         foreach (var enemyData in _parameters.Enemies)
         {
+            var tile = GetHexTile(EnemyInitX, EnemyInitY);
             var toInstantiate = enemyData.Prefab;
-            var enemyInstance = Instantiate(toInstantiate, GetHexTile(EnemyInitX, EnemyInitY).Position, Quaternion.identity) as GameObject;
-            enemyInstance.GetComponent<EnemyObject>().X = EnemyInitX;
-            enemyInstance.GetComponent<EnemyObject>().Y = EnemyInitY;
-            enemyInstance.GetComponent<EnemyObject>().SetData(enemyData);
+            var enemyInstance = Instantiate(toInstantiate, tile.Position, Quaternion.identity) as GameObject;
+            var enemyScript = enemyInstance.GetComponent<EnemyObject>();
+
+            // Setup some data in related scripts
+            enemyScript.X = EnemyInitX;
+            enemyScript.Y = EnemyInitY;
+            tile.ObjectOnTile = enemyScript;
+            enemyScript.SetData(enemyData);
             CombatManager.Instance.AddEnemyObject(enemyInstance);
+            
+            // Get position of next enemy
             EnemyInitX++;
             EnemyInitY++;
         }

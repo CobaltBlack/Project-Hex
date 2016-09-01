@@ -32,12 +32,14 @@ public class MovingObject : MonoBehaviour
     // Adds a move action to the end of the queue
     public virtual void QueueMoveAction(int targetX, int targetY)
     {
-        var path = CombatBoardManager.Instance.GetTilesInPath(X, Y, targetX, targetY);
-        var moveAction = new MoveAction(targetX, targetY, path);
+        var path = CombatBoardManager.Instance.GetTilesInPath(X, Y, targetX, targetY, false);
+        var moveAction = new MoveAction(path);
         ActionQueue.Add(moveAction);
 
         // Decrease currentAp
         CurrentAp -= path.Count * Constants.ApCostPerMove;
+        
+        CombatBoardManager.Instance.SetObjectOnTileQueued(targetX, targetY, this);
     }
 
     // Removes a queued action by index
@@ -101,7 +103,7 @@ public class MovingObject : MonoBehaviour
         switch (action.ActionType)
         {
             case ActionType.Move:
-                RunMoveAction((MoveAction)action, ProcessNextCombatAction);
+                RunMoveAction((MoveAction)action, ProcessNextCombatAction, true);
                 break;
 
             case ActionType.Skill:
@@ -116,8 +118,9 @@ public class MovingObject : MonoBehaviour
     }
 
     // Processes the movement action
-    // callback indicates what function will be run when current execution completes
-    public void RunMoveAction(MoveAction action, Action callback)
+    // - callback indicates what function will be run when current execution completes
+    // - updateTiles indicates whether tiles should update to store the current object
+    public void RunMoveAction(MoveAction action, Action callback, bool updateTiles)
     {
         _inverseMoveTime = 1f / MoveTime;
 
@@ -127,6 +130,11 @@ public class MovingObject : MonoBehaviour
         // Update object coordinates
         X = action.TargetX;
         Y = action.TargetY;
+
+        if (updateTiles)
+        {
+            CombatBoardManager.Instance.SetObjectOnTile(X, Y, this);
+        }
 
         // Move to each tile in the path
         _currentPath = action.Path;

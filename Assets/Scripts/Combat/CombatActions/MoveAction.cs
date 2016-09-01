@@ -8,11 +8,12 @@ public class MoveAction : CombatAction
     public int TargetY;
     public List<HexTile> Path;
 
-    public MoveAction(int targetX, int targetY, List<HexTile> path)
+    public MoveAction(List<HexTile> path)
     {
-        ActionType = ActionType.Move;
-        this.TargetX = targetX;
-        this.TargetY = targetY;
+        this.ActionType = ActionType.Move;
+        this.RequiredAp = path.Count * Constants.ApCostPerMove;
+        this.TargetX = path[path.Count - 1].X;
+        this.TargetY = path[path.Count - 1].Y;
         this.Path = path;
     }
 }

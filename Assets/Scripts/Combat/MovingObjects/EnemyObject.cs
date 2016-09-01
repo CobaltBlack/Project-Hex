@@ -30,26 +30,25 @@ public abstract class EnemyObject : MovingObject
     // Returns true if an action was queued. false if no action was queued.
     protected bool MoveTowardPlayer()
     {
-        var path = CombatBoardManager.Instance.GetTilesInPath(X, Y, GetPlayerCoordX(), GetPlayerCoordY());
-        if (path.Count <= 1)
+        var playerX = GetPlayerCoordX();
+        var playerY = GetPlayerCoordY();
+        var path = CombatBoardManager.Instance.GetTilesInPath(X, Y, playerX, playerY, false);
+        if (path.Count < 1)
         {
             return false;
         }
 
-        // Remove last tile because that's where the player is
-        path.RemoveAt(path.Count - 1);
-
-        // Remove extra tiles from the end of the path 
-        if (MoveRange < path.Count)
+        // Remove extra tiles from the end of the path until its under the MoveRange
+        if (path.Count > MoveRange)
         {
             path.RemoveRange(MoveRange, path.Count - MoveRange);
         }
 
-        var targetX = path[path.Count - 1].X;
-        var targetY = path[path.Count - 1].Y;
-        MoveAction moveAction = new MoveAction(targetX, targetY, path);
+        var moveAction = new MoveAction(path);
         ActionQueue.Add(moveAction);
-        
+
+        CombatBoardManager.Instance.SetObjectOnTileQueued(moveAction.TargetX, moveAction.TargetY, this);
+
         return true;
     }
 }

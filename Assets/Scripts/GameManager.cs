@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
         var enemy = database.GetEnemyById(1);
         CombatParameters.Enemies.Add(enemy);
         CombatParameters.Enemies.Add(enemy);
+        CombatParameters.Enemies.Add(enemy);
+        CombatParameters.Enemies.Add(enemy);
 
         // Load combat scene
         SceneManager.LoadScene("Combat");

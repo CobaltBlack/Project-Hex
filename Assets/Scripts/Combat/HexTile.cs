@@ -21,8 +21,8 @@ public class HexTile
     public List<HexTile> Neighbors { get { return GetNeighbors(); } }
     public List<HexTile> TraversableNeighbors { get { return GetTraversableNeighbors(); } }
     public bool IsTraversable { get { return GetIsTraversable(); } }
-    public MovingObject ObjectOnTile;
-    public MovingObject ObjectQueuedOnTile;
+    public MovingObject ObjectOnTile = null;
+    public MovingObject ObjectOnTileQueued = null;
 
     // Constructor
     public HexTile(int x, int y, Vector3 position, HexTileType type)
@@ -33,18 +33,22 @@ public class HexTile
         this.TileType = type;
     }
 
+    List<HexTile> _neighbors = null;
     List<HexTile> GetNeighbors()
     {
-        var neighborTiles = new List<HexTile>();
+        // The neighbors of a tile don't change, so we can cache them
+        if (_neighbors != null) return _neighbors;
+
+        _neighbors = new List<HexTile>();
         HexTile tempTile;
 
         // Above
         tempTile = CombatBoardManager.Instance.GetHexTile(X, Y - 1);
-        if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+        if (tempTile != null) _neighbors.Add(tempTile);
 
         // Below
         tempTile = CombatBoardManager.Instance.GetHexTile(X, Y + 1);
-        if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+        if (tempTile != null) _neighbors.Add(tempTile);
 
         // (&) is the bitwise AND operator
         // x is even
@@ -52,41 +56,41 @@ public class HexTile
         {
             // Top Left
             tempTile = CombatBoardManager.Instance.GetHexTile(X - 1, Y - 1);
-            if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+            if (tempTile != null) _neighbors.Add(tempTile);
 
             // Top Right
             tempTile = CombatBoardManager.Instance.GetHexTile(X + 1, Y - 1);
-            if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+            if (tempTile != null) _neighbors.Add(tempTile);
 
             // Bottom Left
             tempTile = CombatBoardManager.Instance.GetHexTile(X - 1, Y);
-            if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+            if (tempTile != null) _neighbors.Add(tempTile);
 
             // Bottom Right
             tempTile = CombatBoardManager.Instance.GetHexTile(X + 1, Y);
-            if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+            if (tempTile != null) _neighbors.Add(tempTile);
         }
         // x is odd
         else
         {
             // Top Left
             tempTile = CombatBoardManager.Instance.GetHexTile(X - 1, Y);
-            if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+            if (tempTile != null) _neighbors.Add(tempTile);
 
             // Top Right
             tempTile = CombatBoardManager.Instance.GetHexTile(X + 1, Y);
-            if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+            if (tempTile != null) _neighbors.Add(tempTile);
 
             // Bottom Left
             tempTile = CombatBoardManager.Instance.GetHexTile(X - 1, Y + 1);
-            if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+            if (tempTile != null) _neighbors.Add(tempTile);
 
             // Bottom Right
             tempTile = CombatBoardManager.Instance.GetHexTile(X + 1, Y + 1);
-            if (tempTile != null && tempTile.IsTraversable) neighborTiles.Add(tempTile);
+            if (tempTile != null) _neighbors.Add(tempTile);
         }
 
-        return neighborTiles;
+        return _neighbors;
     }
 
     List<HexTile> GetTraversableNeighbors()
@@ -105,11 +109,18 @@ public class HexTile
 
     bool GetIsTraversable()
     {
+        // If the tile type is None or Wall
         if (TileType == HexTileType.None || TileType == HexTileType.Wall)
         {
             return false;
         }
-        
+
+        // If there is something on the tile, or WILL be on the tile
+        if (ObjectOnTile != null || ObjectOnTileQueued != null)
+        {
+            return false;
+        }
+
         return true;
     }
 }
