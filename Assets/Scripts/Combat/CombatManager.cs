@@ -14,6 +14,12 @@ enum TurnState
     EnemyTurnProcessing, // Processing/animating enemy actions
 }
 
+/* CombatManager
+ * 
+ * This scripts manages the top level flow of combat.
+ * 
+ * It is in charge of determining the turn state and handling player input.
+ */
 public class CombatManager : MonoBehaviour
 {
     // Allows combat manager to be called from anywhere
@@ -54,10 +60,10 @@ public class CombatManager : MonoBehaviour
                 HandleMoveAction(x, y);
                 break;
             case ActionType.Skill:
-                // TODO
+                // TODO Handle ActionType.Skill
                 break;
             case ActionType.Item:
-                // TODO
+                // TODO Handle ActionType.Item
                 break;
             case ActionType.None:
             default:
@@ -68,13 +74,15 @@ public class CombatManager : MonoBehaviour
     }
 
     // Activates the skill clicked
-    public void HandleSkillClick()
+    public void HandleSkillClick(int skillIndex)
     {
-        // Only proceed if it is player turn
-        if (_turnState != TurnState.PlayerTurn)
-        {
-            return;
-        }
+        // Only proceed if it is player turn, and skillIndex is valid
+        if (_turnState != TurnState.PlayerTurn) return;
+        if ( 0 > skillIndex || skillIndex >= _currentCharacter.Skills.Count) return;
+
+        // TODO: Queue a skill action instead of activating it
+        var clickedSkill = _currentCharacter.Skills[skillIndex];
+        clickedSkill.SkillEffect();
     }
 
     // Shows the movement overlays for the currently selected character
@@ -186,6 +194,8 @@ public class CombatManager : MonoBehaviour
     {
         // Initialize combat map and enemies
         BoardManager.SetupBoard(GameManager.Instance.CombatParameters);
+
+        _currentCharacter = PlayerScript;
     }
 
     // Leave the combat scene.
@@ -196,7 +206,7 @@ public class CombatManager : MonoBehaviour
     void InitializeUI()
     {
         Debug.Log("Initialize UI");
-        UIManager.SetupUI();
+        UIManager.SetupUI(_currentCharacter);
     }
 
     // Enables UI buttons and controls for player turn

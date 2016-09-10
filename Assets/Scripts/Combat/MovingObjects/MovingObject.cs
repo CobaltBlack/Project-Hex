@@ -16,14 +16,12 @@ public class MovingObject : MonoBehaviour
     public int CurrentAp;
     public int MaxAp;
 
+    public List<SkillData> Skills = new List<SkillData>();
+
     public bool ActionsComplete = false;
-    public List<CombatAction> ActionQueue = new List<CombatAction>();
 
     // Remaining move range based on AP
     public int MoveRange { get { return CurrentAp / Constants.ApCostPerMove; } }
-
-    // Duration of the movement animation in seconds
-    public float MoveTime = 0.1f;
 
     // ======================================
     // Public Functions
@@ -71,6 +69,11 @@ public class MovingObject : MonoBehaviour
     // ======================================
     // Private Functions
     // ======================================
+
+    protected List<CombatAction> ActionQueue = new List<CombatAction>();
+
+    // Duration of the movement animation in seconds
+    float MoveTime = 0.1f;
 
     int _actionIndex = 0;
     float _inverseMoveTime;

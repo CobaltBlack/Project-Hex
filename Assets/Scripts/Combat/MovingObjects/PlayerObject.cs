@@ -10,13 +10,15 @@ using System.Collections;
  */
 public class PlayerObject : FriendlyObject
 {
-    void Start()
+    public void InitializeData()
     {
-        // Get hp, ap, etc from player script
-        CurrentHp = PlayerManager.Instance.MaxHp;
+        // Get hp, ap, skills from PlayerManager
         MaxHp = PlayerManager.Instance.MaxHp;
+        CurrentHp = PlayerManager.Instance.CurrentHp;
 
         MaxAp = PlayerManager.Instance.ActionPoints;
         CurrentAp = MaxAp;
+
+        Skills = PlayerManager.Instance.Skills;
     }
 }

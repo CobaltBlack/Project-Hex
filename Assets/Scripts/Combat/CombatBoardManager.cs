@@ -314,8 +314,6 @@ public class CombatBoardManager : MonoBehaviour
         {
             var friendlyObj = (FriendlyObject)obj;
             GetHexTile(friendlyObj.ShadowX, friendlyObj.ShadowY).ObjectOnTileQueued = null;
-            print(friendlyObj.ShadowX);
-            print(friendlyObj.ShadowY);
         }
 
         GetHexTile(obj.X, obj.Y).ObjectOnTile = null;
@@ -429,10 +427,10 @@ public class CombatBoardManager : MonoBehaviour
         // Setup some data in related scripts
         playerScript.X = PlayerInitX;
         playerScript.Y = PlayerInitY;
+        playerScript.InitializeData();
         tile.ObjectOnTile = playerScript;
         CombatManager.Instance.SetPlayerObject(playerInstance);
         
-
         // Instantiate companions
 
 

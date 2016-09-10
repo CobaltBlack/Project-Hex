@@ -169,6 +169,47 @@ MonoBehaviour:
 GameObject:
   m_PrefabParentObject: {fileID: 192076, guid: e9560c7cc5ac78b4b8433f09d0d3e7dd, type: 2}
   m_PrefabInternal: {fileID: 920573920}
+--- !u!1 &765191285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 765191287}
+  - 114: {fileID: 765191286}
+  m_Layer: 0
+  m_Name: SkillDatabase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &765191286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 765191285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d1701776fc924d4393a9bd3fee69045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SkillList: {fileID: 11400000, guid: 2afba7d0ccddacb4c9870e508482f2f9, type: 2}
+--- !u!4 &765191287
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 765191285}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.0058074, y: -5.2448726, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
 --- !u!1001 &920573920
 Prefab:
   m_ObjectHideFlags: 0
@@ -404,6 +445,18 @@ Prefab:
       propertyPath: displayText
       value: 
       objectReference: {fileID: 1282690654}
+    - target: {fileID: 11473498, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
+      propertyPath: MaxMorality
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11473498, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
+      propertyPath: MaxSanity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11473498, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
+      propertyPath: MaxNumOfSkills
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d4b2c52c5a3fd0449be4517f3d543ba, type: 2}
   m_IsPrefabParent: 0
