@@ -17,25 +17,28 @@ using System;
 
 public class CombatBoardManager : MonoBehaviour
 {
-    // Allows board manager to be called from anywhere
+    // Singleton instance allows this script to be called from anywhere
     public static CombatBoardManager Instance = null;
 
     // =========================
-    // Public functions
+    // Unity Inspecter variables
     // =========================
-
-    public HexTile[,] GameBoard;
-    public int Columns, Rows;
+    public int Columns;
+    public int Rows;
 
     public GameObject[] NormalTiles;
     public GameObject[] RockTiles;
     public GameObject[] WallTiles;
     public GameObject[] LavaTiles;
 
-    public int PlayerInitX = 5;
-    public int PlayerInitY = 5;
+    public int PlayerInitX;
+    public int PlayerInitY;
 
-    // Use this for initialization
+    // =========================
+    // Public functions
+    // =========================
+
+    // Initialize the board based on given CombatParameters
     public void SetupBoard(CombatParameters parameters)
     {
         if (Instance == null)
@@ -296,15 +299,6 @@ public class CombatBoardManager : MonoBehaviour
         return true;
     }
 
-    public bool IsHexWithinBounds(int x, int y)
-    {
-        if (0 > x || x >= Columns || 0 > y || y >= Rows)
-        {
-            return false;
-        }
-        return true;
-    }
-
     // Sets obj to be queued on tile (x, y), so that no other objects can move to (x, y)
     // Also makes the obj's previous tile free to me moved on
     public void SetObjectOnTileQueued(int x, int y, MovingObject obj)
@@ -331,12 +325,12 @@ public class CombatBoardManager : MonoBehaviour
         }
     }
 
-
     // =========================
     // Private functions
     // =========================
 
     CombatParameters _parameters;
+    HexTile[,] GameBoard;
 
     // Set up an empty game board
     void InitializeGameBoard()
@@ -508,6 +502,15 @@ public class CombatBoardManager : MonoBehaviour
         return Mathf.Max(maxParam);
     }
 
+    bool IsHexWithinBounds(int x, int y)
+    {
+        if (0 > x || x >= Columns || 0 > y || y >= Rows)
+        {
+            return false;
+        }
+        return true;
+    }
+
     class CubeHex
     {
         public int X;
@@ -560,4 +563,3 @@ public class CombatBoardManager : MonoBehaviour
         public OffsetHex(CubeHex cube) : this(cube.X, cube.Y, cube.Z) { }
     }
 }
-

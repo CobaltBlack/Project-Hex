@@ -2,11 +2,9 @@
 using System.Collections;
 
 
-/*
- * Player
+/* PlayerObject
  *  
  * This script is attached to the in-combat object of the player
- * 
  */
 public class PlayerObject : FriendlyObject
 {

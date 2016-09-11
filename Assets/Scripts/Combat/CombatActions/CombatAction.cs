@@ -8,7 +8,7 @@ public enum ActionType
     Item,
 }
 
-public class CombatAction {
+public abstract class CombatAction {
     public int RequiredAp;
     public ActionType ActionType;
 }

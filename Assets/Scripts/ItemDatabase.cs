@@ -11,7 +11,6 @@ using System.Collections.Generic;
 
 public class ItemDatabase : MonoBehaviour
 {
-
     // List of items defined in the Unity Inspector
     public List<Item> items = new List<Item>();
     public List<Consumable> consumables = new List<Consumable>();

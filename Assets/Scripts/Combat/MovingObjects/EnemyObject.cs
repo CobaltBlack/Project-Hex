@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* EnemyObject
+ * 
+ * Base class for a generic enemy
+ * 
+ * Inheriting classes must implement QueueTurnActions()
+ * to define the behaviour of the enemy per turn
+ */
 public abstract class EnemyObject : MovingObject
 {
     public EnemyType Type;
@@ -16,11 +23,13 @@ public abstract class EnemyObject : MovingObject
 
     public abstract void QueueTurnActions();
 
+    // X coordinate of player
     protected int GetPlayerCoordX()
     {
         return CombatManager.Instance.PlayerScript.X;
     }
 
+    // Y coordinate of player
     protected int GetPlayerCoordY()
     {
         return CombatManager.Instance.PlayerScript.Y;

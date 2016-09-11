@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/*
- * PlayerManager
+/* PlayerManager
  * 
  * This script stores all information related to the player.
  * As a singleton, this can be accessed anywhere.
- * 
  */
 public class PlayerManager : MonoBehaviour
 {
