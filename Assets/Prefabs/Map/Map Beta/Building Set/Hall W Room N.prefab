@@ -109,7 +109,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138998}
   m_LocalRotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
-  m_LocalPosition: {x: -5.65833, y: 34.691364, z: 0}
+  m_LocalPosition: {x: 77.77999, y: 162.64381, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
   m_Children:
@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 2
   isClickable: 0
   isVisited: 0
   player: 0
@@ -241,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 1
   isClickable: 0
   isVisited: 0
   player: 0
@@ -257,6 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 2
   isClickable: 0
   isVisited: 0
   player: 0
@@ -273,16 +276,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744383a511cc430478adb91b43efdccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0
-  property: 0
+  TilesetTag: 0
   exit1A: {fileID: 146590}
-  exit1B: {fileID: 0}
   exit2A: {fileID: 119010}
-  exit2B: {fileID: 0}
   exit3A: {fileID: 194858}
-  exit3B: {fileID: 0}
   exit4A: {fileID: 0}
-  exit4B: {fileID: 0}
   startingNode: {fileID: 189916}
 --- !u!114 &11473958
 MonoBehaviour:
@@ -295,6 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 2
   isClickable: 0
   isVisited: 0
   player: 0

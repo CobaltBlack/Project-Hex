@@ -210,7 +210,7 @@ public class MapManager : MonoBehaviour
             }
 
             // read tiles zoning property
-            EnumTileProperty property = ZoningProperty(mapData, x, y);
+            Tileset property = ZoningProperty(mapData, x, y);
 
             // construct a list of valid tiles with correct "exit" and "zone" pool
             List<GameObject> validMapTiles = ConstructValidMapTilesList(property, hasNorthExit, hasWestExit, hasSouthExit, hasEastExit);
@@ -224,8 +224,8 @@ public class MapManager : MonoBehaviour
         // register all nodes correctly
         ConnectExitNodes(mapData.columns, mapData.rows);
 
-        // draw visual lines between nodes
-        //InitializeNodes(mapData.columns, mapData.rows);
+        // assign instances to nodes
+        InitializeNodes(mapData.columns, mapData.rows);
     }
 
     // place object in location provided with GameObject provided
@@ -264,7 +264,7 @@ public class MapManager : MonoBehaviour
     }
 
     // given the info surrounding a tile, return a list of acceptable tiles
-    List<GameObject> ConstructValidMapTilesList(EnumTileProperty property, bool hasNorthExit, bool hasWestExit, bool hasSouthExit, bool hasEastExit)
+    List<GameObject> ConstructValidMapTilesList(Tileset property, bool hasNorthExit, bool hasWestExit, bool hasSouthExit, bool hasEastExit)
     {
         List<GameObject> validMapTiles = new List<GameObject>();
         validMapTiles.Clear();
@@ -273,7 +273,7 @@ public class MapManager : MonoBehaviour
         {
             MapTile currentTile = mapTiles[i].GetComponent<MapTile>();
 
-            if (property == currentTile.property) // check property
+            if (property == currentTile.TilesetTag) // check property
             {
                 if (hasNorthExit == currentTile.exit1A && hasWestExit == currentTile.exit2A && hasSouthExit == currentTile.exit3A && hasEastExit == currentTile.exit4A) // check exit
                 {
@@ -305,20 +305,20 @@ public class MapManager : MonoBehaviour
     }
 
     // read tiles zoning property given current location
-    EnumTileProperty ZoningProperty(MapDataTemplate mapData, int x, int y)
+    Tileset ZoningProperty(MapDataTemplate mapData, int x, int y)
     {
         if (mapData.building_xFrom <= x && x <= mapData.building_xTo && mapData.building_yFrom <= y && y <= mapData.building_yTo) // if x and y is within zoning property of garden
         {
             // this tile should be building
-            return EnumTileProperty.Building;
+            return Tileset.Building;
         }
         if (mapData.garden_xFrom <= x && x <= mapData.garden_xTo && mapData.garden_yFrom <= y && y <= mapData.garden_yTo) // if x and y is within zoning property of garden
         {
             // this tile should be garden
-            return EnumTileProperty.Garden;
+            return Tileset.Garden;
         }
         Debug.Log("Error may have occurred - check ZoningProperty under MapManager");
-        return EnumTileProperty.Default;
+        return Tileset.Default;
     }
 
     // connect all exit nodes together
@@ -330,17 +330,21 @@ public class MapManager : MonoBehaviour
             for (int y = 0; y < rows; y++)
             {
                 // check 1. if out of bound, 2. current tile exists, 3. current tile South exit exists, 4. corresponding tile exists, 5. corresponding tile North exit exists
-                if (x - 1 >= 0 &&
-                    mapTileGameObjects[x, y] && mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A &&
-                    mapTileGameObjects[x - 1, y] && mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A)
+                if (x - 1 >= 0
+                    && mapTileGameObjects[x, y]
+                    && mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A
+                    && mapTileGameObjects[x - 1, y]
+                    && mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A)
                 {
                     mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A);
                     mapTileGameObjects[x - 1, y].GetComponent<MapTile>().exit1A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x, y].GetComponent<MapTile>().exit3A);
                 }
                 // check 1. if out of bound, 2. current tile exists, 3. current tile East exit exists, 4. corresponding tile exists, 5. corresponding tile West exit exists
-                if (y - 1 >= 0 &&
-                    mapTileGameObjects[x, y] && mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A &&
-                    mapTileGameObjects[x, y - 1] && mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A)
+                if (y - 1 >= 0
+                    && mapTileGameObjects[x, y]
+                    && mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A
+                    && mapTileGameObjects[x, y - 1]
+                    && mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A)
                 {
                     mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A);
                     mapTileGameObjects[x, y - 1].GetComponent<MapTile>().exit2A.GetComponent<MapNode>().nodesConnected.Add(mapTileGameObjects[x, y].GetComponent<MapTile>().exit4A);
@@ -349,7 +353,7 @@ public class MapManager : MonoBehaviour
         }
     }
     
-    // connect all nodes visually
+    // assign instances to all nodes (now obsolete: connect all nodes visually)
     void InitializeNodes(int columns, int rows)
     {
         List<GameObject> childNodeList = new List<GameObject>();
@@ -376,11 +380,16 @@ public class MapManager : MonoBehaviour
                 // for all nodes inside tile
                 for (int i = 0; i < childNodeList.Count; i++)
                 {
-                    // for all nodesConnected inside node
+                    // ASSIGN INSTANCE
+                    childNodeList[i].GetComponent<MapNode>().assignedInstance = GetComponent<InstanceManager>().AssignInstance(mapTileGameObjects[x, y].GetComponent<MapTile>().TilesetTag, childNodeList[i].GetComponent<MapNode>().LayoutTag);
+
+                    /*
+                    //for all nodesConnected inside node
                     for (int u = 0; u < childNodeList[i].GetComponent<MapNode>().nodesConnected.Count; u++)
                     {
                         if (childNodeList[i] && childNodeList[i].GetComponent<MapNode>().nodesConnected[u]) // i forgot why this part was necessary ha ha ha
                         {
+                            // DRAW LINE
                             //Debug.DrawLine(childNodeList[i].transform.position, childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform.position, Color.green, 1000, false);
 
                             // dotted line using line renderer
@@ -391,9 +400,16 @@ public class MapManager : MonoBehaviour
                             lineInstance.transform.SetParent(lineHolder);
                         }
                     }
+                    */
                 }
             }
         }
+    }
+
+    // the legendary math function
+    void SolveThisMathQuestion(int originX, int originY, int edgeX, int edgeY, int givenX, int givenY)
+    {
+
     }
 
     // connect surrounding nodes visually

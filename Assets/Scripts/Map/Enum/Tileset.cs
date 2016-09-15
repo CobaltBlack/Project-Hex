@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum EnumTileProperty
+public enum Tileset
 {
     Building,
     Garden,
     Default
 };
-

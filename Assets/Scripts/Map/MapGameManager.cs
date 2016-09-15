@@ -45,6 +45,7 @@ public class MapGameManager : MonoBehaviour
 
         // set player
         newNode = mapScript.mapTileGameObjects[10, 10].GetComponent<MapTile>().startingNode; //temporary place holder starting location
+        newNode.GetComponent<MapNode>().isVisited = true; // set start as visited
         MovePlayer(newNode);
 
         // initialization complete
@@ -59,8 +60,8 @@ public class MapGameManager : MonoBehaviour
         // send playerInstance to this position
         playerInstance.transform.position = currentNode.transform.position;
 
-        // set the node to visited
-        currentNode.GetComponent<MapNode>().isVisited = true;
+        // set the node to visited // this functionality is moved to MapNode
+        //currentNode.GetComponent<MapNode>().isVisited = true;
 
         // connect surrounding nodes visually, disconnect previous connections
         mapScript.ConnectNodes(newNode);
@@ -75,5 +76,10 @@ public class MapGameManager : MonoBehaviour
         {
             newNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isClickable = true;
         }
+    }
+
+    public void PlayInstance(Instance currentInstance)
+    {
+        instanceScript.StartInstance(currentInstance);
     }
 }

@@ -179,6 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 1
   isClickable: 0
   isVisited: 0
   player: 0
@@ -195,16 +196,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744383a511cc430478adb91b43efdccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0
-  property: 0
+  TilesetTag: 0
   exit1A: {fileID: 0}
-  exit1B: {fileID: 0}
   exit2A: {fileID: 0}
-  exit2B: {fileID: 0}
   exit3A: {fileID: 0}
-  exit3B: {fileID: 0}
   exit4A: {fileID: 158694}
-  exit4B: {fileID: 0}
   startingNode: {fileID: 129504}
 --- !u!114 &11476676
 MonoBehaviour:
@@ -217,6 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
@@ -234,6 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 1
   isClickable: 0
   isVisited: 0
   player: 0

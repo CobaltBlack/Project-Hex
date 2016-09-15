@@ -3,8 +3,8 @@ using System.Collections;
 
 public class MapTile : MonoBehaviour
 {
-    // property
-    public EnumTileProperty property;
+    // tile property
+    public Tileset TilesetTag;
 
     // EXIT information
     public GameObject exit1A;

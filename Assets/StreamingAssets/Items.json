@@ -1,0 +1,32 @@
+[
+	{
+		"id": 0,
+		"title": "Coca Cola!",
+		"value": 6,
+		"stats":
+			{
+			"power": 1,
+			"defense": 4,
+			"vitality": 2 
+			},
+		"description": "Now 70% more delicious than Pepsi!",
+		"stackable": false,
+		"rarity": 2,
+		"slug": "Coca_Cola"
+	},
+	{
+		"id": 1,
+		"title": "The Great Tomato",
+		"value": 543,
+		"stats":
+			{
+			"power": 56,
+			"defense": 2,
+			"vitality": 54 
+			},
+		"description": "One tomato, two tomato, three tomato.",
+		"stackable": true,
+		"rarity": 6,
+		"slug": "tomato"
+	}
+]

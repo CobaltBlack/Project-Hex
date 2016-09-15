@@ -22,6 +22,18 @@ public class ExampleInstance : Instance
         return InstanceType.Dialogue;
     }
 
+    // ========================= TEST =========================
+    protected override List<Tileset> GetInstanceTileset()
+    {
+        return new List<Tileset> { Tileset.Building };
+    }
+
+    protected override List<Layout> GetInstanceLayout()
+    {
+        return new List<Layout> { Layout.Room };
+    }
+    // ========================= TEST =========================
+
     // Define the first prompt
     class IntroPrompt : Prompt
     {

@@ -41,8 +41,7 @@ public class InventoryManager : MonoBehaviour
         {
             return;
         }
-
-        playerItems.Add(database.getItemById(itemId));
+        playerItems.Add(database.getItemByID(itemId));
     }
 
     public bool RemoveItem(int itemId)

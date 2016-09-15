@@ -271,16 +271,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744383a511cc430478adb91b43efdccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0
-  property: 0
+  TilesetTag: 0
   exit1A: {fileID: 0}
-  exit1B: {fileID: 0}
   exit2A: {fileID: 181600}
-  exit2B: {fileID: 0}
   exit3A: {fileID: 129632}
-  exit3B: {fileID: 0}
   exit4A: {fileID: 189322}
-  exit4B: {fileID: 0}
   startingNode: {fileID: 121284}
 --- !u!114 &11440892
 MonoBehaviour:
@@ -293,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 1
   isClickable: 0
   isVisited: 0
   player: 0
@@ -310,6 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
@@ -328,6 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
@@ -345,6 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
@@ -361,6 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0

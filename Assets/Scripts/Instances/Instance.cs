@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum InstanceType
 {
@@ -11,13 +12,19 @@ public enum InstanceType
 };
 
 // Parent class of all Instances
-public abstract class Instance
+public abstract class Instance : MonoBehaviour
 {
     public string Name { get { return GetInstanceName(); } }
     public Prompt InitialPrompt { get { return GetInitialPrompt(); } }
     public InstanceType Type { get { return GetInstanceType(); } }
 
+    public List<Tileset> InstanceTileset { get { return GetInstanceTileset(); } }
+    public List<Layout> InstanceLayout { get { return GetInstanceLayout(); } }
+
     protected abstract string GetInstanceName();
     protected abstract Prompt GetInitialPrompt();
     protected abstract InstanceType GetInstanceType();
+
+    protected abstract List<Tileset> GetInstanceTileset();
+    protected abstract List<Layout> GetInstanceLayout();
 }

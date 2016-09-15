@@ -1,41 +1,96 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using System;
 
-public class MapNode : MonoBehaviour
+public class MapNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
 {
     SpriteRenderer nodeSprite;
+
+    // node property
+    public Layout LayoutTag;
 
     // basic node attributes
     public bool isClickable = false;
     public bool isVisited = false;
     public bool player = false;
 
+    // i dont remember why i added this probably delete it? HA HA HA
+    public Canvas dialogueUI;
+
     // list of neighbouring nodes
     public List<GameObject> nodesConnected = new List<GameObject>();
+
+    public Instance assignedInstance;
+
+    // reference to nodeTooltip script
+    NodeTooltip NodeTooltipScript;
 
     void Awake()
     {
         nodeSprite = gameObject.GetComponent<SpriteRenderer>();
+        NodeTooltipScript = GameObject.Find("MapManager").GetComponent<NodeTooltip>();
     }
 
     void OnMouseEnter()
     {
-        if (isClickable)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            nodeSprite.material.color = Color.green;
+            if (isClickable)
+            {
+                // turn node green if clickable
+                nodeSprite.material.color = Color.green;
+
+                // display node information
+                NodeTooltipScript.ActivateHoverTooltip();
+            }
         }
     }
 
     void OnMouseExit()
     {
-        nodeSprite.material.color = Color.white;
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            // turn node back to original color
+            nodeSprite.material.color = Color.white;
+
+            // hide node information
+            NodeTooltipScript.DeactivateHoverTooltip();
+        }
     }
 
     void OnMouseUp()
     {
-        if (isClickable)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            MapGameManager.instance.MovePlayer(gameObject);
+            if (isClickable)
+            {
+                MapGameManager.instance.MovePlayer(gameObject);
+
+                if (!isVisited)
+                {
+                    MapGameManager.instance.PlayInstance(assignedInstance);
+                }
+            }
+
+            isVisited = true;
         }
+    }
+
+    // upgrade later
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        throw new NotImplementedException();
     }
 }
