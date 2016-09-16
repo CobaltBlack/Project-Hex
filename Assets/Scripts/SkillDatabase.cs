@@ -47,7 +47,9 @@ public class SkillDatabase : MonoBehaviour
         }
         else
         {
-            return SkillDict[name];
+            // Use a clone so the database values cannot be edited
+            var clone = Instantiate(SkillDict[name]) as SkillData;
+            return clone;
         }
     }
 }

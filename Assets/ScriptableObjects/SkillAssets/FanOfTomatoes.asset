@@ -11,11 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866f343d52b592b48bb713afb9a2d7a7, type: 3}
   m_Name: HolyNova
   m_EditorClassIdentifier: 
-  DisplayName: New Skill
-  Description: 
-  Type: 1
-  Icon: {fileID: 0}
+  DisplayName: Holy Nova
+  Description: Emit a burst of light that damages enemies and heals your allies.
   RequiredAp: 80
   CooldownTurns: 2
-  BaseDamage: 50
+  MaxUsesPerTurn: 10
+  Icon: {fileID: 0}
+  Type: 0
+  SourceObject: {fileID: 0}
+  DamageAmount: 50
+  HealAmount: 50
   Range: 6
+  SkillAnimation: {fileID: 160082, guid: 7763cbcd0f247aa4f85e5daa7b807936, type: 2}

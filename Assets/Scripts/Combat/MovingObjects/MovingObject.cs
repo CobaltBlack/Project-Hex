@@ -36,17 +36,24 @@ public class MovingObject : MonoBehaviour
 
         // Decrease currentAp
         CurrentAp -= path.Count * Constants.ApCostPerMove;
-        
+
+        // Set the object queued on target tile, so other objects can't move on it
         CombatBoardManager.Instance.SetObjectOnTileQueued(targetX, targetY, this);
     }
 
-    // Removes a queued action by index
-    public void DequeueAction(int index)
+    // Adds an action for an InstantSkill to the ActionQueue
+    public void QueueInstantSkill(InstantSkill skill)
     {
-        CurrentAp -= ActionQueue[index].RequiredAp;
-        ActionQueue.RemoveAt(index);
+        CurrentAp -= skill.RequiredAp;
+        var action = new InstantSkillAction(skill);
+        action.SourceObject = this;
+        ActionQueue.Add(action);
+    }
 
-        // Update UI visuals for action removed
+    // Adds an action for an RangedSkill to the ActionQueue
+    public void QueueRangedSkill(RangedSkill skill, int targetX, int targetY)
+    {
+
     }
 
     // Runs all the actions in the action queue
@@ -55,6 +62,15 @@ public class MovingObject : MonoBehaviour
         ActionsComplete = true;
         _actionIndex = 0;
         ProcessNextCombatAction();
+    }
+
+    // Removes a queued action by index
+    public void DequeueAction(int index)
+    {
+        CurrentAp += ActionQueue[index].RequiredAp;
+        ActionQueue.RemoveAt(index);
+
+        // Update UI visuals for action removed
     }
 
     // Removes all actions currently in the queue
@@ -101,6 +117,7 @@ public class MovingObject : MonoBehaviour
         }
 
         // Run action based on its type
+        // The functions will call ProcessNextCombatAction() once it completes
         var action = ActionQueue[_actionIndex];
         _actionIndex++;
         switch (action.ActionType)
@@ -110,6 +127,7 @@ public class MovingObject : MonoBehaviour
                 break;
 
             case ActionType.Skill:
+                RunSkillAction((SkillAction)action);
                 break;
 
             case ActionType.Item:
@@ -182,16 +200,23 @@ public class MovingObject : MonoBehaviour
         StartNextSmoothMove();
     }
 
+    // Updates the sprite's sorting layer so that they render in the right order
+    void UpdateSortingLayer()
+    {
+        _sprite.sortingOrder = (int)((-1) * transform.position.y);
+    }
+
+    // Makes the current character run the SkillAction
+    // Calls ProcessNextCombatAction() once it is complete
+    public void RunSkillAction(SkillAction action)
+    {
+        action.ExecuteSkill(ProcessNextCombatAction);
+    }
+
     // Runs the ending action
     void EndCombatAction()
     {
         if (_EndActionCallback != null)
             _EndActionCallback();
-    }
-
-    // Updates the sprite's sorting layer so that they render in the right order
-    void UpdateSortingLayer()
-    {
-        _sprite.sortingOrder = (int)((-1) * transform.position.y);
     }
 }

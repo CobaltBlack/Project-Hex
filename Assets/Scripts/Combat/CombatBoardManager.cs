@@ -325,6 +325,23 @@ public class CombatBoardManager : MonoBehaviour
         }
     }
 
+    // Returns a list of objects (friendly or hostile) within a given range of a coordinate
+    public List<MovingObject> GetObjectsInRange(int x, int y, int range)
+    {
+        var objectsInRange = new List<MovingObject>();
+
+        var tiles = GetTilesInRange(x, y, range);
+        foreach (var tile in tiles)
+        {
+            if (tile.ObjectOnTile != null)
+            {
+                objectsInRange.Add(tile.ObjectOnTile);
+            }
+        }
+
+        return objectsInRange;
+    }
+
     // =========================
     // Private functions
     // =========================

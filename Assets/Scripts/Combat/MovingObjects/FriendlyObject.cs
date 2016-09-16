@@ -5,16 +5,6 @@ public class FriendlyObject : MovingObject
 {
     public GameObject CharacterShadow = null;
 
-    void Start()
-    {
-        // Get hp, ap, etc from player script
-        //int currentHp = PlayerManager.instance.maxHp;
-        //int maxHp = PlayerManager.instance.maxHp;
-
-        //int maxAp = PlayerManager.instance.actionPoints;
-        //int currentAp = maxAp;
-    }
-
     // Animate the shadow if queueing a move command for friendly characters
     public override void QueueMoveAction(int targetX, int targetY)
     {
@@ -41,11 +31,6 @@ public class FriendlyObject : MovingObject
         }
     }
 
-    // ====================================
-    // Functions for Shadow object
-    // - The shadow is displayed during the player turn when planning Move actions
-    // ====================================
-
     public int ShadowX
     {
         get
@@ -70,7 +55,7 @@ public class FriendlyObject : MovingObject
 
     // Display the shadow for the current object
     // Activated when player attempts to move the current character
-    void ShowShadow()
+    public void ShowShadow()
     {
         // Instantiates the shadow if it is not yet instantiated
         if (!CharacterShadow)

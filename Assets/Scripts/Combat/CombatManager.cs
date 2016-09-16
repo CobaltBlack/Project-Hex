@@ -73,20 +73,54 @@ public class CombatManager : MonoBehaviour
         UpdateUI();
     }
 
-    // Activates the skill clicked
+    // Handles what happens when a skill icon is clicked
     public void HandleSkillClick(int skillIndex)
     {
         // Only proceed if it is player turn, and skillIndex is valid
         if (_turnState != TurnState.PlayerTurn) return;
-        if ( 0 > skillIndex || skillIndex >= _currentCharacter.Skills.Count) return;
+        if (0 > skillIndex || skillIndex >= _currentCharacter.Skills.Count) return;
 
-        // TODO: Queue a skill action instead of activating it
         var clickedSkill = _currentCharacter.Skills[skillIndex];
-        clickedSkill.SkillEffect();
+
+        // Check if character has enough AP
+        // (Should always have enough, since otherwise the skill buttons would be disabled)
+        if (_currentCharacter.CurrentAp < clickedSkill.RequiredAp)
+        {
+            Debug.Log("Attempting to queue skill without enough AP!");
+            return;
+        }
+
+        // Handle the selected skill based on its type
+        switch (clickedSkill.Type)
+        {
+            case SkillType.Instant:
+                // For instant skills, add it to the queue right away
+                HandleInstantSkillClick((InstantSkill)clickedSkill);
+                break;
+
+            case SkillType.Ranged:
+                // For ranged skills, highlight range.
+                // Mouseover shows affected area for AOE skills
+                ShowRangedSkillOverlay((RangedSkill)clickedSkill);
+                break;
+
+            case SkillType.Target:
+                // For targeted skills, highlight available targets within range
+                break;
+
+            case SkillType.Directional:
+                // For directional skills, highlight directions
+                break;
+
+            default:
+                Debug.LogError("Unhandled skill type");
+                break;
+        }
     }
 
     // Shows the movement overlays for the currently selected character
     // Takes into account of current remaining AP and shadow
+    // Assumes that no other overlays are displayed
     public void ShowMovementOverlays()
     {
         int currentX, currentY;
@@ -112,6 +146,15 @@ public class CombatManager : MonoBehaviour
         OverlayManager.InstantiateOverlays(overlayTiles);
     }
 
+    // Show the overlay for the Ranged skill, allowing the player to target a hex
+    public void ShowRangedSkillOverlay(RangedSkill skill)
+    {
+        _currentAction = ActionType.Skill;
+        _currentSkill = skill;
+        var inRangeTiles = BoardManager.GetTilesInRange(_currentCharacter.X, _currentCharacter.Y, skill.Range);
+        OverlayManager.InstantiateOverlays(inRangeTiles);
+    }
+
     // ======================================
     // Private Functions
     // ======================================
@@ -121,7 +164,8 @@ public class CombatManager : MonoBehaviour
     CombatUIManager UIManager;
 
     TurnState _turnState = TurnState.Initializing; // Current state of the game    
-    ActionType _currentAction = ActionType.None; // Currently selected skill
+    ActionType _currentAction = ActionType.None; // Currently selected action
+    SkillData _currentSkill = null;
     FriendlyObject _currentCharacter; // The character the player is currently controlling (hero or companions)
     List<FriendlyObject> _characterRunOrder; // The order in which the characters run their actions
 
@@ -244,7 +288,7 @@ public class CombatManager : MonoBehaviour
         // Disable UI and controls
         OverlayManager.RemoveAllOverlays();
 
-        // Hide shadows for all friendly characters
+        // TODO: Hide shadows for all friendly characters
         PlayerScript.HideShadow();
 
         Debug.Log("Processing actions");
@@ -318,7 +362,7 @@ public class CombatManager : MonoBehaviour
         // TODO: Do stuff with UI
     }
 
-    // Called when a skill is selected
+    // Called when a tile is clicked, with the intent of targeting skill
     void HandleUseSkillAction()
     {
         // If skill does not require a target, queue it right away
@@ -333,11 +377,33 @@ public class CombatManager : MonoBehaviour
 
     }
 
+    // Called when an Instant skill is selected
+    // Adds the skill to the queue instantly
+    void HandleInstantSkillClick(InstantSkill skill)
+    {
+        // Add a InstantSkillAction to the currentChar's ActionQueue
+        _currentCharacter.QueueInstantSkill(skill);
+
+        // Update internal values after queuing the skill
+        skill.HandleSkillQueued();
+
+        // Refresh movement overlays because the character now has less AP
+        OverlayManager.RemoveAllOverlays();
+        ShowMovementOverlays();
+
+        // Refresh UI for action queue
+        UpdateUI();
+    }
+
     // Refreshes all the UI elements based on current game state
     void UpdateUI()
     {
         // AP Display
         UIManager.UpdateApDisplay(_currentCharacter.CurrentAp, _currentCharacter.MaxAp);
+
+        // Action queue display
+
+        // Disable skill buttons based on remaining AP
     }
 
     // ==============================

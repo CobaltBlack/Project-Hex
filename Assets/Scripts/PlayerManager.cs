@@ -134,7 +134,7 @@ public class PlayerManager : MonoBehaviour
         // TEST Load example skills
         _skills = new List<SkillData>();
         AddSkill(SkillDatabase.Instance.getSkillByName("Fireball1"));
-        AddSkill(SkillDatabase.Instance.getSkillByName("HolyNova"));
+        AddSkill(SkillDatabase.Instance.getSkillByName("FanOfTomatoes"));
     }
 
     // Refreshes the player stats by recalculating it based on current items and effects

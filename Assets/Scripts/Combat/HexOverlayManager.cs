@@ -18,9 +18,9 @@ public class HexOverlayManager : MonoBehaviour
     public void InstantiateOverlays(List<HexTile> tiles)
     {
         OverlayContainer = new GameObject("HexOverlays");
-        for (int i = 0; i < tiles.Count; i++)
+        foreach (var tile in tiles)
         {
-            GameObject overlayObj = InstantiateOverlay(tiles[i]);
+            var overlayObj = InstantiateOverlay(tile);
             overlayObj.transform.SetParent(OverlayContainer.transform);
         }
     }
@@ -38,7 +38,7 @@ public class HexOverlayManager : MonoBehaviour
 
         // Set some attributes
         instance.name = "hexOverlay";
-        HexOverlay overlayScript = instance.GetComponent<HexOverlay>();
+        var overlayScript = instance.GetComponent<HexOverlay>();
         overlayScript.X = tile.X;
         overlayScript.Y = tile.Y;
         return instance;

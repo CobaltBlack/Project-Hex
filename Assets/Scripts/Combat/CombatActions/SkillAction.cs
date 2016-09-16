@@ -1,32 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
-public enum SkillType
+// Base class for an CombatAction that contains a Skill
+public abstract class SkillAction : CombatAction
 {
-    Target,
-    Instant,
-};
+    public MovingObject SourceObject;
+    public List<MovingObject> AffectedObjects;
+    public SkillType SkillType;
 
-[System.Serializable]
-public class SkillAction : CombatAction
-{
-    public string Name;
-    public string Description;
-    public SkillType Type;
-    public Sprite Icon; // Set in inspector
+    // Reference to MovingObject.ProcessNextCombatAction()
+    protected Action _processNextCombatActionCallback = null;
 
-    //public string Name { get { return GetName(); } }
-    //public string Description { get { return GetDescription(); } }
-    //public SkillType Type { get { return GetSkillType(); } }
-    //public Sprite Icon; // Set in inspector
-
-    //protected abstract string GetName();
-    //protected abstract string GetDescription();
-    //protected abstract SkillType GetSkillType();
-    //protected abstract int GetRequiredAp();
-
-    public SkillAction()
+    public SkillAction(SkillData skill)
     {
-        //RequiredAp = GetRequiredAp();
+        RequiredAp = skill.RequiredAp;
+        ActionType = ActionType.Skill;
     }
+
+    //
+    public abstract void ExecuteSkill(Action callback);
+    public abstract void ApplySkillEffects();
 }
