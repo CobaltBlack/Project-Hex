@@ -7,8 +7,9 @@ public class Inventory : MonoBehaviour
 {
     ItemDatabase itemDatabaseScript;
 
-    GameObject inventoryPanel;
-    GameObject slotPanel;
+    // the following items must be assigned in the inspector
+    public GameObject inventoryPanel;
+    public GameObject slotPanel;
     public GameObject inventorySlot;
     public GameObject inventoryItem;
 
@@ -20,8 +21,9 @@ public class Inventory : MonoBehaviour
     {
         itemDatabaseScript = GetComponent<ItemDatabase>();
 
-        inventoryPanel = GameObject.Find("Inventory Panel"); // assign in inspector later?
-        slotPanel = inventoryPanel.transform.FindChild("Slot Panel").gameObject; // assign in inspector later?
+        // may use this in place of inspector assignment
+        //inventoryPanel = GameObject.Find("Inventory Panel");
+        //slotPanel = inventoryPanel.transform.FindChild("Slot Panel").gameObject;
 
         // initialize all slots according to slotAmount
         for (int i = 0; i < slotAmount; i++)
@@ -40,6 +42,18 @@ public class Inventory : MonoBehaviour
         AddItem(1);
         AddItem(0);
         AddItem(0);
+    }
+
+    public void ToggleInventory()
+    {
+        if (inventoryPanel.activeSelf)
+        {
+            inventoryPanel.SetActive(false);
+        }
+        else
+        {
+            inventoryPanel.SetActive(true);
+        }
     }
 
     public void AddItem(int id)

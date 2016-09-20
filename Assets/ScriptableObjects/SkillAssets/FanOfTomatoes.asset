@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 866f343d52b592b48bb713afb9a2d7a7, type: 3}
-  m_Name: HolyNova
+  m_Name: FanOfTomatoes
   m_EditorClassIdentifier: 
   DisplayName: Holy Nova
   Description: Emit a burst of light that damages enemies and heals your allies.
@@ -18,7 +18,6 @@ MonoBehaviour:
   MaxUsesPerTurn: 10
   Icon: {fileID: 0}
   Type: 0
-  SourceObject: {fileID: 0}
   DamageAmount: 50
   HealAmount: 50
   Range: 6

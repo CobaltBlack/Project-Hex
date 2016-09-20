@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour
     // ======================================
     // Game related player stats
     // ======================================
+
+    // GENERAL
     public int CurrentHp { get { return _currentHp; } }
     public int MaxHp { get { return _maxHp; } }
 
@@ -29,6 +31,18 @@ public class PlayerManager : MonoBehaviour
     public int Sanity { get { return _sanity; } }
 
     public int ActionPoints { get { return _actionPoints; } }
+
+    // OFFENSE
+    public int MaxAtt { get { return _maxAtt; } }
+    public int MinAtt { get { return _minAtt; } }
+    public int Crit { get { return _crit; } }
+
+    // DEFENSE
+    public int Defense { get { return _defense; } }
+    public int Dodge { get { return _dodge; } }
+
+    // RESISTENCE
+
 
     // Skills
     public List<SkillData> Skills { get { return _skills; } }
@@ -118,6 +132,14 @@ public class PlayerManager : MonoBehaviour
     private int _sanity;
 
     private int _actionPoints;
+
+    private int _maxAtt;
+    private int _minAtt;
+    private int _crit;
+
+    private int _defense;
+    private int _dodge;
+
     private List<SkillData> _skills;
 
     // TODO: Load data from save file.
