@@ -10,7 +10,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 
     void Start()
     {
-        inventoryScript = GameObject.Find("Inventory").GetComponent<Inventory>();
+        inventoryScript = GameObject.Find("InventoryManager").GetComponent<Inventory>();
     }
 
     public void OnDrop(PointerEventData eventData)
