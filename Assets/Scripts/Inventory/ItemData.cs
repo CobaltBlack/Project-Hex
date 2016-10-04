@@ -11,22 +11,25 @@ using System;
  * 
  */
 
-public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Item item;
     public int amount;
     public int slotIndex;
+    public InventoryType invType;
 
     private Transform originalParent;
     private Vector2 offset;
 
-    private Inventory inventoryScript;
+    private InventoryManager inventoryManagerScript;
+    private ShopManager shopManagerScript;
     private InventoryTooltip tooltipScript;
 
     void Start()
     {
-        inventoryScript = GameObject.Find("InventoryManager").GetComponent<Inventory>();
-        tooltipScript = inventoryScript.GetComponent<InventoryTooltip>();
+        inventoryManagerScript = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        shopManagerScript = GameObject.Find("InventoryManager").GetComponent<ShopManager>();
+        tooltipScript = inventoryManagerScript.GetComponent<InventoryTooltip>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -56,8 +59,17 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.transform.SetParent(inventoryScript.slots[slotIndex].transform);
-        this.transform.position = inventoryScript.slots[slotIndex].transform.position;
+        if (this.invType == InventoryType.PlayerInv)
+        {
+            this.transform.SetParent(inventoryManagerScript.invSlots[slotIndex].transform);
+            this.transform.position = inventoryManagerScript.invSlots[slotIndex].transform.position;
+        }
+
+        if (this.invType == InventoryType.ShopInv)
+        {
+            this.transform.SetParent(shopManagerScript.shopSlots[slotIndex].transform);
+            this.transform.position = shopManagerScript.shopSlots[slotIndex].transform.position;
+        }
 
         GetComponent<CanvasGroup>().blocksRaycasts = true; // turn blockRaycasts back on
     }
@@ -70,5 +82,55 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnPointerExit(PointerEventData eventData)
     {
         tooltipScript.DeactivateTooltip();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (shopManagerScript.shopPanel.activeSelf && eventData.button == PointerEventData.InputButton.Right)
+        {
+            ItemData droppedItemData = eventData.pointerDrag.GetComponent<ItemData>(); // eventData.pointerDrag is the GameObject being dragged
+
+            GameObject droppedItem = this.gameObject;
+
+            // BUY
+            if (this.invType == InventoryType.ShopInv)
+            {
+                // if enough money
+                if (inventoryManagerScript.RemoveGold(this.item.Value))
+                {
+                    inventoryManagerScript.AddItem(this.item.ID);
+                    Destroy(droppedItem);
+
+                    if (droppedItemData.invType == InventoryType.PlayerInv)
+                    {
+                        inventoryManagerScript.invItems[droppedItemData.slotIndex] = new Item();
+                    }
+                    else if (droppedItemData.invType == InventoryType.ShopInv)
+                    {
+                        shopManagerScript.shopItems[droppedItemData.slotIndex] = new Item();
+                    }
+
+                    return;
+                }
+            }
+
+            // SELL
+            else if (this.invType == InventoryType.PlayerInv)
+            {
+                inventoryManagerScript.AddGold(this.item.Value);
+                Destroy(droppedItem);
+
+                if (droppedItemData.invType == InventoryType.PlayerInv)
+                {
+                    inventoryManagerScript.invItems[droppedItemData.slotIndex] = new Item();
+                }
+                else if (droppedItemData.invType == InventoryType.ShopInv)
+                {
+                    shopManagerScript.shopItems[droppedItemData.slotIndex] = new Item();
+                }
+
+                return;
+            }
+        }
     }
 }

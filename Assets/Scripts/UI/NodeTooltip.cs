@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,12 @@ public class NodeTooltip : MonoBehaviour
         {
             hoverTooltip.transform.position = Input.mousePosition;
         }
+
+        if (EventSystem.current.IsPointerOverGameObject()) // UI elements getting the hit/hover
+        {
+            DeactivateHoverTooltip();
+        }
+
     }
 
     public void ActivateHoverTooltip()

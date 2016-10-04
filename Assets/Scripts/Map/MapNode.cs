@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using System;
 
-public class MapNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+public class MapNode : MonoBehaviour
 {
     SpriteRenderer nodeSprite;
 
@@ -72,25 +71,15 @@ public class MapNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
                 {
                     MapGameManager.instance.PlayInstance(assignedInstance);
                 }
+
+                isVisited = true;
+
+                // turn node back to original color
+                nodeSprite.material.color = Color.white;
+
+                // hide node information
+                NodeTooltipScript.DeactivateHoverTooltip();
             }
-
-            isVisited = true;
         }
-    }
-
-    // upgrade later
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        throw new NotImplementedException();
     }
 }

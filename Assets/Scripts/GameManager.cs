@@ -42,9 +42,9 @@ public class GameManager : MonoBehaviour
 
     public void InitializeGame()
     {
-        // Initialize inventory
-        Debug.Log("Initialize inventory");
-        InventoryManager.InventorySetup();
+        // Initialize inventory // outdated
+        //Debug.Log("Initialize inventory");
+        //InventoryManager.InventorySetup();
 
         // Initialize player data
         Debug.Log("Initialize player data");

@@ -21,7 +21,7 @@ public class ProfileManager : MonoBehaviour
 
     void RefreshStats()
     {
-        ProfileText.text = "Place Holder Name" + "\n\n"
+        ProfileText.text = "PLACEHOLDER" + "\n\n"
                         + playerManagerScript.CurrentHp + " / " + playerManagerScript.MaxHp + "\n\n"
                         + playerManagerScript.ActionPoints + "\n\n"
                         + playerManagerScript.Morality + "\n\n"
