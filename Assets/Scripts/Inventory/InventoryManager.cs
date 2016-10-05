@@ -49,6 +49,10 @@ public class InventoryManager : MonoBehaviour
         AddItem(1);
         AddItem(1);
         AddItem(0);
+
+        AddEquipment(1);
+        AddEquipment(1);
+        AddEquipment(0);
     }
 
     // initialize all slots according to slotAmount
@@ -57,13 +61,13 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < invSlotAmount; i++)
         {
             // add to Items list
-            invItems.Add(new Item());                                  // NULL case (ID = -1), add to items list
+            invItems.Add(new Item());                                               // NULL case (ID = -1), add to items list
 
-            // add to Slots GameObject list
-            invSlots.Add(Instantiate(blankSlot));                  // instantiate a slot, add to slots list
-            invSlots[i].GetComponent<ItemSlot>().slotIndex = i;        // record slotIndex in ItemSlot script
-            invSlots[i].GetComponent<ItemSlot>().invType = InventoryType.PlayerInv;
-            invSlots[i].transform.SetParent(invSlotPanel.transform);      // child to slotPanel
+            // add to Slots list, record slot information
+            invSlots.Add(Instantiate(blankSlot));                                   // instantiate a slot, add to slots list
+            invSlots[i].GetComponent<ItemSlot>().slotIndex = i;                     // record slotIndex in ItemSlot script
+            invSlots[i].GetComponent<ItemSlot>().invType = InventoryType.PlayerInv; // record invType in ItemSlot script
+            invSlots[i].transform.SetParent(invSlotPanel.transform);                // child to slotPanel
         }
     }
 
@@ -72,13 +76,13 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0 + invSlotAmount; i < equipSlotAmount + invSlotAmount; i++)
         {
             // add to Items list
-            invItems.Add(new Item());                                  // NULL case (ID = -1), add to items list
+            invItems.Add(new Item());                                               // NULL case (ID = -1), add to items list
 
-            // add to Slots GameObject list
-            invSlots.Add(Instantiate(blankSlot));                  // instantiate a slot, add to slots list
-            invSlots[i].GetComponent<ItemSlot>().slotIndex = i;        // record slotIndex in ItemSlot script
-            invSlots[i].GetComponent<ItemSlot>().invType = InventoryType.PlayerInv;
-            invSlots[i].transform.SetParent(equipSlotPanel.transform);      // child to slotPanel
+            // add to Slots list, record slot information
+            invSlots.Add(Instantiate(blankSlot));                                   // instantiate a slot, add to slots list
+            invSlots[i].GetComponent<ItemSlot>().slotIndex = i;                     // record slotIndex in ItemSlot script
+            invSlots[i].GetComponent<ItemSlot>().invType = InventoryType.PlayerInv; // record invType in ItemSlot script
+            invSlots[i].transform.SetParent(equipSlotPanel.transform);              // child to slotPanel
         }
     }
 
@@ -131,24 +135,52 @@ public class InventoryManager : MonoBehaviour
         {
         */
 
-        for (int i = 0; i < invItems.Count; i++)
+        for (int i = 0; i < invSlotAmount; i++)
         {
             if (invItems[i].ID == -1) // if no item in slot case (null item)
             {
-                invItems[i] = itemToAdd;                                    // add to items list
-                GameObject itemObject = Instantiate(blankItem);         // instantiate itemObject GameObject
+                invItems[i] = itemToAdd;                                        // add to items list
+                GameObject itemObject = Instantiate(blankItem);                 // instantiate itemObject GameObject
 
-                itemObject.GetComponent<ItemData>().item = itemToAdd;       // register into itemData script attached to item
-                itemObject.GetComponent<ItemData>().amount = 1;             // tick up the item amount
-                itemObject.GetComponent<ItemData>().slotIndex = i;          // set slotIndex to current index in ItemData
+                itemObject.GetComponent<ItemData>().item = itemToAdd;           // register into itemData script attached to item
+                itemObject.GetComponent<ItemData>().amount = 1;                 // tick up the item amount
+                itemObject.GetComponent<ItemData>().slotIndex = i;              // set slotIndex to current index in ItemData
                 itemObject.GetComponent<ItemData>().invType = InventoryType.PlayerInv;
 
-                itemObject.GetComponent<Image>().sprite = itemToAdd.Sprite; // set sprite
+                itemObject.GetComponent<Image>().sprite = itemToAdd.Sprite;     // set sprite
 
-                itemObject.transform.SetParent(invSlots[i].transform);      // child to the corresponding inventorySlot in slots list
-                //itemObject.transform.position = Vector2.zero;             // set position // why doesnt this work anymore?
+                itemObject.transform.SetParent(invSlots[i].transform);          // child to the corresponding inventorySlot in slots list
+                //itemObject.transform.position = Vector2.zero;                 // set position // why did this line break?
+                itemObject.transform.position = invSlots[i].transform.position; // set position // replacement
+                itemObject.name = itemToAdd.Title;                              // rename items for inspector
+
+                break;
+            }
+        }
+    }
+
+    public void AddEquipment(int id)
+    {
+        Item itemToAdd = itemDatabaseScript.getItemByID(id);
+
+        for (int i = 0 + invSlotAmount; i < equipSlotAmount + invSlotAmount; i++)
+        {
+            if (invItems[i].ID == -1) // if no item in slot case (null item)
+            {
+                invItems[i] = itemToAdd;                                        // add to items list
+                GameObject itemObject = Instantiate(blankItem);                 // instantiate itemObject GameObject
+
+                itemObject.GetComponent<ItemData>().item = itemToAdd;           // register into itemData script attached to item
+                itemObject.GetComponent<ItemData>().amount = 1;                 // tick up the item amount
+                itemObject.GetComponent<ItemData>().slotIndex = i;              // set slotIndex to current index in ItemData
+                itemObject.GetComponent<ItemData>().invType = InventoryType.PlayerInv;
+
+                itemObject.GetComponent<Image>().sprite = itemToAdd.Sprite;     // set sprite
+
+                itemObject.transform.SetParent(invSlots[i].transform);          // child to the corresponding inventorySlot in slots list
+                //itemObject.transform.position = Vector2.zero;                 // set position // why doesnt this work anymore?
                 itemObject.transform.position = invSlots[i].transform.position; // set position
-                itemObject.name = itemToAdd.Title;                          // rename items for inspector
+                itemObject.name = itemToAdd.Title;                              // rename items for inspector
 
                 break;
             }
@@ -187,7 +219,7 @@ public class InventoryManager : MonoBehaviour
 
     public bool RemoveGold(int amount)
     {
-        if (amount > getPlayerGold())
+        if (amount > playerGold)
         {
             return false;
         }
@@ -211,10 +243,16 @@ public class InventoryManager : MonoBehaviour
     public void PrintInvItems()
     {
         Debug.Log("=============================PrintInvItems==============================");
-        for (int i = 0; i < invItems.Count; i++)
+        for (int i = 0; i < invSlotAmount; i++)
         {
             Debug.Log(invItems[i].Title);
         }
         Debug.Log("=============================PrintInvItems==============================");
+        Debug.Log("=============================PrintequipItems============================");
+        for (int i = 0 + invSlotAmount; i < equipSlotAmount + invSlotAmount; i++)
+        {
+            Debug.Log(invItems[i].Title);
+        }
+        Debug.Log("=============================PrintequipItems============================");
     }
 }

@@ -18,7 +18,7 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public int slotIndex;
     public InventoryType invType;
 
-    private Transform originalParent;
+    //private Transform originalParent;
     private Vector2 offset;
 
     private InventoryManager inventoryManagerScript;
@@ -37,8 +37,8 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (item != null)
         {
             // to avoid visual conflict, move to the slot panel while moving
-            originalParent = this.transform.parent;
-            this.transform.SetParent(this.transform.parent.parent);
+            //originalParent = this.transform.parent; // never used
+            this.transform.SetParent(this.transform.parent.parent.parent.parent); // dw
 
             // to avoid mouse from grabbing the center of the item, instead grab where it is clicked
             offset = eventData.position - new Vector2(this.transform.position.x, this.transform.position.y);
@@ -88,6 +88,8 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         if (shopManagerScript.shopPanel.activeSelf && eventData.button == PointerEventData.InputButton.Right)
         {
+            tooltipScript.DeactivateTooltip(); // close tool tip
+
             ItemData droppedItemData = eventData.pointerDrag.GetComponent<ItemData>(); // eventData.pointerDrag is the GameObject being dragged
 
             GameObject droppedItem = this.gameObject;

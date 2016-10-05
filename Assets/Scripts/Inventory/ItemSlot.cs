@@ -18,6 +18,8 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     private InventoryManager inventoryManagerScript;
     private ShopManager shopManagerScript;
 
+    private ItemData droppedItemData;
+
     void Start()
     {
         inventoryManagerScript = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
@@ -26,7 +28,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        ItemData droppedItemData = eventData.pointerDrag.GetComponent<ItemData>(); // eventData.pointerDrag is the GameObject being dragged
+        droppedItemData = eventData.pointerDrag.GetComponent<ItemData>(); // eventData.pointerDrag is GameObject being dragged
 
         if (droppedItemData.invType != this.invType)
         {
@@ -35,20 +37,14 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             // BUY
             if (this.invType == InventoryType.PlayerInv)
             {
-                // if enough money
-                if (inventoryManagerScript.RemoveGold(droppedItemData.item.Value)) // check if enough gold is available, and remove it if true
+                // if sufficient gold, remove gold and execute following
+                if (inventoryManagerScript.RemoveGold(droppedItemData.item.Value))
                 {
-                    inventoryManagerScript.AddItem(droppedItemData.item.ID);
                     Destroy(droppedItem);
+                    inventoryManagerScript.AddItem(droppedItemData.item.ID);
 
-                    if (droppedItemData.invType == InventoryType.PlayerInv)
-                    {
-                        inventoryManagerScript.invItems[droppedItemData.slotIndex] = new Item();
-                    }
-                    else if (droppedItemData.invType == InventoryType.ShopInv)
-                    {
-                        shopManagerScript.shopItems[droppedItemData.slotIndex] = new Item();
-                    }
+                    // update list
+                    ListUpdatePreviousIndex(new Item());
 
                     return;
                 }
@@ -57,17 +53,11 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             // SELL
             else if (this.invType == InventoryType.ShopInv)
             {
-                inventoryManagerScript.AddGold(droppedItemData.item.Value);
                 Destroy(droppedItem);
+                inventoryManagerScript.AddGold(droppedItemData.item.Value);
 
-                if (droppedItemData.invType == InventoryType.PlayerInv)
-                {
-                    inventoryManagerScript.invItems[droppedItemData.slotIndex] = new Item();
-                }
-                else if (droppedItemData.invType == InventoryType.ShopInv)
-                {
-                    shopManagerScript.shopItems[droppedItemData.slotIndex] = new Item();
-                }
+                // update list
+                ListUpdatePreviousIndex(new Item());
 
                 return;
             }
@@ -75,86 +65,68 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             return;
         }
 
-        // drop on an empty slot
-        if (this.invType == InventoryType.PlayerInv && inventoryManagerScript.invItems[slotIndex].ID == -1) // if no item there 
+        // makes you unable to rearrange shop items
+        if (this.invType == InventoryType.ShopInv)
         {
-            // update list
+            return;
+        }
 
-            // came from list index
-            if (droppedItemData.invType == InventoryType.PlayerInv)
-            {
-                inventoryManagerScript.invItems[droppedItemData.slotIndex] = new Item(); // null out the current item in the items list
-            }
-            else if (droppedItemData.invType == InventoryType.ShopInv)
-            {
-                shopManagerScript.shopItems[droppedItemData.slotIndex] = new Item(); // null out the current item in the items list
-            }
+        //==================== remove two above if components above to make two independent item windows ====================//
 
-            // now in list index
-            inventoryManagerScript.invItems[this.slotIndex] = droppedItemData.item; // register the new item in the items list
+        // drop on an empty slot
+        if (this.invType == InventoryType.PlayerInv && inventoryManagerScript.invItems[slotIndex].ID == -1)
+        {
+            // update list - previous index
+            ListUpdatePreviousIndex(new Item());
 
-            // update dropped items ItemData
-            droppedItemData.slotIndex = this.slotIndex; // update slotIndex of the itemData of item dropped to the slotIndex of this new slot
+            // update list - current index
+            inventoryManagerScript.invItems[this.slotIndex] = droppedItemData.item;
+
+            // update ItemData according to data in ItemSlot
+            droppedItemData.slotIndex = this.slotIndex;
             droppedItemData.invType = this.invType;
+
+            // transform is handled in ItemData
         }
 
         // drop on an empty slot
-        else if (this.invType == InventoryType.ShopInv && shopManagerScript.shopItems[slotIndex].ID == -1) // if no item there 
+        else if (this.invType == InventoryType.ShopInv && shopManagerScript.shopItems[slotIndex].ID == -1)
         {
-            // update list
+            // update list - previous index
+            ListUpdatePreviousIndex(new Item());
 
-            // came from list index
-            if (droppedItemData.invType == InventoryType.PlayerInv)
-            {
-                inventoryManagerScript.invItems[droppedItemData.slotIndex] = new Item(); // null out the current item in the items list
-            }
-            else if (droppedItemData.invType == InventoryType.ShopInv)
-            {
-                shopManagerScript.shopItems[droppedItemData.slotIndex] = new Item(); // null out the current item in the items list
-            }
+            // update list - current index
+            shopManagerScript.shopItems[this.slotIndex] = droppedItemData.item;
 
-            // now in list index
-            shopManagerScript.shopItems[this.slotIndex] = droppedItemData.item; // register the new item in the items list
-
-            // update dropped items ItemData
-            droppedItemData.slotIndex = this.slotIndex; // update slotIndex of the itemData of item dropped to the slotIndex of this new slot
+            // update ItemData according to data in ItemSlot
+            droppedItemData.slotIndex = this.slotIndex;
             droppedItemData.invType = this.invType;
+
+            // transform is handled in ItemData
         }
 
         // drop on a slot with item, and the item isnt being dropped on the same slot
         else if (!(droppedItemData.invType == this.invType && droppedItemData.slotIndex == this.slotIndex))
         {
-            Transform originalItem = this.transform.GetChild(0);
+            Transform currentItemInSlot = this.transform.GetChild(0);
 
-            // update original items itemData
-            originalItem.GetComponent<ItemData>().slotIndex = droppedItemData.slotIndex;
-            originalItem.GetComponent<ItemData>().invType = droppedItemData.invType;
+            // update ItemData - current item in slot
+            currentItemInSlot.GetComponent<ItemData>().slotIndex = droppedItemData.slotIndex;
+            currentItemInSlot.GetComponent<ItemData>().invType = droppedItemData.invType;
 
-            // handle movement of item currently in slot
+            // update transform - current item in slot
             if (droppedItemData.invType == InventoryType.PlayerInv)
             {
-                originalItem.transform.SetParent(inventoryManagerScript.invSlots[droppedItemData.slotIndex].transform);
-                originalItem.transform.position = inventoryManagerScript.invSlots[droppedItemData.slotIndex].transform.position;
+                currentItemInSlot.transform.SetParent(inventoryManagerScript.invSlots[droppedItemData.slotIndex].transform);
+                currentItemInSlot.transform.position = inventoryManagerScript.invSlots[droppedItemData.slotIndex].transform.position;
             }
             else if (droppedItemData.invType == InventoryType.ShopInv)
             {
-                originalItem.transform.SetParent(shopManagerScript.shopSlots[droppedItemData.slotIndex].transform);
-                originalItem.transform.position = shopManagerScript.shopSlots[droppedItemData.slotIndex].transform.position;
+                currentItemInSlot.transform.SetParent(shopManagerScript.shopSlots[droppedItemData.slotIndex].transform);
+                currentItemInSlot.transform.position = shopManagerScript.shopSlots[droppedItemData.slotIndex].transform.position;
             }
 
-            // update list
-            //inventoryManagerScript.invItems[droppedItemData.slotIndex] = item.GetComponent<ItemData>().item;
-            //inventoryManagerScript.invItems[slotIndex] = droppedItemData.item;
-
-            if (droppedItemData.invType == InventoryType.PlayerInv)
-            {
-                inventoryManagerScript.invItems[droppedItemData.slotIndex] = originalItem.GetComponent<ItemData>().item;
-            }
-            else if (droppedItemData.invType == InventoryType.ShopInv)
-            {
-                shopManagerScript.shopItems[droppedItemData.slotIndex] = originalItem.GetComponent<ItemData>().item;
-            }
-
+            // update list - current index
             if (this.invType == InventoryType.PlayerInv)
             {
                 inventoryManagerScript.invItems[this.slotIndex] = droppedItemData.item; // register the new item in the items list
@@ -164,13 +136,29 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                 shopManagerScript.shopItems[this.slotIndex] = droppedItemData.item; // register the new item in the items list
             }
 
-            // update dropped items ItemData
+            // update list - previous index
+            ListUpdatePreviousIndex(currentItemInSlot.GetComponent<ItemData>().item);
+
+            // update ItemData - droppedItemData
             droppedItemData.slotIndex = this.slotIndex;
             droppedItemData.invType = this.invType;
 
-            // handle movement of item new in slot
+            // update transform - droppedItemData
             droppedItemData.transform.SetParent(this.transform);
             droppedItemData.transform.position = this.transform.position;
+        }
+    }
+
+    // update list according to invType and slotIndex of where the droppedItem came from, with the Item item of choice
+    public void ListUpdatePreviousIndex(Item item)
+    {
+        if (droppedItemData.invType == InventoryType.PlayerInv)
+        {
+            inventoryManagerScript.invItems[droppedItemData.slotIndex] = item;
+        }
+        else if (droppedItemData.invType == InventoryType.ShopInv)
+        {
+            shopManagerScript.shopItems[droppedItemData.slotIndex] = item;
         }
     }
 }
