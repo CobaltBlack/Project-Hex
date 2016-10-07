@@ -14,12 +14,14 @@ public class ProfileManager : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("profile start");
+
         playerManagerScript = GetComponent<PlayerManager>();
 
-        RefreshStats();
+        RefreshStatsText();
     }
 
-    void RefreshStats()
+    public void RefreshStatsText()
     {
         ProfileText.text = "PLACEHOLDER" + "\n\n"
                         + playerManagerScript.CurrentHp + " / " + playerManagerScript.MaxHp + "\n\n"

@@ -1,32 +1,47 @@
 [
 	{
+		"type": 2,
+		"function": 0,
+
 		"id": 0,
 		"title": "Coca Cola!",
-		"value": 125,
-		"stats":
-			{
-			"power": 1,
-			"defense": 4,
-			"vitality": 2 
-			},
 		"description": "Now 70% more delicious than Pepsi!",
-		"stackable": false,
+		"value": 125,
 		"rarity": 2,
+		"stackable": false,
 		"slug": "Coca_Cola"
 	},
 	{
+		"type": 2,
+		"function": 1,
+
 		"id": 1,
 		"title": "The Great Tomato",
-		"value": 30,
-		"stats":
-			{
-			"power": 56,
-			"defense": 2,
-			"vitality": 54 
-			},
 		"description": "One tomato, two tomato, three tomato.",
+		"value": 30,
+		"rarity": 1,
 		"stackable": true,
-		"rarity": 6,
 		"slug": "tomato"
+	},
+	{
+		"type": 1,
+		"function": 1,
+
+		"id": 2,
+		"title": "Elegant Glove",
+		"description": "An elegant glove, missing its left pair.",
+		"value": 450,
+		"rarity": 9,
+		"stackable": true,
+		"slug": "Glove",
+
+		"maxHp": 0,
+		"actionPoint": 10,
+		"moralityFlux": 0,
+		"sanityFlux": 2,
+		"attack": 5,
+		"crit": 10,
+		"defense": 5,
+		"dodge": 0
 	}
 ]

@@ -3,8 +3,9 @@ using System.Collections;
 
 public class MapGameManager : MonoBehaviour
 {
-    MapManager mapScript;
-    InstanceManager instanceScript;
+    MapManager mapManagerScript;
+    InstanceManager instanceManagerScript;
+    PlayerManager playerManagerScript;
 
     public GameObject player;
     GameObject playerInstance;
@@ -26,9 +27,11 @@ public class MapGameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject); // To preserve game data such as score between stages
 
-        mapScript = GetComponent<MapManager>();
+        mapManagerScript = GetComponent<MapManager>();
 
-        instanceScript = GetComponent<InstanceManager>();
+        instanceManagerScript = GetComponent<InstanceManager>();
+
+        playerManagerScript = GetComponent<PlayerManager>();
 
         InitializeGame();
     }
@@ -37,14 +40,14 @@ public class MapGameManager : MonoBehaviour
     {
         // set up board
         Debug.Log("Initialize gameboard");
-        mapScript.MapSetup();
+        mapManagerScript.MapSetup();
 
         // initialize player
         Debug.Log("Instantiate player");
         playerInstance = Instantiate(player) as GameObject;
 
         // set player
-        newNode = mapScript.mapTileGameObjects[10, 10].GetComponent<MapTile>().startingNode; //temporary place holder starting location
+        newNode = mapManagerScript.mapTileGameObjects[10, 10].GetComponent<MapTile>().startingNode; //temporary place holder starting location
         newNode.GetComponent<MapNode>().isVisited = true; // set start as visited
         MovePlayer(newNode);
 
@@ -64,7 +67,7 @@ public class MapGameManager : MonoBehaviour
         //currentNode.GetComponent<MapNode>().isVisited = true;
 
         // connect surrounding nodes visually, disconnect previous connections
-        mapScript.ConnectNodes(newNode);
+        mapManagerScript.ConnectNodes(newNode);
 
         // deactivate oldNode's nodesConnected
         for (int i = 0; i < oldNode.GetComponent<MapNode>().nodesConnected.Count; i++)
@@ -76,10 +79,14 @@ public class MapGameManager : MonoBehaviour
         {
             newNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isClickable = true;
         }
+
+        // GLITCHED - it will have one extra processing caused by InitializeGame
+        // fluctuations in MP SP
+        playerManagerScript.ProcessFlux();
     }
 
     public void PlayInstance(Instance currentInstance)
     {
-        instanceScript.StartInstance(currentInstance);
+        instanceManagerScript.StartInstance(currentInstance);
     }
 }

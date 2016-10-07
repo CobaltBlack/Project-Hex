@@ -30,11 +30,13 @@ public class PlayerManager : MonoBehaviour
     public int Morality { get { return _morality; } }
     public int Sanity { get { return _sanity; } }
 
+    public int MoralityFlux { get { return _moralityFlux; } }
+    public int SanityFlux { get { return _sanityFlux; } }
+
     public int ActionPoints { get { return _actionPoints; } }
 
     // OFFENSE
-    public int MaxAtt { get { return _maxAtt; } }
-    public int MinAtt { get { return _minAtt; } }
+    public int Attack { get { return _attack; } }
     public int Crit { get { return _crit; } }
 
     // DEFENSE
@@ -54,6 +56,14 @@ public class PlayerManager : MonoBehaviour
     // ======================================
     // Public Functions
     // ======================================
+
+    // temporary
+    void Awake()
+    {
+        Debug.Log("player awake");
+
+        InitializePlayerData();
+    }
 
     // Load save file, initialize player data
     public void SetupPlayer()
@@ -77,13 +87,14 @@ public class PlayerManager : MonoBehaviour
     public void ModifyHp(int modifyAmount)
     {
         _currentHp += modifyAmount;
-        if (CurrentHp > MaxHp)
+        if (CurrentHp <= 0)
+        {
+            _currentHp = 0;
+            // Call GameOver()
+        }
+        else if (CurrentHp > MaxHp)
         {
             _currentHp = MaxHp;
-        }
-        else if (CurrentHp <= 0)
-        {
-            // Call GameOver()
         }
     }
 
@@ -94,10 +105,12 @@ public class PlayerManager : MonoBehaviour
         if (_morality < 0)
         {
             _morality = 0;
+            // Call GameOver()
         }
         else if (_morality > MaxMorality)
         {
             _morality = MaxMorality;
+            // Call GameOver()
         }
     }
 
@@ -108,11 +121,19 @@ public class PlayerManager : MonoBehaviour
         if (_sanity < 0)
         {
             _sanity = 0;
+            // Call GameOver()
         }
         else if (_sanity > MaxSanity)
         {
             _sanity = MaxSanity;
+            // Call GameOver()
         }
+    }
+
+    public void ProcessFlux()
+    {
+        ModifyMorality(MoralityFlux);
+        ModifySanity(SanityFlux);
     }
 
     // Add a skill to the player's learned skills
@@ -130,11 +151,12 @@ public class PlayerManager : MonoBehaviour
 
     private int _morality;
     private int _sanity;
+    private int _moralityFlux;
+    private int _sanityFlux;
 
     private int _actionPoints;
 
-    private int _maxAtt;
-    private int _minAtt;
+    private int _attack;
     private int _crit;
 
     private int _defense;
@@ -149,14 +171,16 @@ public class PlayerManager : MonoBehaviour
         _maxHp = 50;
         _morality = 50;
         _sanity = 50;
+        _moralityFlux = -1;
+        _sanityFlux = -1;
         _actionPoints = 100;
 
         RefreshPlayerStats();
 
         // TEST Load example skills
-        _skills = new List<SkillData>();
-        AddSkill(SkillDatabase.Instance.getSkillByName("Fireball1"));
-        AddSkill(SkillDatabase.Instance.getSkillByName("FanOfTomatoes"));
+        //_skills = new List<SkillData>();
+        //AddSkill(SkillDatabase.Instance.getSkillByName("Fireball1"));
+        //AddSkill(SkillDatabase.Instance.getSkillByName("FanOfTomatoes"));
     }
 
     // Refreshes the player stats by recalculating it based on current items and effects

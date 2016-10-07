@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EquipmentManager : MonoBehaviour {
+public class ItemBehaviours : MonoBehaviour
+{
 
 	// Use this for initialization
 	void Start () {

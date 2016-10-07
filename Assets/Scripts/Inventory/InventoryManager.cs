@@ -43,12 +43,13 @@ public class InventoryManager : MonoBehaviour
         RefreshGoldText();
 
         // test
-        AddItem(0);
         AddItem(1);
         AddItem(1);
         AddItem(1);
         AddItem(1);
         AddItem(0);
+        AddItem(0);
+        AddItem(2);
 
         AddEquipment(1);
         AddEquipment(1);
@@ -232,11 +233,6 @@ public class InventoryManager : MonoBehaviour
     void RefreshGoldText()
     {
         GoldText.text = playerGold + " USD";
-    }
-
-    void RefreshStats()
-    {
-
     }
 
     // Debug
