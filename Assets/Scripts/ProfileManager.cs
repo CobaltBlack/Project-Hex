@@ -12,22 +12,24 @@ public class ProfileManager : MonoBehaviour
     public GameObject profilePanel;
     public Text ProfileText; // assign Profile Text under Profile Panel
 
-    void Start()
+    void Awake()
     {
         Debug.Log("profile start");
 
         playerManagerScript = GetComponent<PlayerManager>();
-
-        RefreshStatsText();
     }
 
-    public void RefreshStatsText()
+    public void RefreshPlayerStatsText()
     {
-        ProfileText.text = "PLACEHOLDER" + "\n\n"
+        ProfileText.text = "empty" + "\n\n"
                         + playerManagerScript.CurrentHp + " / " + playerManagerScript.MaxHp + "\n\n"
                         + playerManagerScript.ActionPoints + "\n\n"
                         + playerManagerScript.Morality + "\n\n"
-                        + playerManagerScript.Sanity + "\n\n";
+                        + playerManagerScript.Sanity + "\n\n"
+                        + playerManagerScript.Attack + "\n\n"
+                        + playerManagerScript.Crit + "\n\n"
+                        + playerManagerScript.Defense + "\n\n"
+                        + playerManagerScript.Dodge + "\n\n";
     }
 
     public void ToggleProfile()

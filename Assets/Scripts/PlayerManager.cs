@@ -9,6 +9,9 @@ using System.Collections.Generic;
  */
 public class PlayerManager : MonoBehaviour
 {
+    ProfileManager ProfileManagerScript;
+    EquipmentManager EquipmentManagerScript;
+
     public static PlayerManager Instance = null;
 
     // ======================================
@@ -62,7 +65,11 @@ public class PlayerManager : MonoBehaviour
     {
         Debug.Log("player awake");
 
+        ProfileManagerScript = GetComponent<ProfileManager>();
+        EquipmentManagerScript = GameObject.Find("InventoryManager").GetComponent<EquipmentManager>();
+
         InitializePlayerData();
+        RefreshPlayerStats();
     }
 
     // Load save file, initialize player data
@@ -164,18 +171,35 @@ public class PlayerManager : MonoBehaviour
 
     private List<SkillData> _skills;
 
+    private int _maxHpBonus;
+    private int _actionPointsBonus;
+
+    private int _moralityFluxBonus;
+    private int _sanityFluxBonus;
+
+    private int _attackBonus;
+    private int _critBonus;
+
+    private int _defenseBonus;
+    private int _dodgeBonus;
+
     // TODO: Load data from save file.
     void InitializePlayerData()
     {
-        _currentHp = 50;
-        _maxHp = 50;
+        Debug.Log("InitializePlayerData");
+
+        _currentHp = 100;
+        _maxHp = 100;
         _morality = 50;
         _sanity = 50;
-        _moralityFlux = -1;
-        _sanityFlux = -1;
+        _moralityFlux = 0;
+        _sanityFlux = 0;
         _actionPoints = 100;
 
-        RefreshPlayerStats();
+        _attack = 0;
+        _crit = 0;
+        _defense = 0;
+        _dodge = 0;
 
         // TEST Load example skills
         //_skills = new List<SkillData>();
@@ -184,7 +208,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     // Refreshes the player stats by recalculating it based on current items and effects
-    void RefreshPlayerStats()
+    public void RefreshPlayerStats()
     {
         // Get character base stats
 
@@ -195,5 +219,58 @@ public class PlayerManager : MonoBehaviour
         // Multiplicative stat modifiers
 
         // Prevent stats under 0
+
+        CalculateStats();
+
+        ProfileManagerScript.RefreshPlayerStatsText();
+    }
+
+    private void CalculateStats()
+    {
+        // reset base stats
+        _maxHp -= _maxHpBonus;
+        _actionPoints -= _actionPointsBonus;
+        _moralityFlux -= _moralityFluxBonus;
+        _sanityFlux -= _sanityFluxBonus;
+        _attack -= _attackBonus;
+        _crit -= _critBonus;
+        _defense -= _defenseBonus;
+        _dodge -= _dodgeBonus;
+
+        // reset bonus stats
+        _maxHpBonus = 0;
+        _actionPointsBonus = 0;
+        _moralityFluxBonus = 0;
+        _sanityFluxBonus = 0;
+        _attackBonus = 0;
+        _critBonus = 0;
+        _defenseBonus = 0;
+        _dodgeBonus = 0;
+
+        for (int i = 0; i < EquipmentManagerScript.equipItems.Count; i++)
+        {
+            if (EquipmentManagerScript.equipItems[i].ID != -1)
+            {
+                Item.Equipment equipment = (Item.Equipment)EquipmentManagerScript.equipItems[i];
+                _maxHpBonus += equipment.MaxHp;
+                _actionPointsBonus += equipment.ActionPoints;
+                _moralityFluxBonus += equipment.MoralityFlux;
+                _sanityFluxBonus += equipment.SanityFlux;
+                _attackBonus += equipment.Attack;
+                _critBonus += equipment.Crit;
+                _defenseBonus += equipment.Defense;
+                _dodgeBonus += equipment.Dodge;
+            }
+        }
+
+        // recalculate stats
+        _maxHp += _maxHpBonus;
+        _actionPoints += _actionPointsBonus;
+        _moralityFlux += _moralityFluxBonus;
+        _sanityFlux += _sanityFluxBonus;
+        _attack += _attackBonus;
+        _crit += _critBonus;
+        _defense += _defenseBonus;
+        _dodge += _dodgeBonus;
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - 114: {fileID: 11482974}
   - 114: {fileID: 11445606}
   - 114: {fileID: 11452538}
+  - 114: {fileID: 11456020}
   m_Layer: 0
   m_Name: InventoryManager
   m_TagString: Untagged
@@ -68,11 +69,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopPanel: {fileID: 0}
   slotPanel: {fileID: 0}
-  slotGameObject: {fileID: 0}
-  itemGameObject: {fileID: 0}
+  blankSlot: {fileID: 127638, guid: 1df138440f870f04a843fda0117ad0df, type: 2}
+  blankItem: {fileID: 144084, guid: ac477488337f7984486f24c5f1a2bf1e, type: 2}
   slotAmount: 20
   shopItems: []
   shopSlots: []
+--- !u!114 &11456020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b30ac2aa1a8d43b4c8dad2f782f70adf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11482974
 MonoBehaviour:
   m_ObjectHideFlags: 1

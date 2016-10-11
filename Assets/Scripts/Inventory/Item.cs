@@ -11,6 +11,7 @@ public class Item
         Consumable,
     }
 
+    public ItemType Type { get; set; }
     public int ID { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
@@ -21,8 +22,9 @@ public class Item
 
     public Sprite Sprite { get; set; }
 
-    public Item(int id, string title,string description, int value, int rarity, bool stackable, string slug)
+    public Item(ItemType type, int id, string title,string description, int value, int rarity, bool stackable, string slug)
     {
+        this.Type = type;
         this.ID = id;
         this.Title = title;
         this.Description = description;
@@ -42,8 +44,6 @@ public class Item
 
     public class Equipment : Item
     {
-        // key to function
-
         public int MaxHp { get; set; }
         public int ActionPoints { get; set; }
         public int MoralityFlux { get; set; }
@@ -55,9 +55,10 @@ public class Item
         public int Defense { get; set; }
         public int Dodge { get; set; }
 
-        public Equipment(int id, string title, string description, int value, int rarity, bool stackable, string slug 
+        public Equipment(ItemType type, int id, string title, string description, int value, int rarity, bool stackable, string slug 
             ,int maxHp, int actionPoint, int moralityFlux, int sanityFlux, int attack, int crit, int defense, int dodge)
         {
+            this.Type = type;
             this.ID = id;
             this.Title = title;
             this.Description = description;
@@ -76,15 +77,17 @@ public class Item
             this.Crit = crit;
             this.Defense = defense;
             this.Dodge = dodge;
-
-            // key to corresponding function
         }
     }
 
     public class Consumable : Item
     {
-        public Consumable(int id, string title, string description, int value, int rarity, bool stackable, string slug)
+        public string FunctionName { get; set; }
+        public int FunctionParameter { get; set; }
+
+        public Consumable(ItemType type, int id, string title, string description, int value, int rarity, bool stackable, string slug, string functionName, int functionParameter)
         {
+            this.Type = type;
             this.ID = id;
             this.Title = title;
             this.Description = description;
@@ -94,6 +97,9 @@ public class Item
             this.Slug = slug;
 
             this.Sprite = Resources.Load<Sprite>("Sprites/Items/" + slug);
+
+            this.FunctionName = functionName;
+            this.FunctionParameter = functionParameter;
         }
     }
 

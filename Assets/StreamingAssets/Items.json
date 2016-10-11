@@ -1,7 +1,6 @@
 [
 	{
 		"type": 2,
-		"function": 0,
 
 		"id": 0,
 		"title": "Coca Cola!",
@@ -9,11 +8,13 @@
 		"value": 125,
 		"rarity": 2,
 		"stackable": false,
-		"slug": "Coca_Cola"
+		"slug": "Coca_Cola",
+
+		"function name": "LoseHealth",
+		"function parameter": -10
 	},
 	{
 		"type": 2,
-		"function": 1,
 
 		"id": 1,
 		"title": "The Great Tomato",
@@ -21,27 +22,49 @@
 		"value": 30,
 		"rarity": 1,
 		"stackable": true,
-		"slug": "tomato"
+		"slug": "tomato",
+
+		"function name": "LoseHealth",
+		"function parameter": 5
 	},
 	{
 		"type": 1,
-		"function": 1,
 
 		"id": 2,
 		"title": "Elegant Glove",
 		"description": "An elegant glove, missing its left pair.",
 		"value": 450,
 		"rarity": 9,
-		"stackable": true,
+		"stackable": false,
 		"slug": "Glove",
 
 		"maxHp": 0,
 		"actionPoint": 10,
 		"moralityFlux": 0,
-		"sanityFlux": 2,
-		"attack": 5,
-		"crit": 10,
-		"defense": 5,
+		"sanityFlux": 0,
+		"attack": 0,
+		"crit": 0,
+		"defense": 10,
+		"dodge": 0
+	},
+	{
+		"type": 1,
+
+		"id": 3,
+		"title": "Ancient Pistol",
+		"description": "Pistol, ancient in age.",
+		"value": 550,
+		"rarity": 7,
+		"stackable": false,
+		"slug": "Gun",
+
+		"maxHp": 0,
+		"actionPoint": 0,
+		"moralityFlux": 0,
+		"sanityFlux": 0,
+		"attack": 20,
+		"crit": 0,
+		"defense": 0,
 		"dodge": 0
 	}
 ]

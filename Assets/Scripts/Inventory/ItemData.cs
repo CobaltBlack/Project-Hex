@@ -16,19 +16,29 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public Item item;
     public int amount;
     public int slotIndex;
-    public InventoryType invType;
+    public SlotType slotType;
 
     //private Transform originalParent;
     private Vector2 offset;
 
-    private InventoryManager inventoryManagerScript;
-    private ShopManager shopManagerScript;
-    private InventoryTooltip tooltipScript;
+    PlayerManager playerManagerScript;
+
+    InventoryManager inventoryManagerScript;
+    ShopManager shopManagerScript;
+    EquipmentManager equipmentManagerScript;
+
+    ItemBehaviours itemBehavioursScript;
+    InventoryTooltip tooltipScript;
 
     void Start()
     {
+        playerManagerScript = GameObject.Find("MapManager").GetComponent<PlayerManager>();
+
         inventoryManagerScript = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
-        shopManagerScript = GameObject.Find("InventoryManager").GetComponent<ShopManager>();
+        shopManagerScript = inventoryManagerScript.GetComponent<ShopManager>();
+        equipmentManagerScript = inventoryManagerScript.GetComponent<EquipmentManager>();
+
+        itemBehavioursScript = inventoryManagerScript.GetComponent<ItemBehaviours>();
         tooltipScript = inventoryManagerScript.GetComponent<InventoryTooltip>();
     }
 
@@ -59,17 +69,26 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (this.invType == InventoryType.PlayerInv)
+        if (this.slotType == SlotType.PlayerInv)
         {
             this.transform.SetParent(inventoryManagerScript.invSlots[slotIndex].transform);
             this.transform.position = inventoryManagerScript.invSlots[slotIndex].transform.position;
         }
 
-        if (this.invType == InventoryType.ShopInv)
+        if (this.slotType == SlotType.ShopInv)
         {
             this.transform.SetParent(shopManagerScript.shopSlots[slotIndex].transform);
             this.transform.position = shopManagerScript.shopSlots[slotIndex].transform.position;
         }
+
+        if (this.slotType == SlotType.EquipmentInv)
+        {
+            this.transform.SetParent(equipmentManagerScript.equipSlots[slotIndex].transform);
+            this.transform.position = equipmentManagerScript.equipSlots[slotIndex].transform.position;
+        }
+
+        // update stats in case equipment is added or removed
+        playerManagerScript.RefreshPlayerStats();
 
         GetComponent<CanvasGroup>().blocksRaycasts = true; // turn blockRaycasts back on
     }
@@ -86,52 +105,87 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (shopManagerScript.shopPanel.activeSelf && eventData.button == PointerEventData.InputButton.Right)
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
-            tooltipScript.DeactivateTooltip(); // close tool tip
-
-            ItemData droppedItemData = eventData.pointerDrag.GetComponent<ItemData>(); // eventData.pointerDrag is the GameObject being dragged
-
-            GameObject droppedItem = this.gameObject;
-
-            // BUY
-            if (this.invType == InventoryType.ShopInv)
+            if (shopManagerScript.shopPanel.activeSelf)
             {
-                // if enough money
-                if (inventoryManagerScript.RemoveGold(this.item.Value))
-                {
-                    inventoryManagerScript.AddItem(this.item.ID);
-                    Destroy(droppedItem);
+                tooltipScript.DeactivateTooltip(); // close tool tip
 
-                    if (droppedItemData.invType == InventoryType.PlayerInv)
+                // BUY
+                if (this.slotType == SlotType.ShopInv)
+                {
+                    // if sufficient gold, remove gold and execute following
+                    if (inventoryManagerScript.RemoveGold(this.item.Value))
                     {
-                        inventoryManagerScript.invItems[droppedItemData.slotIndex] = new Item();
+                        inventoryManagerScript.AddItem(this.item.ID);
+                        Destroy(this.gameObject);
+
+                        // update list
+                        shopManagerScript.shopItems[this.slotIndex] = new Item();
+
+                        return;
                     }
-                    else if (droppedItemData.invType == InventoryType.ShopInv)
-                    {
-                        shopManagerScript.shopItems[droppedItemData.slotIndex] = new Item();
-                    }
+                }
+
+                // SELL
+                else if (this.slotType == SlotType.PlayerInv)
+                {
+                    inventoryManagerScript.AddGold(this.item.Value);
+                    Destroy(this.gameObject);
+
+                    // update list
+                    inventoryManagerScript.invItems[this.slotIndex] = new Item();
 
                     return;
                 }
             }
 
-            // SELL
-            else if (this.invType == InventoryType.PlayerInv)
+            else if (this.item.Type == Item.ItemType.Consumable)
             {
-                inventoryManagerScript.AddGold(this.item.Value);
-                Destroy(droppedItem);
+                Item.Consumable consumable = (Item.Consumable)item;
+                itemBehavioursScript.ExecuteByName(consumable.FunctionName, consumable.FunctionParameter);
 
-                if (droppedItemData.invType == InventoryType.PlayerInv)
-                {
-                    inventoryManagerScript.invItems[droppedItemData.slotIndex] = new Item();
-                }
-                else if (droppedItemData.invType == InventoryType.ShopInv)
-                {
-                    shopManagerScript.shopItems[droppedItemData.slotIndex] = new Item();
-                }
+                Destroy(gameObject);
+
+                inventoryManagerScript.invItems[this.slotIndex] = new Item();
 
                 return;
+            }
+
+            else if (inventoryManagerScript.equipmentPanel.activeSelf)
+            {
+                if (this.item.Type == Item.ItemType.Equipment)
+                {
+                    tooltipScript.DeactivateTooltip(); // close tool tip
+
+                    // DEQUIP
+                    if (this.slotType == SlotType.EquipmentInv)
+                    {
+                        inventoryManagerScript.AddItem(this.item.ID);
+                        Destroy(this.gameObject);
+
+                        equipmentManagerScript.equipItems[this.slotIndex] = new Item();
+
+                        // update stats according to dequip
+                        playerManagerScript.RefreshPlayerStats();
+
+                        return;
+                    }
+
+                    // EQUIP
+                    else if (this.slotType == SlotType.PlayerInv)
+                    {
+                        equipmentManagerScript.AddItem(this.item.ID);
+                        Destroy(this.gameObject);
+
+                        inventoryManagerScript.invItems[this.slotIndex] = new Item();
+
+                        // update stats according to equip
+                        playerManagerScript.RefreshPlayerStats();
+
+                        return;
+                    }
+                }
             }
         }
     }

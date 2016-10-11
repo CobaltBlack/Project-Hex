@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum InventoryType
+public enum SlotType
 {
     PlayerInv,
     ShopInv,

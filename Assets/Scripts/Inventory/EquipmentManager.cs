@@ -3,10 +3,12 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ShopManager : MonoBehaviour
+public class EquipmentManager : MonoBehaviour
 {
     ItemDatabase itemDatabaseScript;
     InventoryManager inventoryManagerScript;
+
+    PlayerManager playerManagerScript;
 
     // the following items must be assigned in the inspector
     public GameObject shopPanel;
@@ -17,30 +19,25 @@ public class ShopManager : MonoBehaviour
     public int slotAmount;
 
     [HideInInspector]
-    public List<Item> shopItems = new List<Item>();
+    public List<Item> equipItems = new List<Item>();
     [HideInInspector]
-    public List<GameObject> shopSlots = new List<GameObject>();
+    public List<GameObject> equipSlots = new List<GameObject>();
 
     void Start()
     {
-        Debug.Log("shop start");
+        Debug.Log("equip start");
         itemDatabaseScript = GetComponent<ItemDatabase>();
         inventoryManagerScript = GetComponent<InventoryManager>();
+
+        playerManagerScript = GameObject.Find("MapManager").GetComponent<PlayerManager>();
 
         // initialize all slots according to slotAmount
         InitializeInventory();
 
         // test
-        AddItem(0);
-        AddItem(1);
-        AddItem(1);
-        AddItem(1);
-        AddItem(1);
-        AddItem(0);
-        AddItem(0);
-        AddItem(0);
-        AddItem(0);
-        AddItem(0);
+        AddItem(2);
+        AddItem(3);
+        AddItem(3);
     }
 
     // initialize all slots according to slotAmount
@@ -48,11 +45,11 @@ public class ShopManager : MonoBehaviour
     {
         for (int i = 0; i < slotAmount; i++)
         {
-            shopItems.Add(new Item());
-            shopSlots.Add(Instantiate(blankSlot));                                  // instantiate a slot
-            shopSlots[i].GetComponent<ItemSlot>().slotIndex = i;                    // record slotIndex in ItemSlot script
-            shopSlots[i].GetComponent<ItemSlot>().slotType = SlotType.ShopInv;  // record invType in ItemSlot script
-            shopSlots[i].transform.SetParent(slotPanel.transform);                  // child to slotPanel
+            equipItems.Add(new Item());
+            equipSlots.Add(Instantiate(blankSlot));                                  // instantiate a slot
+            equipSlots[i].GetComponent<ItemSlot>().slotIndex = i;                    // record slotIndex in ItemSlot script
+            equipSlots[i].GetComponent<ItemSlot>().slotType = SlotType.EquipmentInv;  // record invType in ItemSlot script
+            equipSlots[i].transform.SetParent(slotPanel.transform);                  // child to slotPanel
         }
     }
 
@@ -73,24 +70,26 @@ public class ShopManager : MonoBehaviour
     {
         Item itemToAdd = itemDatabaseScript.getItemByID(id);
 
-        for (int i = 0; i < shopItems.Count; i++)
+        for (int i = 0; i < equipItems.Count; i++)
         {
-            if (shopItems[i].ID == -1) // if no item in slot case (null item)
+            if (equipItems[i].ID == -1) // if no item in slot case (null item)
             {
-                shopItems[i] = itemToAdd;                                   // add to items list
+                equipItems[i] = itemToAdd;                                   // add to items list
                 GameObject itemObject = Instantiate(blankItem);             // instantiate itemObject GameObject
 
                 itemObject.GetComponent<ItemData>().item = itemToAdd;       // register into itemData script attached to item
                 itemObject.GetComponent<ItemData>().amount = 1;             // tick up the item amount
                 itemObject.GetComponent<ItemData>().slotIndex = i;          // set slotLocation to current index
-                itemObject.GetComponent<ItemData>().slotType = SlotType.ShopInv;
+                itemObject.GetComponent<ItemData>().slotType = SlotType.EquipmentInv;
 
                 itemObject.GetComponent<Image>().sprite = itemToAdd.Sprite; // set sprite
 
-                itemObject.transform.SetParent(shopSlots[i].transform);     // child to the corresponding inventorySlot in slots list
+                itemObject.transform.SetParent(equipSlots[i].transform);     // child to the corresponding inventorySlot in slots list
                 //itemObject.transform.position = Vector2.zero;                 // set position // why doesnt this work anymore?
-                itemObject.transform.position = shopSlots[i].transform.position; // set position
+                itemObject.transform.position = equipSlots[i].transform.position; // set position
                 itemObject.name = itemToAdd.Title;                          // rename items for inspector
+
+                playerManagerScript.RefreshPlayerStats(); // redundant?
 
                 break;
             }
@@ -105,9 +104,9 @@ public class ShopManager : MonoBehaviour
 
     bool CheckIfInInventory(Item item)
     {
-        for (int i = 0; i < shopItems.Count; i++)
+        for (int i = 0; i < equipItems.Count; i++)
         {
-            if (shopItems[i].ID == item.ID)
+            if (equipItems[i].ID == item.ID)
             {
                 return true;
             }
@@ -115,13 +114,13 @@ public class ShopManager : MonoBehaviour
         return false;
     }
 
-    public void PrintShopItems()
+    public void PrintEquipItems()
     {
-        Debug.Log("=============================PrintShopItems=============================");
-        for (int i = 0; i < shopItems.Count; i++)
+        Debug.Log("=============================PrintEquipItems============================");
+        for (int i = 0; i < equipItems.Count; i++)
         {
-            Debug.Log(shopItems[i].Title);
+            Debug.Log(equipItems[i].Title);
         }
-        Debug.Log("=============================PrintShopItems=============================");
+        Debug.Log("=============================PrintEquipItems============================");
     }
 }

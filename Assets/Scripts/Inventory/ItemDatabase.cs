@@ -44,7 +44,8 @@ public class ItemDatabase : MonoBehaviour
         {
             if ((Item.ItemType)(int)itemData[i]["type"] == Item.ItemType.Default)
             {
-                database.Add(new Item((int)itemData[i]["id"]
+                database.Add(new Item((Item.ItemType)(int)itemData[i]["type"]
+                    , (int)itemData[i]["id"]
                     , (string)itemData[i]["title"]
                     , (string)itemData[i]["description"]
                     , (int)itemData[i]["value"]
@@ -55,7 +56,8 @@ public class ItemDatabase : MonoBehaviour
 
             if ((Item.ItemType)(int)itemData[i]["type"] == Item.ItemType.Equipment)
             {
-                database.Add(new Item.Equipment((int)itemData[i]["id"]
+                database.Add(new Item.Equipment((Item.ItemType)(int)itemData[i]["type"]
+                    , (int)itemData[i]["id"]
                     , (string)itemData[i]["title"]
                     , (string)itemData[i]["description"]
                     , (int)itemData[i]["value"]
@@ -75,14 +77,28 @@ public class ItemDatabase : MonoBehaviour
 
             if ((Item.ItemType)(int)itemData[i]["type"] == Item.ItemType.Consumable)
             {
-                database.Add(new Item.Consumable((int)itemData[i]["id"]
+                database.Add(new Item.Consumable((Item.ItemType)(int)itemData[i]["type"]
+                    , (int)itemData[i]["id"]
                     , (string)itemData[i]["title"]
                     , (string)itemData[i]["description"]
                     , (int)itemData[i]["value"]
                     , (int)itemData[i]["rarity"]
                     , (bool)itemData[i]["stackable"]
-                    , (string)itemData[i]["slug"]));
-            }
+                    , (string)itemData[i]["slug"]
+
+                    , (string)itemData[i]["function name"]
+                    , (int)itemData[i]["function parameter"]));
+    }
         }
+    }
+
+    public void printDatabase()
+    {
+        Debug.Log("=============================PrintDatabase==============================");
+        for (int i = 0; i < database.Count; i++)
+        {
+            Debug.Log(database[i].ID + " / " + database[i]. Title);
+        }
+        Debug.Log("=============================PrintDatabase==============================");
     }
 }

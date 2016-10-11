@@ -36,7 +36,7 @@ public class InventoryManager : MonoBehaviour
 
         // initialize all slots according to slotAmount
         InitializeInventory();
-        InitializeEquipment();
+        //InitializeEquipment();
 
         // initialize gold
         playerGold = startingGold;
@@ -50,10 +50,10 @@ public class InventoryManager : MonoBehaviour
         AddItem(0);
         AddItem(0);
         AddItem(2);
+        AddItem(3);
 
-        AddEquipment(1);
-        AddEquipment(1);
-        AddEquipment(0);
+        //AddEquipment(2);
+        //AddEquipment(3);
     }
 
     // initialize all slots according to slotAmount
@@ -67,7 +67,7 @@ public class InventoryManager : MonoBehaviour
             // add to Slots list, record slot information
             invSlots.Add(Instantiate(blankSlot));                                   // instantiate a slot, add to slots list
             invSlots[i].GetComponent<ItemSlot>().slotIndex = i;                     // record slotIndex in ItemSlot script
-            invSlots[i].GetComponent<ItemSlot>().invType = InventoryType.PlayerInv; // record invType in ItemSlot script
+            invSlots[i].GetComponent<ItemSlot>().slotType = SlotType.PlayerInv; // record invType in ItemSlot script
             invSlots[i].transform.SetParent(invSlotPanel.transform);                // child to slotPanel
         }
     }
@@ -82,7 +82,7 @@ public class InventoryManager : MonoBehaviour
             // add to Slots list, record slot information
             invSlots.Add(Instantiate(blankSlot));                                   // instantiate a slot, add to slots list
             invSlots[i].GetComponent<ItemSlot>().slotIndex = i;                     // record slotIndex in ItemSlot script
-            invSlots[i].GetComponent<ItemSlot>().invType = InventoryType.PlayerInv; // record invType in ItemSlot script
+            invSlots[i].GetComponent<ItemSlot>().slotType = SlotType.PlayerInv; // record invType in ItemSlot script
             invSlots[i].transform.SetParent(equipSlotPanel.transform);              // child to slotPanel
         }
     }
@@ -146,7 +146,7 @@ public class InventoryManager : MonoBehaviour
                 itemObject.GetComponent<ItemData>().item = itemToAdd;           // register into itemData script attached to item
                 itemObject.GetComponent<ItemData>().amount = 1;                 // tick up the item amount
                 itemObject.GetComponent<ItemData>().slotIndex = i;              // set slotIndex to current index in ItemData
-                itemObject.GetComponent<ItemData>().invType = InventoryType.PlayerInv;
+                itemObject.GetComponent<ItemData>().slotType = SlotType.PlayerInv;
 
                 itemObject.GetComponent<Image>().sprite = itemToAdd.Sprite;     // set sprite
 
@@ -174,7 +174,7 @@ public class InventoryManager : MonoBehaviour
                 itemObject.GetComponent<ItemData>().item = itemToAdd;           // register into itemData script attached to item
                 itemObject.GetComponent<ItemData>().amount = 1;                 // tick up the item amount
                 itemObject.GetComponent<ItemData>().slotIndex = i;              // set slotIndex to current index in ItemData
-                itemObject.GetComponent<ItemData>().invType = InventoryType.PlayerInv;
+                itemObject.GetComponent<ItemData>().slotType = SlotType.PlayerInv;
 
                 itemObject.GetComponent<Image>().sprite = itemToAdd.Sprite;     // set sprite
 
@@ -239,16 +239,10 @@ public class InventoryManager : MonoBehaviour
     public void PrintInvItems()
     {
         Debug.Log("=============================PrintInvItems==============================");
-        for (int i = 0; i < invSlotAmount; i++)
+        for (int i = 0; i < invItems.Count; i++)
         {
             Debug.Log(invItems[i].Title);
         }
         Debug.Log("=============================PrintInvItems==============================");
-        Debug.Log("=============================PrintequipItems============================");
-        for (int i = 0 + invSlotAmount; i < equipSlotAmount + invSlotAmount; i++)
-        {
-            Debug.Log(invItems[i].Title);
-        }
-        Debug.Log("=============================PrintequipItems============================");
     }
 }
