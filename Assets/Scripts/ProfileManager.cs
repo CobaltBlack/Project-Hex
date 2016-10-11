@@ -19,6 +19,11 @@ public class ProfileManager : MonoBehaviour
         playerManagerScript = GetComponent<PlayerManager>();
     }
 
+    void Update()
+    {
+        RefreshPlayerStatsText(); // removing this will result in no update after PlayerManager ProcessFlux
+    }
+
     public void RefreshPlayerStatsText()
     {
         ProfileText.text = "empty" + "\n\n"

@@ -192,8 +192,8 @@ public class PlayerManager : MonoBehaviour
         _maxHp = 100;
         _morality = 50;
         _sanity = 50;
-        _moralityFlux = 0;
-        _sanityFlux = 0;
+        _moralityFlux = -5;
+        _sanityFlux = -5;
         _actionPoints = 100;
 
         _attack = 0;
