@@ -14,6 +14,9 @@ GameObject:
   - 114: {fileID: 11494424}
   - 114: {fileID: 11470346}
   - 114: {fileID: 11433480}
+  - 114: {fileID: 11498440}
+  - 114: {fileID: 11417222}
+  - 114: {fileID: 11499842}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: Untagged
@@ -46,6 +49,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 153036, guid: 419de3641eb17f04193281f8b41ae474, type: 2}
+--- !u!114 &11417222
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d491c40f69fb664ebaecc82f092034b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxMorality: 100
+  MaxSanity: 100
+  MaxNumOfSkills: 0
+  PlayerCharacterPrefab: {fileID: 0}
 --- !u!114 &11433480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,6 +237,40 @@ MonoBehaviour:
   - {fileID: 102700, guid: b01759fda684eff488e66d9a995f9b57, type: 2}
   - {fileID: 192618, guid: cc4f851c035f1934cb228171ab67fbbe, type: 2}
   - {fileID: 134156, guid: d262329f60494fb4d8397b39850ddd68, type: 2}
+--- !u!114 &11498440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b558e7977ccfc814dac9a4cd41dba93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profilePanel: {fileID: 0}
+  ProfileText: {fileID: 0}
+--- !u!114 &11499842
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f74a3819ed49814597b341f49dbc524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  moralityBar: {fileID: 0}
+  moralityBarInverse: {fileID: 0}
+  sanityBar: {fileID: 0}
+  sanityBarInverse: {fileID: 0}
+  lerpSpeed: 3
+  healthFullColor: {r: 1, g: 0, b: 0, a: 0.5882353}
+  moralityFullColor: {r: 0, g: 1, b: 0.29411766, a: 0.5882353}
+  sanityFullColor: {r: 0, g: 0.29411766, b: 1, a: 0.5882353}
+  lowColor: {r: 0, g: 0, b: 0, a: 0.5882353}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

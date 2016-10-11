@@ -142,6 +142,8 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
             else if (this.item.Type == Item.ItemType.Consumable)
             {
+                tooltipScript.DeactivateTooltip(); // close tool tip
+
                 Item.Consumable consumable = (Item.Consumable)item;
                 itemBehavioursScript.ExecuteByName(consumable.FunctionName, consumable.FunctionParameter);
 
