@@ -801,6 +801,10 @@ Prefab:
       propertyPath: ProfileText
       value: 
       objectReference: {fileID: 414005549}
+    - target: {fileID: 11499842, guid: bfbf6aa1f44b9794388acbef2c1e905b, type: 2}
+      propertyPath: lerpSpeed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bfbf6aa1f44b9794388acbef2c1e905b, type: 2}
   m_IsPrefabParent: 0
@@ -1131,7 +1135,7 @@ Transform:
   - {fileID: 1032209143}
   - {fileID: 826486955}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!1 &788501789 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 183592, guid: db3e6e7ab29dea44cbe1722a2a60a62a, type: 2}
@@ -1953,6 +1957,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11440334, guid: 173257af72dde08448df8d499e63cf03, type: 2}
+      propertyPath: m_Color.g
+      value: 0.29411766
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11412424, guid: 173257af72dde08448df8d499e63cf03, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 173257af72dde08448df8d499e63cf03, type: 2}
@@ -2465,7 +2473,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!1 &1938258975 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 173288, guid: 8a806adbf085b9247b4a13b743fcd029, type: 2}
