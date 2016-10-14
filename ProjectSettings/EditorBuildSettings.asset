@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
   - enabled: 1
+    path: Assets/Scenes/Title.unity
+  - enabled: 1
+    path: Assets/Scenes/CharSelect.unity
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+  - enabled: 1
     path: Assets/Scenes/Combat.unity

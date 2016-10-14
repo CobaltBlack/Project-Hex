@@ -13,7 +13,7 @@ using LitJson;
 
 public class ItemDatabase : MonoBehaviour
 {
-    private List<Item> database = new List<Item>();
+    private List<Item> itemDatabase = new List<Item>();
     private List<Item.Equipment> equipmentDatabase = new List<Item.Equipment>();
     private List<Item.Consumable> consumablesDatabase = new List<Item.Consumable>();
 
@@ -27,11 +27,11 @@ public class ItemDatabase : MonoBehaviour
 
     public Item getItemByID(int id)
     {
-        for (int i = 0; i < database.Count; i++)
+        for (int i = 0; i < itemDatabase.Count; i++)
         {
-            if (database[i].ID == id)
+            if (itemDatabase[i].ID == id)
             {
-                return database[i];
+                return itemDatabase[i];
             }
         }
 
@@ -44,7 +44,7 @@ public class ItemDatabase : MonoBehaviour
         {
             if ((Item.ItemType)(int)itemData[i]["type"] == Item.ItemType.Default)
             {
-                database.Add(new Item((Item.ItemType)(int)itemData[i]["type"]
+                itemDatabase.Add(new Item((Item.ItemType)(int)itemData[i]["type"]
                     , (int)itemData[i]["id"]
                     , (string)itemData[i]["title"]
                     , (string)itemData[i]["description"]
@@ -56,7 +56,7 @@ public class ItemDatabase : MonoBehaviour
 
             if ((Item.ItemType)(int)itemData[i]["type"] == Item.ItemType.Equipment)
             {
-                database.Add(new Item.Equipment((Item.ItemType)(int)itemData[i]["type"]
+                itemDatabase.Add(new Item.Equipment((Item.ItemType)(int)itemData[i]["type"]
                     , (int)itemData[i]["id"]
                     , (string)itemData[i]["title"]
                     , (string)itemData[i]["description"]
@@ -77,7 +77,7 @@ public class ItemDatabase : MonoBehaviour
 
             if ((Item.ItemType)(int)itemData[i]["type"] == Item.ItemType.Consumable)
             {
-                database.Add(new Item.Consumable((Item.ItemType)(int)itemData[i]["type"]
+                itemDatabase.Add(new Item.Consumable((Item.ItemType)(int)itemData[i]["type"]
                     , (int)itemData[i]["id"]
                     , (string)itemData[i]["title"]
                     , (string)itemData[i]["description"]
@@ -88,16 +88,16 @@ public class ItemDatabase : MonoBehaviour
 
                     , (string)itemData[i]["function name"]
                     , (int)itemData[i]["function parameter"]));
-    }
+            }
         }
     }
 
     public void printDatabase()
     {
         Debug.Log("=============================PrintDatabase==============================");
-        for (int i = 0; i < database.Count; i++)
+        for (int i = 0; i < itemDatabase.Count; i++)
         {
-            Debug.Log(database[i].ID + " / " + database[i]. Title);
+            Debug.Log(itemDatabase[i].ID + " / " + itemDatabase[i]. Title);
         }
         Debug.Log("=============================PrintDatabase==============================");
     }
