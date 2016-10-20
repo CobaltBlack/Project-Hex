@@ -1096,8 +1096,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 2800000, guid: 3b0cf35069e300945a20e27290f618b8, type: 3}
-  sceneToStart: 1
-  changeScenes: 0
+  sceneToStart: CharSelect
+  changeScenes: 1
   changeMusicOnStart: 0
   inMainMenu: 1
   animColorFade: {fileID: 1045877792}
@@ -2537,7 +2537,7 @@ RectTransform:
   m_RootOrder: 4
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -338.39795, y: -257}
+  m_AnchoredPosition: {x: -338.39795, y: -260.8}
   m_SizeDelta: {x: 170, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &995230941
@@ -2817,7 +2817,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -342, y: -179}
+  m_AnchoredPosition: {x: -342, y: -182.8}
   m_SizeDelta: {x: 248, y: 146}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1274920097

@@ -271,11 +271,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
+  dialogueUI: {fileID: 0}
   nodesConnected:
   - {fileID: 157896}
+  assignedInstance: {fileID: 0}
 --- !u!114 &11411670
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -287,11 +290,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
+  dialogueUI: {fileID: 0}
   nodesConnected:
   - {fileID: 157896}
+  assignedInstance: {fileID: 0}
 --- !u!114 &11429858
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -303,15 +309,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744383a511cc430478adb91b43efdccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0
+  TilesetTag: 0
   exit1A: {fileID: 150356}
-  exit1B: {fileID: 0}
   exit2A: {fileID: 152898}
-  exit2B: {fileID: 0}
   exit3A: {fileID: 122812}
-  exit3B: {fileID: 0}
   exit4A: {fileID: 108554}
-  exit4B: {fileID: 0}
   startingNode: {fileID: 157896}
 --- !u!114 &11450864
 MonoBehaviour:
@@ -324,11 +326,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
+  dialogueUI: {fileID: 0}
   nodesConnected:
   - {fileID: 157896}
+  assignedInstance: {fileID: 0}
 --- !u!114 &11478888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -340,11 +345,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
+  dialogueUI: {fileID: 0}
   nodesConnected:
   - {fileID: 157896}
+  assignedInstance: {fileID: 0}
 --- !u!114 &11496622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -356,13 +364,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888338a3977149a4d8d7fa4913302583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayoutTag: 0
   isClickable: 0
   isVisited: 0
   player: 0
+  dialogueUI: {fileID: 0}
   nodesConnected:
   - {fileID: 150356}
   - {fileID: 152898}
   - {fileID: 122812}
+  assignedInstance: {fileID: 0}
 --- !u!212 &21208880
 SpriteRenderer:
   m_ObjectHideFlags: 1

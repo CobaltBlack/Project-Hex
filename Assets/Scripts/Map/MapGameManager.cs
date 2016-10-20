@@ -7,6 +7,8 @@ public class MapGameManager : MonoBehaviour
     InstanceManager instanceManagerScript;
     PlayerManager playerManagerScript;
 
+    MaskManager maskManagerScript;
+
     public GameObject player;
     GameObject playerInstance;
     GameObject oldNode;
@@ -33,6 +35,8 @@ public class MapGameManager : MonoBehaviour
 
         playerManagerScript = GetComponent<PlayerManager>();
 
+        maskManagerScript = GetComponent<MaskManager>();
+
         InitializeGame();
     }
 
@@ -57,6 +61,10 @@ public class MapGameManager : MonoBehaviour
 
     public void MovePlayer(GameObject currentNode)
     {
+        // unmask map - ONLY IF FIRST TIME VISITING NODE!!!
+        maskManagerScript.SpawnUnmasker(currentNode.transform.position);
+
+
         oldNode = newNode;
         newNode = currentNode;
 
