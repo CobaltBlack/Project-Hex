@@ -7,7 +7,9 @@ public class MapGameManager : MonoBehaviour
     InstanceManager instanceManagerScript;
     PlayerManager playerManagerScript;
 
-    MaskManager maskManagerScript;
+    Mask maskScript;
+    Shadow shadowScript;
+    FadeAlphaCutoff fadeScript;
 
     public GameObject player;
     GameObject playerInstance;
@@ -30,18 +32,27 @@ public class MapGameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // To preserve game data such as score between stages
 
         mapManagerScript = GetComponent<MapManager>();
-
         instanceManagerScript = GetComponent<InstanceManager>();
-
         playerManagerScript = GetComponent<PlayerManager>();
 
-        maskManagerScript = GetComponent<MaskManager>();
-
-        InitializeGame();
+        maskScript = GetComponent<Mask>();
+        shadowScript = GetComponent<Shadow>();
+        fadeScript = GetComponent<FadeAlphaCutoff>();
     }
 
-    public void InitializeGame()
+    void Start()
     {
+        StartCoroutine(InitializeGame());
+    }
+
+    IEnumerator InitializeGame()
+    {
+        // fade in map
+        fadeScript.FadeMapIn();
+
+        // wait
+        yield return new WaitForSeconds(3);
+
         // set up board
         Debug.Log("Initialize gameboard");
         mapManagerScript.MapSetup();
@@ -55,6 +66,9 @@ public class MapGameManager : MonoBehaviour
         newNode.GetComponent<MapNode>().isVisited = true; // set start as visited
         MovePlayer(newNode);
 
+        // start shadow flicker
+        shadowScript.StartFlickerShadow();
+
         // initialization complete
         Debug.Log("Initialization complete!");
     }
@@ -62,7 +76,7 @@ public class MapGameManager : MonoBehaviour
     public void MovePlayer(GameObject currentNode)
     {
         // unmask map - ONLY IF FIRST TIME VISITING NODE!!!
-        maskManagerScript.SpawnUnmasker(currentNode.transform.position);
+        maskScript.SpawnUnmasker(currentNode.transform.position);
 
 
         oldNode = newNode;
