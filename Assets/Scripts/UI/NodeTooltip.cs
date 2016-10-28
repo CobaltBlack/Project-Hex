@@ -7,7 +7,9 @@ using System.Collections.Generic;
 
 public class NodeTooltip : MonoBehaviour
 {
+    private Instance instance;
     private string descriptionText;
+
     public GameObject hoverTooltip; // assign "HoverUI" in inspector. Also, remember to tick off "HoverUI" before running game.
 
     void Update()
@@ -21,11 +23,11 @@ public class NodeTooltip : MonoBehaviour
         {
             DeactivateHoverTooltip();
         }
-
     }
 
-    public void ActivateHoverTooltip()
+    public void ActivateHoverTooltip(Instance currentInstnace)
     {
+        this.instance = currentInstnace;
         ConstructTooltipDataString();
 
         hoverTooltip.SetActive(true);
@@ -45,7 +47,7 @@ public class NodeTooltip : MonoBehaviour
         // YELLOW:  #FFFF00
         // LIME:    #00FF00
         // BLUE:    #0000FF
-        descriptionText = "<color=#FFFFFF><b>" + "PLACE HOLDER MESSAGE" + "</b></color>" + "\n\n" + "<color=#FFFFFF>" + "MORE PLACE HOLDER MESSAGE" + "</color>";
+        descriptionText = "<color=#FFFFFF><b>" + instance.Name + "</b></color>" + "\n\n" + "<color=#FFFFFF>" + instance.Description + "</color>";
         hoverTooltip.transform.GetChild(0).GetComponent<Text>().text = descriptionText;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
@@ -42,7 +43,7 @@ public class MapNode : MonoBehaviour
                 nodeSprite.material.color = Color.green;
 
                 // display node information
-                NodeTooltipScript.ActivateHoverTooltip();
+                NodeTooltipScript.ActivateHoverTooltip(assignedInstance);
             }
         }
     }
@@ -63,13 +64,16 @@ public class MapNode : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (isClickable)
+            if (isClickable && !MapGameManager.instance.PlayerIsMoving()) // node is clickable & character is not moving
             {
                 MapGameManager.instance.MovePlayer(gameObject);
 
                 if (!isVisited)
                 {
-                    MapGameManager.instance.PlayInstance(assignedInstance);
+                    //MapGameManager.instance.UnmaskArea(gameObject);
+                    //MapGameManager.instance.PlayInstance(assignedInstance);
+
+                    StartCoroutine(NotVistedCase());
                 }
 
                 isVisited = true;
@@ -81,5 +85,12 @@ public class MapNode : MonoBehaviour
                 NodeTooltipScript.DeactivateHoverTooltip();
             }
         }
+    }
+
+    IEnumerator NotVistedCase()
+    {
+        MapGameManager.instance.UnmaskArea(gameObject);
+        yield return new WaitForSeconds(1.5f);
+        MapGameManager.instance.PlayInstance(assignedInstance);
     }
 }

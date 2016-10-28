@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class CharData : MonoBehaviour
 {
@@ -19,17 +20,35 @@ public class CharData : MonoBehaviour
     
     void OnMouseEnter()
     {
-        spotlight.transform.position = gameObject.transform.position;
-        spotlight.SetActive(true);
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            spotlight.transform.position = gameObject.transform.position;
+            spotlight.SetActive(true);
+        }
     }
 
     void OnMouseExit()
     {
-        spotlight.SetActive(false);
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            spotlight.SetActive(false);
+        }
     }
 
     void OnMouseUp()
     {
-        charSelectManagerScript.LoadGame(characterData);
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            charSelectManagerScript.LoadGame(characterData);
+        }
+    }
+
+    // to avoid spotlight staying on when esc is pressed
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            spotlight.SetActive(false);
+        }
     }
 }

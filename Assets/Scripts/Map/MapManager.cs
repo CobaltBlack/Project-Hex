@@ -357,7 +357,6 @@ public class MapManager : MonoBehaviour
     void InitializeNodes(int columns, int rows)
     {
         List<GameObject> childNodeList = new List<GameObject>();
-        Transform lineHolder = new GameObject("Lines").transform;
 
         for (int x = 0; x < columns; x++)
         {
@@ -382,25 +381,6 @@ public class MapManager : MonoBehaviour
                 {
                     // ASSIGN INSTANCE
                     childNodeList[i].GetComponent<MapNode>().assignedInstance = GetComponent<InstanceManager>().AssignInstance(mapTileGameObjects[x, y].GetComponent<MapTile>().TilesetTag, childNodeList[i].GetComponent<MapNode>().LayoutTag);
-
-                    /*
-                    //for all nodesConnected inside node
-                    for (int u = 0; u < childNodeList[i].GetComponent<MapNode>().nodesConnected.Count; u++)
-                    {
-                        if (childNodeList[i] && childNodeList[i].GetComponent<MapNode>().nodesConnected[u]) // i forgot why this part was necessary ha ha ha
-                        {
-                            // DRAW LINE
-                            //Debug.DrawLine(childNodeList[i].transform.position, childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform.position, Color.green, 1000, false);
-
-                            // dotted line using line renderer
-                            GameObject lineInstance = Instantiate(line) as GameObject;
-                            lineInstance.GetComponent<Line>().DrawLine(childNodeList[i].transform, childNodeList[i].GetComponent<MapNode>().nodesConnected[u].transform);
-
-                            // editing GameObject
-                            lineInstance.transform.SetParent(lineHolder);
-                        }
-                    }
-                    */
                 }
             }
         }

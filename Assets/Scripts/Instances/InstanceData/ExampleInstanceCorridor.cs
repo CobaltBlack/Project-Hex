@@ -11,6 +11,11 @@ public class ExampleInstanceCorridor : Instance
         return "Example Instance CORRIDOR / ROOM";
     }
 
+    protected override string GetInstanceDescription()
+    {
+        return "Example Instance CORRIDOR / ROOM description blah blha";
+    }
+
     protected override Prompt GetInitialPrompt()
     {
         return new IntroPrompt();

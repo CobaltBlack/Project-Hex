@@ -12,6 +12,11 @@ public class ExampleInstance : Instance
         return "Example Instance";
     }
 
+    protected override string GetInstanceDescription()
+    {
+        return "Example Instance descrition here... blahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblah";
+    }
+
     protected override Prompt GetInitialPrompt()
     {
         return new IntroPrompt();

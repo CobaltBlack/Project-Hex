@@ -11,6 +11,11 @@ public class ExampleInstanceHall : Instance
         return "Example Instance HALL";
     }
 
+    protected override string GetInstanceDescription()
+    {
+        return "Example Instance HALL description ehre blah blahblahblahblahblahblahblahblahblahblah";
+    }
+
     protected override Prompt GetInitialPrompt()
     {
         return new IntroPrompt();

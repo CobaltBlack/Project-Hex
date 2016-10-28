@@ -192,6 +192,10 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 391337966}
+    - target: {fileID: 109784, guid: 1af7f9ba1c9272640b5a7e0f7ddd4893, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1af7f9ba1c9272640b5a7e0f7ddd4893, type: 2}
   m_IsPrefabParent: 0
@@ -250,6 +254,14 @@ Prefab:
     - target: {fileID: 435890, guid: b808997d24f649e4baa59ce1de16c848, type: 2}
       propertyPath: m_RootOrder
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 10846364, guid: b808997d24f649e4baa59ce1de16c848, type: 2}
+      propertyPath: m_Intensity
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 126538, guid: b808997d24f649e4baa59ce1de16c848, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b808997d24f649e4baa59ce1de16c848, type: 2}
@@ -1234,6 +1246,10 @@ Prefab:
       propertyPath: m_CullingMask.m_Bits
       value: 4294965503
       objectReference: {fileID: 0}
+    - target: {fileID: 11497874, guid: 28d27b9567b3d9546aeabbda3e373142, type: 2}
+      propertyPath: backgroundFade
+      value: 
+      objectReference: {fileID: 1251501113}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 28d27b9567b3d9546aeabbda3e373142, type: 2}
   m_IsPrefabParent: 0
@@ -1245,6 +1261,18 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 118872, guid: bfbf6aa1f44b9794388acbef2c1e905b, type: 2}
   m_PrefabInternal: {fileID: 614603844}
+--- !u!114 &1931176492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1931176491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb7a107fb65fe994c8438c305c13e8c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTime: 0.4
 --- !u!114 &1931176501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1256,6 +1284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21a20edc1cf8cb040af159673ad28354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unmaskSingle: {fileID: 195640, guid: 10af62e8a81aabc4cbfec6d2ebaae719, type: 2}
   unmaskCluster: {fileID: 110066, guid: 0e372059b2c56434ab4d6e48cafbc78a, type: 2}
 --- !u!114 &1931176502
 MonoBehaviour:

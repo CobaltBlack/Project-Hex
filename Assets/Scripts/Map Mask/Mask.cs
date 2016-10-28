@@ -7,9 +7,16 @@ public class Mask : MonoBehaviour
 {
     // assign in inspector
     // consider making multiple different unmaskCluster and choosing randomly to increase the feeling of randomness in line appearing
+    public GameObject unmaskSingle;
     public GameObject unmaskCluster;
 
-    public void SpawnUnmasker(Vector2 spawnPosition)
+    public void SpawnUnmaskSingle(Vector2 spawnPosition)
+    {
+        GameObject instance = Instantiate(unmaskSingle, spawnPosition, Quaternion.identity) as GameObject;
+        StartCoroutine(Resize(instance.transform, 1.5f));
+    }
+
+    public void SpawnUnmaskCluster(Vector2 spawnPosition)
     {
         GameObject instance = Instantiate(unmaskCluster, spawnPosition, Quaternion.identity) as GameObject;
 

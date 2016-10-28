@@ -11,6 +11,8 @@ public class MapGameManager : MonoBehaviour
     Shadow shadowScript;
     FadeAlphaCutoff fadeScript;
 
+    MapMovingObject mapMovingObjectScript;
+
     public GameObject player;
     GameObject playerInstance;
     GameObject oldNode;
@@ -38,6 +40,8 @@ public class MapGameManager : MonoBehaviour
         maskScript = GetComponent<Mask>();
         shadowScript = GetComponent<Shadow>();
         fadeScript = GetComponent<FadeAlphaCutoff>();
+
+        mapMovingObjectScript = GetComponent<MapMovingObject>();
     }
 
     void Start()
@@ -57,33 +61,55 @@ public class MapGameManager : MonoBehaviour
         Debug.Log("Initialize gameboard");
         mapManagerScript.MapSetup();
 
-        // initialize player
-        Debug.Log("Instantiate player");
-        playerInstance = Instantiate(player) as GameObject;
-
-        // set player
-        newNode = mapManagerScript.mapTileGameObjects[10, 10].GetComponent<MapTile>().startingNode; //temporary place holder starting location
-        newNode.GetComponent<MapNode>().isVisited = true; // set start as visited
-        MovePlayer(newNode);
+        // set up player
+        Debug.Log("Initialize player");
+        InitializePlayer();
 
         // start shadow flicker
+        Debug.Log("Initialize shadow");
         shadowScript.StartFlickerShadow();
 
         // initialization complete
         Debug.Log("Initialization complete!");
     }
 
+    void InitializePlayer()
+    {
+        // initialize player GameObject
+        playerInstance = Instantiate(player) as GameObject;
+
+        // save starting location
+        GameObject startingNode = mapManagerScript.mapTileGameObjects[10, 10].GetComponent<MapTile>().startingNode;
+
+        // set starting location as visited
+        startingNode.GetComponent<MapNode>().isVisited = true; 
+
+        // set player at starting location
+        playerInstance.transform.position = startingNode.transform.position;
+
+        // unmask map
+        maskScript.SpawnUnmaskCluster(startingNode.transform.position);
+
+        // connect surrounding nodes visually, disconnect previous connections
+        mapManagerScript.ConnectNodes(startingNode);
+
+        // activate newNode's nodesConnected as clickable
+        for (int i = 0; i < startingNode.GetComponent<MapNode>().nodesConnected.Count; i++)
+        {
+            startingNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isClickable = true;
+        }
+
+        // prep for MovePlayer
+        newNode = startingNode;
+    }
+
     public void MovePlayer(GameObject currentNode)
     {
-        // unmask map - ONLY IF FIRST TIME VISITING NODE!!!
-        maskScript.SpawnUnmasker(currentNode.transform.position);
-
-
         oldNode = newNode;
         newNode = currentNode;
 
-        // send playerInstance to this position
-        playerInstance.transform.position = currentNode.transform.position;
+        // smooth move player
+        mapMovingObjectScript.MoveObject(playerInstance.transform, newNode.transform.position);
 
         // set the node to visited // this functionality is moved to MapNode
         //currentNode.GetComponent<MapNode>().isVisited = true;
@@ -100,15 +126,29 @@ public class MapGameManager : MonoBehaviour
         for (int i = 0; i < newNode.GetComponent<MapNode>().nodesConnected.Count; i++)
         {
             newNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isClickable = true;
+
+            if (!newNode.GetComponent<MapNode>().isVisited)
+            {
+                maskScript.SpawnUnmaskSingle(newNode.GetComponent<MapNode>().nodesConnected[i].transform.position);
+            }
         }
 
-        // GLITCHED - it will have one extra processing caused by InitializeGame
-        // fluctuations in MP SP
+        // calculate new MP SP
         playerManagerScript.ProcessFlux();
+    }
+
+    public void UnmaskArea(GameObject targetNode)
+    {
+        maskScript.SpawnUnmaskCluster(targetNode.transform.position);
     }
 
     public void PlayInstance(Instance currentInstance)
     {
         instanceManagerScript.StartInstance(currentInstance);
+    }
+
+    public bool PlayerIsMoving()
+    {
+        return mapMovingObjectScript.IsMoving();
     }
 }
