@@ -42,7 +42,6 @@ public class ExampleInstance : Instance
     // Define the first prompt
     class IntroPrompt : Prompt
     {
-
         protected override string GetPromptText()
         {
             return "Has anyone really been far as decided to use even go want to do look more like?";

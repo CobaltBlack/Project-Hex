@@ -392,12 +392,16 @@ public class MapManager : MonoBehaviour
 
     }
 
+    Transform lineHolder;
+
+    void Awake()
+    {
+        lineHolder = new GameObject("Lines").transform;
+    }
+
     // connect surrounding nodes visually
     public void ConnectNodes(GameObject node)
     {
-        Destroy(GameObject.Find("Lines"));
-        Transform lineHolder = new GameObject("Lines").transform;
-
         for (int u = 0; u < node.GetComponent<MapNode>().nodesConnected.Count; u++)
         {
             // dotted line using line renderer
@@ -406,6 +410,14 @@ public class MapManager : MonoBehaviour
 
             // editing GameObject
             lineInstance.transform.SetParent(lineHolder);
+        }
+    }
+
+    public void DisconnectNodes()
+    {
+        for (int i = 0; i < lineHolder.childCount; i++)
+        {
+            lineHolder.GetChild(i).GetComponent<Line>().EraseLine();
         }
     }
 }

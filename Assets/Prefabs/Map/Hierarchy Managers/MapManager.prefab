@@ -17,6 +17,10 @@ GameObject:
   - 114: {fileID: 11498440}
   - 114: {fileID: 11417222}
   - 114: {fileID: 11499842}
+  - 114: {fileID: 11431552}
+  - 114: {fileID: 11416252}
+  - 114: {fileID: 11490134}
+  - 114: {fileID: 11417610}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: Untagged
@@ -48,7 +52,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ee3678a07cec6408a5a8db0db7943d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 153036, guid: 419de3641eb17f04193281f8b41ae474, type: 2}
+  player: {fileID: 0}
+--- !u!114 &11416252
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a20edc1cf8cb040af159673ad28354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unmaskSingle: {fileID: 195640, guid: 10af62e8a81aabc4cbfec6d2ebaae719, type: 2}
+  unmaskCluster: {fileID: 110066, guid: 0e372059b2c56434ab4d6e48cafbc78a, type: 2}
 --- !u!114 &11417222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -64,6 +81,31 @@ MonoBehaviour:
   MaxSanity: 100
   MaxNumOfSkills: 0
   PlayerCharacterPrefab: {fileID: 0}
+--- !u!114 &11417610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7e8a69c8e5e6545b00b77e530f24cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundFade: {fileID: 0}
+  backgroundFadeFire: {fileID: 0}
+--- !u!114 &11431552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb7a107fb65fe994c8438c305c13e8c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTime: 0.4
 --- !u!114 &11433480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -222,6 +264,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &11490134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b6b21842ac4fa24f84824b0e0ccda84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadow: {fileID: 0}
+  flicker: 1
 --- !u!114 &11494424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -266,7 +321,7 @@ MonoBehaviour:
   moralityBarInverse: {fileID: 0}
   sanityBar: {fileID: 0}
   sanityBarInverse: {fileID: 0}
-  lerpSpeed: 3
+  lerpSpeed: 2
   healthFullColor: {r: 1, g: 0, b: 0, a: 0.5882353}
   moralityFullColor: {r: 0, g: 1, b: 0.29411766, a: 0.5882353}
   sanityFullColor: {r: 0, g: 0.29411766, b: 1, a: 0.5882353}

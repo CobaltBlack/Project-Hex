@@ -26,5 +26,8 @@ public abstract class PromptAnswer
     public void ClosePrompt()
     {
         ModalPanelInstance.Instance.ClosePanel();
+
+        // start second part of Move Player when the panel closes
+        MapGameManager.instance.MovePlayerPartB();
     }
 }

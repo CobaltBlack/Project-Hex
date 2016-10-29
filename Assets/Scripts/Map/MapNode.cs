@@ -26,11 +26,13 @@ public class MapNode : MonoBehaviour
 
     // reference to nodeTooltip script
     NodeTooltip NodeTooltipScript;
+    QuestMark QuestMarkScript;
 
     void Awake()
     {
         nodeSprite = gameObject.GetComponent<SpriteRenderer>();
         NodeTooltipScript = GameObject.Find("MapManager").GetComponent<NodeTooltip>();
+        QuestMarkScript = GameObject.Find("QuestMark").GetComponent<QuestMark>();
     }
 
     void OnMouseEnter()
@@ -40,7 +42,7 @@ public class MapNode : MonoBehaviour
             if (isClickable)
             {
                 // turn node green if clickable
-                nodeSprite.material.color = Color.green;
+                nodeSprite.material.color = Color.black;
 
                 // display node information
                 NodeTooltipScript.ActivateHoverTooltip(assignedInstance);
@@ -64,19 +66,21 @@ public class MapNode : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (isClickable && !MapGameManager.instance.PlayerIsMoving()) // node is clickable & character is not moving
+            if (isClickable && !MapGameManager.instance.PlayerIsMoving() && !QuestMarkScript.IsActive()) // node is clickable & character is not moving & quest mark is inactive
             {
-                MapGameManager.instance.MovePlayer(gameObject);
+                MapGameManager.instance.MovePlayerPartA(gameObject);
 
                 if (!isVisited)
                 {
-                    //MapGameManager.instance.UnmaskArea(gameObject);
-                    //MapGameManager.instance.PlayInstance(assignedInstance);
-
                     StartCoroutine(NotVistedCase());
+
+                    isVisited = true;
                 }
 
-                isVisited = true;
+                else
+                {
+                    StartCoroutine(VistedCase());
+                }
 
                 // turn node back to original color
                 nodeSprite.material.color = Color.white;
@@ -90,7 +94,16 @@ public class MapNode : MonoBehaviour
     IEnumerator NotVistedCase()
     {
         MapGameManager.instance.UnmaskArea(gameObject);
-        yield return new WaitForSeconds(1.5f);
-        MapGameManager.instance.PlayInstance(assignedInstance);
+
+        yield return new WaitForSeconds(2f);
+
+        QuestMarkScript.ActivateQuestMark(assignedInstance);
+    }
+
+    IEnumerator VistedCase()
+    {
+        yield return new WaitForSeconds(2f);
+
+        MapGameManager.instance.MovePlayerPartB();
     }
 }

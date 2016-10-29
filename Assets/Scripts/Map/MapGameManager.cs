@@ -76,16 +76,16 @@ public class MapGameManager : MonoBehaviour
     void InitializePlayer()
     {
         // initialize player GameObject
-        playerInstance = Instantiate(player) as GameObject;
+        //playerInstance = Instantiate(player) as GameObject;
 
         // save starting location
         GameObject startingNode = mapManagerScript.mapTileGameObjects[10, 10].GetComponent<MapTile>().startingNode;
 
         // set starting location as visited
-        startingNode.GetComponent<MapNode>().isVisited = true; 
+        startingNode.GetComponent<MapNode>().isVisited = true;
 
         // set player at starting location
-        playerInstance.transform.position = startingNode.transform.position;
+        player.transform.position = startingNode.transform.position;
 
         // unmask map
         maskScript.SpawnUnmaskCluster(startingNode.transform.position);
@@ -103,38 +103,49 @@ public class MapGameManager : MonoBehaviour
         newNode = startingNode;
     }
 
-    public void MovePlayer(GameObject currentNode)
+    public void MovePlayerPartA(GameObject currentNode)
     {
         oldNode = newNode;
         newNode = currentNode;
 
         // smooth move player
-        mapMovingObjectScript.MoveObject(playerInstance.transform, newNode.transform.position);
+        mapMovingObjectScript.MoveObject(player.transform, newNode.transform.position);
 
         // set the node to visited // this functionality is moved to MapNode
         //currentNode.GetComponent<MapNode>().isVisited = true;
 
-        // connect surrounding nodes visually, disconnect previous connections
-        mapManagerScript.ConnectNodes(newNode);
+        // calculate new MP SP
+        playerManagerScript.ProcessFlux();
+
+        // spawn unmask single
+        for (int i = 0; i < newNode.GetComponent<MapNode>().nodesConnected.Count; i++)
+        {
+            if (!newNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isVisited)
+            {
+                maskScript.SpawnUnmaskSingle(newNode.GetComponent<MapNode>().nodesConnected[i].transform.position);
+            }
+        }
+
+        // disconnectsurrounding nodes visually
+        mapManagerScript.DisconnectNodes();
 
         // deactivate oldNode's nodesConnected
         for (int i = 0; i < oldNode.GetComponent<MapNode>().nodesConnected.Count; i++)
         {
             oldNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isClickable = false;
         }
+    }
+
+    public void MovePlayerPartB()
+    {
+        // connect surrounding nodes visually
+        mapManagerScript.ConnectNodes(newNode);
+
         // activate newNode's nodesConnected
         for (int i = 0; i < newNode.GetComponent<MapNode>().nodesConnected.Count; i++)
         {
             newNode.GetComponent<MapNode>().nodesConnected[i].GetComponent<MapNode>().isClickable = true;
-
-            if (!newNode.GetComponent<MapNode>().isVisited)
-            {
-                maskScript.SpawnUnmaskSingle(newNode.GetComponent<MapNode>().nodesConnected[i].transform.position);
-            }
         }
-
-        // calculate new MP SP
-        playerManagerScript.ProcessFlux();
     }
 
     public void UnmaskArea(GameObject targetNode)

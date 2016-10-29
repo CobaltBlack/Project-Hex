@@ -42,7 +42,6 @@ public class ExampleInstanceCorridor : Instance
 // Define the first prompt
 class IntroPrompt : Prompt
 {
-
     protected override string GetPromptText()
     {
         return "You find what appears to be a shape of a man on the ground, leaning against the wall. The corridor is dimly lit, and you cannot make out the face.";

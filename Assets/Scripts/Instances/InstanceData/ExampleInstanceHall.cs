@@ -39,7 +39,6 @@ public class ExampleInstanceHall : Instance
     // Define the first prompt
     class IntroPrompt : Prompt
     {
-
         protected override string GetPromptText()
         {
             return "You find yourself in an open atrium - you could almost hear the faint laughter and music which once filled the hall.";
